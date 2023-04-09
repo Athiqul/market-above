@@ -29,6 +29,7 @@ class User extends Migration
                 "type"=>"VARCHAR",
                 "constraint"=>100,
                 "unique"=> true,
+                "null"=>true
 
             ],
             "mobile"=>[

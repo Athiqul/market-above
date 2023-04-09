@@ -10,6 +10,7 @@ $routes = Services::routes();
  * Router Setup
  * --------------------------------------------------------------------
  */
+
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
@@ -32,10 +33,16 @@ $routes->set404Override();
 $routes->get('/', 'Home::index',['filter'=>'auth']);
 $routes->get('login', 'Authen::index');
 $routes->post('verify', 'Authen::verify');
+$routes->get('logout', 'Authen::destroy');
 
-$routes->group('company',['namespace'=>'App\Controllers'],function($routes){
+//User related routes
+$routes->group('user',['namespace'=>'App\Controllers','filter'=>'auth'],function ($routes){
+          $routes->get('my-profile','User::myProfile');
+});
+
+$routes->group('company',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
        $routes->get('add','Company::create');
-       $routes->post('add','Company::create');
+       $routes->post('add','Company::store');
        $routes->get('list','Company::index');
        $routes->get('show/(:num)','Company::show/$1');
        $routes->post('update/(:num)','Company::update/$1');

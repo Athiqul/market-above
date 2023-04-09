@@ -18,12 +18,15 @@ Above IT
 
     <div class="row">
                             <div class="col-xl-12">
+                               
                                 <div class="card">
                                     <div class="card-body">
                                         <h4 class="card-title">Company Add</h4>
+                                       
                                         <p class="card-title-desc">Please Provide Proper and Authentic information</p>
         
-                                        <form class="custom-validation" action="<?=base_url('/company/add')?>" method="POST" novalidate="">
+                                        <?=$this->include('assets/alert')?>
+                                        <?=form_open('/company/add',"class='custom-validation' novalidate=''")?>
                                             <div class="mb-3">
                                                 <label>Company Name:</label>
                                                 <input type="text" class="form-control" name="company_name" value="<?=old('company_name')?>" required>
@@ -100,7 +103,7 @@ Above IT
                                                 <div class="col-md-4">
                                                     <div class="mb-3">
                                                     <label for="union" class="form-label">Union/Ward:</label>
-                                                    <select class="form-select union" id="union" name="union" required="">
+                                                    <select class="form-select union" id="union" name="area" required="">
                                                             <option selected=""  value="">Choose...</option>
                                                             
                                                         </select>
@@ -120,6 +123,7 @@ Above IT
                                                 </div>
                                             </div>
                                             <div class="mb-0">
+                                                <input type="hidden" name="user_id" value="<?=session()->get('user')['id']?>">
                                                 <div>
                                                     <button type="submit" class="btn btn-primary waves-effect waves-light me-1">
                                                         Submit

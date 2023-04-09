@@ -70,17 +70,17 @@ class Authen extends BaseController
                   
                   if($row->role=="1")
                   {
-                    $data[]=['role'=>'employ'];
+                    $data['role']='employ';
                      session()->set('user',$data);
 
                      
                     
                   }else{
-                    $data[]=['role'=>'admin'];
+                    $data['role']='admin';
                     session()->set('user',$data);
                   }
                  
-                  return redirect()->to('/');
+                  return redirect()->to('/')->with('success',"Welcome {$row->name} !");
                    
                 } else {
                     return redirect()->back()->withInput()->with('warning','Inactive Account Please Contact With Administration');
@@ -93,6 +93,14 @@ class Authen extends BaseController
 
            return redirect()->back()->withInput()->with('warning','Invalid Mobile number no users found');
         }
+    }
+
+
+    public function destroy ()
+    {
+        session()->remove('user');
+        session()->destroy();
+        return redirect()->to('/login');
     }
     
 }

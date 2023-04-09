@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class Customer extends Model
+class UserInfo extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'customers';
+    protected $table            = 'user_info';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
-    protected $returnType       = \App\Entities\Customers::class;
+    protected $returnType       = \App\Entities\UserInfo::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['user_id','company_name','email','mobile','division','district','thana','area','address','url','company_desc'];
+    protected $allowedFields    = ['user_id','image_link','resume_link','nid','desg','sex','dob','about','division','district','thana','area','address'];
 
     // Dates
     protected $useTimestamps = true;

@@ -45,14 +45,14 @@
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
 										<label for="mobile">Mobile:</label>
-                                        <input class="form-control" id="mobile" type="text" value="<?=esc(old('mobile'))?>" name="mobile" required >
+                                        <input class="form-control" id="mobile" type="tel" pattern="01[3-9][0-9]{8}" value="<?=esc(old('mobile'))?>" name="mobile" required >
                                     </div>
                                 </div>
     
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
 									<label for="password">Password:</label>
-                                        <input class="form-control" id="password" type="password" name="password" value="<?=esc(old('password'))?>" required >
+                                        <input class="form-control" id="password" pattern=".{8,}" type="password" name="password" value="<?=esc(old('password'))?>" required >
                                     </div>
                                 </div>
     
@@ -66,7 +66,7 @@
     
                                 <div class="form-group mb-0 row mt-2">
                                     <div class="col-sm-7 mt-3">
-                                        <a href="auth-recoverpw.html" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your password?</a>
+                                        <a href="" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your password?</a>
                                     </div>
                                     
                                 </div>
