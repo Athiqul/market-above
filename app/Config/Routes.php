@@ -49,7 +49,7 @@ $routes->group('company',['namespace'=>'App\Controllers','filter'=>'auth'],funct
 });
 
 
-$routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
+$routes->group('api',['namespace'=>'App\Controllers\Api','filter'=>'auth'],function($routes){
     $routes->get('divisions','Divisions::index');
     $routes->get('districts','Districts::index');
    
@@ -61,6 +61,8 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
 
     //Company Add
     $routes->post('create-company','Company::create');
+    //User Information Update
+    $routes->post('user-update/(:num)','User::updateInfo/$1');
 });
 
 

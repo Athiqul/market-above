@@ -5,15 +5,9 @@ Above IT
 
 
 
-<?= $this->section('topbar') ?>
-<?= $this->include('assets/topbar') ?>
-<?= $this->endSection() ?>
-<?= $this->section('left_sidebar') ?>
-<?= $this->include('assets/left_sidebar') ?>
-<?= $this->endSection() ?>
+
 <?= $this->section('content') ?>
-<div class="page-content">
-                    <div class="container-fluid">
+
                         
                         <!-- start page title -->
                         <div class="row">
@@ -262,16 +256,9 @@ Above IT
                           <!-- end col -->
                         </div>
                         <!-- end row -->
-                    </div>
-                    
-                </div>
+                   
 <!--Modal-->
 
 <?= $this->endSection() ?>
 
-<?=$this->section('right_sidebar')?>
-<?=$this->include('assets/right_sidebar')?>
-<?=$this->endSection()?>
-<?=$this->section('footer')?>
-<?=$this->include('assets/footer')?>
-<?=$this->endSection()?>
+

@@ -5,15 +5,9 @@ Above IT
 
 
 
-<?= $this->section('topbar') ?>
-<?= $this->include('assets/topbar') ?>
-<?= $this->endSection() ?>
-<?= $this->section('left_sidebar') ?>
-<?= $this->include('assets/left_sidebar') ?>
-<?= $this->endSection() ?>
+
 <?= $this->section('content') ?>
-<div class="page-content">
-    <div class="container-fluid">
+
 
 
     <div class="row">
@@ -140,14 +134,11 @@ Above IT
                             </div> <!-- end col -->
         
                            
-                        </div>
-    </div>
+                      
     <?= $this->endSection() ?>
 
  
-    <?= $this->section('footer') ?>
-    <?= $this->include('assets/footer') ?>
-    <?= $this->endSection() ?>
+   
 
     <?=$this->section('custom-js')?>
     <script src="<?=base_url('/assets/libs/parsleyjs/parsley.min.js')?>"></script>

@@ -31,22 +31,25 @@
 
             
         
-           <?=$this->renderSection('topbar')?>
+          <?=$this->include('assets/topbar')?>
         
             <!-- Left Sidebar End -->
 
             
-            <?=$this->renderSection('left_sidebar')?>
+            <?=$this->include('assets/left_sidebar')?>
             <!-- ============================================================== -->
             <!-- Start right Content here -->
             <!-- ============================================================== -->
             <div class="main-content">
+            <div class="page-content">
+    <div class="container-fluid">
                 <?=$this->renderSection('content')?>
                 
                 <!-- End Page-content -->
-               <?=$this->renderSection('footer')?>
+               <?=$this->include('assets/footer')?>
                
-                
+</div>
+            </div>
             </div>
             <!-- end main content-->
 

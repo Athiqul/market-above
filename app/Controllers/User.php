@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\UserInfo;
-
+use Exception;
 class User extends BaseController
 {
     private $userModel;
@@ -37,9 +37,26 @@ class User extends BaseController
          ];
         
 
-         dd($data);
-         return view('profile/my-profile');  
+        // dd($data);
+         return view('profile/my-profile',['data'=>$data]);  
 
 
+    }
+
+    //user information update 
+    public function updateInformation($id)
+    {
+        $id=session()->get('user')['id'];
+        $profileInfo=$this->userInfoModel->where('user_id',$id)->first();
+        if($profileInfo==null)
+        {
+            $data=$this->request->getVar();
+            try{
+                $this->userInfoModel->save($data);
+                
+            }catch(Exception $ex){
+
+            }
+        }
     }
 }
