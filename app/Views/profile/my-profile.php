@@ -131,264 +131,316 @@ Above IT
 
 <!--Modal-->
 <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="myModalLabel">Profile Update</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                            <div class="card">
-                                    <div class="card-body"> 
-                                        <p class="card-title-desc">Please Provide Proper and Authentic information</p>
-        
-                                        <?=$this->include('assets/alert')?>
-                                        <form class="custom-validation" novalidate='' id="form_update">
-                                     
-                                            <div class="mb-3">
-                                                <label>NID:</label>
-                                                <input type="text" class="form-control" name="nid" value="<?=old('nid')?>">
-                                            </div>
-        
-                                            <div class="mb-3">
-                                                <label>Designation:</label>
-                                                <div>
-                                                    <input type="text"  class="form-control" name="desg" value="<?=old('desg')?>" >
-                                                </div>
-                                          
-                                            </div>
-        
-                                            <div class="mb-3">
-                                                <label for="gender">Gender: </label>
-                                                <div>
-                                                <select class="form-select" id="gender" name="sex">
-                                                           <option selected>Choose.....</option>
-                                                            <option  value="0">Male</option>
-                                                            <option  value="1">Female</option>
-                                                            <option  value="2">Other</option>
-                                                            
-                                                        </select>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="about">About</label>
-                                                <div>
-                                                    <textarea name="about" class="form-control" id="about" rows="5">
-                                                    <?=old('about')?>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Profile Update</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-title-desc">Please Provide Proper and Authentic information</p>
+
+                        <?= $this->include('assets/alert') ?>
+                        <form class="custom-validation" novalidate='' id="form_update">
+
+                            <div class="mb-3">
+                                <label>NID:</label>
+                                <input type="text" pattern="^[0-9]{10,17}$" class="form-control" name="nid" id="nid" value="<?= old('nid', $data['info']->nid) ?>" required="">
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Designation:</label>
+                                <div>
+                                    <input type="text" class="form-control" name="desg" id="desg" value="<?= old('desg', $data['info']->desg) ?>" required>
+                                </div>
+
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="sex">Gender: </label>
+                                <div>
+                                    <select class="form-select" id="sex" name="sex" required>
+                                        <option selected>Choose.....</option>
+                                        <option <?= $data['info']->sex == '0' ? 'Selected' : '' ?> value="0">Male</option>
+                                        <option <?= $data['info']->sex == '1' ? 'Selected' : '' ?> value="1">Female</option>
+                                        <option <?= $data['info']->sex == '2' ? 'Selected' : '' ?> value="2">Other</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="about">About</label>
+                                <div>
+                                    <textarea name="about" class="form-control" id="about" rows="5" required>
+                                                    <?= old('about', $data['info']->about) ?>
                                                     </textarea>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class=" mb-3">
-                                            <label for="example-date-input" class="col-sm-2 col-form-label">Date of Birth</label>
-                                            <div class="col-sm-10">
-                                                <input class="form-control" type="date"  name="dob" value="1999-08-19" min="<?=date('Y-m-d',strtotime('-60 years'))?>" max="<?=date('Y-m-d',strtotime('-18 years'))?>" id="example-date-input">
-                                            </div>
+                                </div>
+                            </div>
+
+                            <div class=" mb-3">
+                                <label for="example-date-input" class="col-sm-2 col-form-label">Date of Birth</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="date" value="<?= old('dob', date('Y-m-d', strtotime($data['info']->dob))) ?>" name="dob" min="<?= date('Y-m-d', strtotime('-60 years')) ?>" max="<?= date('Y-m-d', strtotime('-18 years')) ?>" id="dob" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="division" class="form-label">Division:</label>
+                                        <select class="form-select division" id="division" name="division" required>
+
+
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select a valid division.
                                         </div>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                        <label for="division" class="form-label">Division:</label>
-                                                        <select class="form-select division" id="division" name="division" >
-                                                           
-                                                           
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            Please select a valid division.
-                                                        </div>
-        
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                    <label for="district" class="form-label">District:</label>
-                                                    <select class="form-select district" id="district" name="district">
-                                                          
-                                                            
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            Please select a valid district.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                    <label for="thana" class="form-label">Thana:</label>
-                                                    <select class="form-select thana" id="thana" name="thana" >
-                                                           
-                                                           
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            Please select a valid thana.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-4">
-                                                    <div class="mb-3">
-                                                    <label for="union" class="form-label">Union/Ward:</label>
-                                                    <select class="form-select union" id="union" name="area" >
-                                                            <option selected="" value=""  >Choose...</option>
-                                                            
-                                                        </select>
-                                                        <div class="invalid-feedback">
-                                                            Please select a valid Union/Ward.
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-8">
-                                                    <div class="mb-3">
-                                                    <label for="address">Street Address:</label>
-                                                <div>
-                                                    <input name="address" id="address" type="text"  value="<?=old('address')?>" class="form-control">
-                                                </div>
-                                                        
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="mb-0">
-                                                <input type="hidden" name="user_id" value="<?=session()->get('user')['id']?>">
-                                                <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
-                                            </div>
-                                        </form>
-        
+
                                     </div>
                                 </div>
-                                                            </div>
-                                                           
-                                                        </div><!-- /.modal-content -->
-                                                    </div><!-- /.modal-dialog -->
-                                                </div>
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="district" class="form-label">District:</label>
+                                        <select class="form-select district" id="district" name="district" required>
+
+
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select a valid district.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="thana" class="form-label">Thana:</label>
+                                        <select class="form-select thana" id="thana" name="thana" required>
+
+
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select a valid thana.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="mb-3">
+                                        <label for="union" class="form-label">Union/Ward:</label>
+                                        <select class="form-select union" id="union" name="area" required>
+                                            <option selected="" value="">Choose...</option>
+
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select a valid Union/Ward.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="mb-3">
+                                        <label for="address">Street Address:</label>
+                                        <div>
+                                            <input name="address" id="address" type="text" value="<?= old('address') ?>" class="form-control" required>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-0">
+                                <input type="hidden" name="user_id" id="user_id" value="<?= session()->get('user')['id'] ?>">
+                                <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
 <?= $this->endSection() ?>
 
 
-<?=$this->section('custom-js')?>
-    <script src="<?=base_url('/assets/libs/parsleyjs/parsley.min.js')?>"></script>
-    <script src="<?=base_url('/assets/js/pages/form-validation.init.js')?>"></script>
-    <script>
-        //divisions
+<?= $this->section('custom-js') ?>
+<script src="<?= base_url('/assets/libs/parsleyjs/parsley.min.js') ?>"></script>
+<script src="<?= base_url('/assets/js/pages/form-validation.init.js') ?>"></script>
+<script>
+    //divisions
 
-  let div=document.getElementById("division");
-  let dis=document.getElementById("district");
-  let thana=document.getElementById("thana");
-  let union=document.getElementById('union');
-  
-//fetch divisions
-  fetch('<?=site_url('/api/divisions')?>')
-  .then(res=>res.json())
-  .then((data)=>{
-       // console.log(data);
-        if(data.success==true)
-        {
-          let payload=data.msg;
-          div.innerHTML='';
-          let html='<option value="">Select Division</option>';
-           payload.forEach(function(item){
-             // console.log(item);
-              html+=`<option value=${item.id}>${item.en_name}</option>`
-           });
+    let div = document.getElementById("division");
+    let dis = document.getElementById("district");
+    let thana = document.getElementById("thana");
+    let union = document.getElementById('union');
 
-           div.innerHTML=html;
-          
+
+    //default load if exist
+
+    //fetch divisions
+    loadLoc("<?=site_url('/api/divisions')?>",
+    '',div,"Choose","<?=$data['info']->division??''?>"
+    );
+      
+    let checkdiv="<?=$data['info']->division??''?>";
+    if(checkdiv!='')
+    {
+        console.log(div.value);
+    //     loadLoc(""+div.value,
+    // '',dis,"Choose","<?=$data['info']->district??''?>"
+    // );
+    } 
+
+    div.addEventListener('change', function() {
+        //console.log(this.value);
+        //fetch districts
+        if (this.value == "") {
+            dis.innerHTML = '';
+            thana.innerHTML = '';
+            union.innerHTML = '';
+            return;
         }
-  })
-  .catch(err=>{
-    console.log(err);
-  });
 
-  div.addEventListener('change',function(){
-   //console.log(this.value);
-   //fetch districts
-   if(this.value=="")
-   {
-    dis.innerHTML='';
-    thana.innerHTML='';
-    union.innerHTML='';
-    return;
-   }
-   fetch('<?=site_url('/api/division-to-districts/')?>'+this.value)
-   .then(res=>res.json())
-   .then(data=>{
-      //console.log(data.msg);
-      let html='<option value="">Select Districts</option>';
-      data.msg.forEach(function(item){
-         html+=`<option value=${item.id}>${item.en_name}</option>`;
-      });
-      dis.innerHTML=html;
-     
-   }).catch(err=>console.log(err))
-  });
+        loadLoc("<?=site_url('/api/division-to-districts/')?>",
+    this.value,dis,"Choose","<?=$data['info']->district??''?>"
+    );
+        
+    });
 
-  dis.addEventListener('change',function(){
-   //console.log(this.value);
-   //fetch districts
-   if(this.value=="")
-   {
-    thana.innerHTML='';
-    union.innerHTML='';
-    return;
-   }
-   fetch('<?=site_url('/api/district-to-thana/')?>'+this.value)
-   .then(res=>res.json())
-   .then(data=>{
-     // console.log(data.msg);
-      let html='<option value="">Select Thana</option>';
-      data.msg.forEach(function(item){
-         html+=`<option value=${item.id}>${item.en_name}</option>`;
-      });
-      thana.innerHTML=html;
-     
-   }).catch(err=>console.log(err))
-  });
+    dis.addEventListener('change', function() {
+        //console.log(this.value);
+        //fetch districts
+        if (this.value == "") {
+            thana.innerHTML = '';
+            union.innerHTML = '';
+            return;
+        }
+        loadLoc("<?=site_url('/api/district-to-thana/')?>",
+    this.value,thana,"Choose","<?=$data['info']->thana??''?>"
+    );
+    });
 
-  thana.addEventListener('change',function(){
-   //console.log(this.value);
-   //fetch districts
-   if(this.value=="")
-   {
-   
-    union.innerHTML='';
-    return;
-   }
-   fetch('<?=site_url('/api/thana-to-unions/')?>'+this.value)
-   .then(res=>res.json())
-   .then(data=>{
-    console.log(data.msg);
-      let html='<option value="">Select Union/Ward</option>';
-      data.msg.forEach(function(item){
-         html+=`<option value=${item.id}>${item.en_name}</option>`;
-      });
-      union.innerHTML=html;
-     
-   }).catch(err=>console.log(err))
-  });
+    thana.addEventListener('change', function(){
+        if (this.value == "") {
+            union.innerHTML = '';
+            return;
+        }
+        loadLoc("<?=site_url('/api/thana-to-unions/')?>",
+    this.value,union,"Select Union/Ward.........","<?=$data['info']->area??''?>"
+    );
+    });
 
-  // Profile Upload
-   let updateFrom= document.getElementById("form_update");
-   updateFrom.addEventListener('submit',function(e){
-      e.preventDefault();
-      //get form data
-      let obj={};
-      const formData= new FormData(updateFrom);
-      for (let [key, value] of formData.entries()) {
-            let get=key;
 
-     obj[`${key}`]=value;
-  }
-  console.log(obj);
-  fetch("<?=site_url('/api/user-update/'.session()->get('user')['id'])?>",{
-    method:"POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body:JSON.stringify(obj)
-  })
-  .then(res=>res.json())
-  .then(res=> console.log(res))
-  .catch(err=>console.log(err));
-   })
-    </script>
-    <?=$this->endSection()?>
+    //geo loc function
+
+    function loadLoc(url, parentId='', element, optionText, existvalue = "",type='') {
+      
+        if (parentId !== "") {
+
+           url=url+parentId;
+        }
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+
+                let html = `<option value="">${optionText}</option>`;
+                data.msg.forEach(function(item) {
+                    html += `<option value=${item.id} ${existvalue==item.en_name?'Selected':''}>${item.en_name}</option>`;
+                });
+                element.innerHTML = html;
+               if(type=='div')
+               {
+                  return true;
+               }else{
+                return false
+               }
+            }).catch(err => console.log(err))
+    }
+    // Profile Upload
+    let updateFrom = document.getElementById("form_update");
+    updateFrom.addEventListener('submit', function(e) {
+        e.preventDefault();
+        let user_idcheck = document.getElementById('user_id').value;
+        let nidcheck = document.getElementById('nid').value;
+        let desgCheck = document.getElementById('desg').value;
+        let sexCheck = document.getElementById('sex').value;
+        let dobCheck = document.getElementById('dob').value;
+        let aboutCheck = document.getElementById('about').value;
+        let addressCheck = document.getElementById('address').value;
+        let divisionCheck = div.options[div.selectedIndex].text;
+        let districtCheck = dis.options[dis.selectedIndex].text;
+        let thanaCheck = thana.options[thana.selectedIndex].text;
+        let areaCheck = union.options[union.selectedIndex].text;
+        if (user_idcheck == "" || nidcheck == "" || desgCheck == "" || sexCheck == "" || dobCheck == "" || aboutCheck == "" || addressCheck == "", divisionCheck == "" || districtCheck == "" || districtCheck == "" || thanaCheck == "" || areaCheck == "") {
+            return;
+        }
+        if (confirm('Are you sure to update your profile information')) {
+            //get form data
+
+
+            const formData = new FormData();
+            formData.append('user_id', user_idcheck);
+            formData.append('nid', nidcheck);
+            formData.append('desg', desgCheck);
+            formData.append('sex', sexCheck);
+            formData.append('dob', dobCheck);
+            formData.append('about', aboutCheck);
+            formData.append('address', addressCheck);
+            formData.append('division', divisionCheck);
+            formData.append('district', districtCheck);
+            formData.append('thana', thanaCheck);
+            formData.append('area', areaCheck);
+
+
+            let obj = {};
+            for (const [key, value] of formData.entries()) {
+                obj[key] = value;
+            }
+
+            console.log(obj);
+
+            fetch("<?= site_url('/api/user-update/') ?>" + user_idcheck, {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application.json',
+                        'Content-Type': 'application/json;charset=UTF-8',
+
+                    },
+                    body: JSON.stringify(obj)
+                })
+                .then(res => res.json())
+                .then(res => {
+
+                    console.log(res);
+                    if (res.errors == true) {
+                        if (typeof res.payload === 'string') {
+                            $("#myModal").modal('hide');
+                            alert(res.payload);
+
+                        } else {
+                            let msg = '';
+                            for (let error in res.payload) {
+                                msg += res.payload[error];
+
+                            }
+
+                            alert(msg);
+                        }
+                    } else {
+                        // data updated successfully 
+
+                        $("#myModal").modal('hide');
+                        alert(res.payload);
+                    }
+
+                })
+                .catch(err => {
+                    console.log(err)
+                });
+        }
+
+    })
+</script>
+<?= $this->endSection() ?>

@@ -49,7 +49,7 @@ $routes->group('company',['namespace'=>'App\Controllers','filter'=>'auth'],funct
 });
 
 
-$routes->group('api',['namespace'=>'App\Controllers\Api','filter'=>'auth'],function($routes){
+$routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->get('divisions','Divisions::index');
     $routes->get('districts','Districts::index');
    

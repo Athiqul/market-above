@@ -43,20 +43,20 @@ class User extends BaseController
 
     }
 
-    //user information update 
-    public function updateInformation($id)
-    {
-        $id=session()->get('user')['id'];
-        $profileInfo=$this->userInfoModel->where('user_id',$id)->first();
-        if($profileInfo==null)
-        {
-            $data=$this->request->getVar();
-            try{
-                $this->userInfoModel->save($data);
+    // //user information update 
+    // public function updateInformation($id)
+    // {
+       
+    //     $profileInfo=$this->userInfoModel->where('user_id',$id)->first();
+    //     if($profileInfo==null)
+    //     {
+    //         $data=$this->request->getVar();
+    //         try{
+    //             $this->userInfoModel->save($data);
                 
-            }catch(Exception $ex){
+    //         }catch(Exception $ex){
 
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
 }

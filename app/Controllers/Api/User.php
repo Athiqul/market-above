@@ -9,31 +9,64 @@ use App\Models\UserModel;
 
 
 
+
 class User extends ResourceController
 {
    
-    public function updateInfo()
+    public function updateInfo($id)
     {
-        $id=session()->get('user')['id'];
+
+        $validation=[
+            'nid'=>[
+                'rules'=>'regex_match[^[0-9]{10,17}$]',
+                'errors'=>[
+                    'regex_match'=>'Provide a valid NID number'
+                ]
+            ],
+            'user_id'=>[
+                'rules'=>'required|is_not_unique[user_access.id]',
+                'errors'=>[
+                    'is_not_unique'=>'Unauthorized User',
+                    'required'=>'Unauthorized User'
+                ]
+            ]
+        ];
+
+        if(!$this->validate($validation))
+        {
+            return $this->setResponse('0',true,$this->validator->getErrors());
+        }
+
         $profile=new UserInfo();
         $profileInfo=$profile->where('user_id',$id)->first();
+        $data=$this->request->getVar();
+        $data=(array)$data;
+       
+        //return $this->setResponse('0',true,var_dump($data));
         if($profileInfo==null)
         {
-            $data=$this->request->getVar();
+            
             try{
-                $profile->save($data);
-
+               if ($profile->save($data))
+               {
                 return $this->setResponse('1',false,"User Information Recorded Successfully");
+               }else{
+                return $this->setResponse('0',true,$profile->errors());
+               }
+
+                
                 
             }catch(Exception $ex){
                     return $this->setResponse('0',true,$ex->getMessage());
             }
         } else{
-            $userInput=$this->request->getPost();
-            $profileInfo->fill($userInput);
-             if($profileInfo->hasChanged())
+           // print_r($profileInfo);
+            
+           // dd($data);
+            $profileInfo->fill($data);
+             if(!$profileInfo->hasChanged())
              {
-                return $this->setResponse('1',false,"Nothing Updated");
+                return $this->setResponse('0',true,"Nothing Updated");
              }
              else{
 
