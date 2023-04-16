@@ -5,7 +5,7 @@
     <!-- User details -->
     <div class="user-profile text-center mt-3">
         <div class="">
-            <img src="<?=site_url('assets/images/users/avatar-1.jpg')?>" alt="" class="avatar-md rounded-circle">
+            <img src="<?=base_url('/user/profile-image-show/'.session()->get('user')['user_info']->image_link)?>" alt="" class="avatar-md rounded-circle">
         </div>
         <div class="mt-3">
             <h4 class="font-size-16 mb-1">Julia Hudda</h4>

@@ -29,7 +29,7 @@ Above IT
                         <!-- end page title -->
 
                         <div class="row">
-                        <?=$this->include('assets/alert')?>
+                      
                             <div class="col-xl-3 col-md-6">
                                 <div class="card">
                                     <div class="card-body">

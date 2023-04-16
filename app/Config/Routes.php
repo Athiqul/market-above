@@ -38,6 +38,12 @@ $routes->get('logout', 'Authen::destroy');
 //User related routes
 $routes->group('user',['namespace'=>'App\Controllers','filter'=>'auth'],function ($routes){
           $routes->get('my-profile','User::myProfile');
+          $routes->get('profile-image-change/(:num)','User::profileImage/$1');
+          $routes->post('profile-image-change/(:num)','User::storeImage/$1');
+          $routes->get('profile-resume-upload/(:num)','User::profileResume/$1');
+          $routes->post('profile-resume-upload/(:num)','User::storeResume/$1');
+          $routes->get('profile-image-show/(:any)','User::image/$1');
+
 });
 
 $routes->group('company',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
@@ -63,6 +69,9 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->post('create-company','Company::create');
     //User Information Update
     $routes->post('user-update/(:num)','User::updateInfo/$1');
+
+    //fetch user information
+    $routes->get('user-information/(:num)','User::profileInfo/$1');
 });
 
 

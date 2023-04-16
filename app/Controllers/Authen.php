@@ -61,11 +61,13 @@ class Authen extends BaseController
             if ($row->password == md5($password)) {
                 //Now check account is active or not
                 if ($row->status == "1") {
-                  
+                     $userInfo=new \App\Models\UserInfo();
+                     $userData=$userInfo->where('user_id',$row->id)->first();
                     $data=[
                         'employ_id'=>$row->employ_id,
                         'id'=>$row->id,
                         'name'=>$row->name,
+                        'user_info'=>$userData,
                     ];
                   
                   if($row->role=="1")

@@ -12,7 +12,12 @@ Above IT
 
         <div class="card text-center ">
             <center>
-                <img class="card-img-top rounded avatar-lg img-fluid mt-2" src="<?= site_url('assets/images/small/img-2.jpg') ?>" alt="Card image cap">
+                
+                <img class="card-img-top rounded avatar-lg img-fluid mt-2" src="<?= site_url('/user/profile-image-show/'.$data['info']->image_link) ?>" alt="Card image cap">
+                
+               <br>
+               <br>
+                <a href="<?=site_url('/user/profile-image-change/'.$data['basic']->id)?>" class="btn btn-info btn-rounded waves-effect waves-light">Change Picture</a>
             </center>
 
             <div class="card-body ">
@@ -25,8 +30,7 @@ Above IT
             </ul>
             <div class="card-body">
                 <div class="my-4 text-center">
-                    <p class="text-muted">Standard modal</p>
-                    <button type="button" class="btn btn-info btn-rounded waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#myModal">Update Profile</button>
+                    <button type="button" class="btn btn-info btn-rounded waves-effect waves-light" id="profile-update" data-bs-toggle="modal" data-bs-target="#myModal">Update Profile</button>
                 </div>
 
             </div>
@@ -52,7 +56,7 @@ Above IT
                 <!-- Nav tabs -->
                 <ul class="nav nav-pills nav-justified" role="tablist">
                     <li class="nav-item waves-effect waves-light">
-                        <a class="nav-link" data-bs-toggle="tab" href="#home-1" role="tab" aria-selected="false">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#home-1" role="tab" aria-selected="false">
                             <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
                             <span class="d-none d-sm-block">My Info</span>
                         </a>
@@ -70,7 +74,7 @@ Above IT
                         </a>
                     </li>
                     <li class="nav-item waves-effect waves-light">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#settings-1" role="tab" aria-selected="true">
+                        <a class="nav-link" data-bs-toggle="tab" href="#settings-1" role="tab" aria-selected="true">
                             <span class="d-block d-sm-none"><i class="fas fa-cloud-download-alt"></i></span>
                             <span class="d-none d-sm-block">Resume</span>
                         </a>
@@ -78,17 +82,10 @@ Above IT
                 </ul>
 
                 <!-- Tab panes -->
-                <div class="tab-content p-3 text-muted">
-                    <div class="tab-pane" id="home-1" role="tabpanel">
-                        <p class="mb-0">
-                            Raw denim you probably haven't heard of them jean shorts Austin.
-                            Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache
-                            cliche tempor, williamsburg carles vegan helvetica. Reprehenderit
-                            butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi,
-                            qui irure terry richardson ex squid. Aliquip placeat salvia cillum
-                            iphone. Seitan aliquip quis cardigan american apparel, butcher
-                            voluptate nisi qui.
-                        </p>
+                <div class="tab-content p-3 text-muted" id="profile-info">
+                    <div class="tab-pane active" id="home-1" role="tabpanel">
+                        
+
                     </div>
                     <div class="tab-pane" id="profile-1" role="tabpanel">
                         <p class="mb-0">
@@ -112,7 +109,7 @@ Above IT
                             mi whatever gluten-free.
                         </p>
                     </div>
-                    <div class="tab-pane active" id="settings-1" role="tabpanel">
+                    <div class="tab-pane " id="settings-1" role="tabpanel">
                         <p class="mb-0">
                             Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
                             art party before they sold out master cleanse gluten-free squid
@@ -147,13 +144,13 @@ Above IT
 
                             <div class="mb-3">
                                 <label>NID:</label>
-                                <input type="text" pattern="^[0-9]{10,17}$" class="form-control" name="nid" id="nid" value="<?= old('nid', $data['info']->nid) ?>" required="">
+                                <input type="text" pattern="^[0-9]{10,17}$" class="form-control" name="nid" id="nid" value="<?= old('nid', $data['info']->nid??'') ?>" required="">
                             </div>
 
                             <div class="mb-3">
                                 <label>Designation:</label>
                                 <div>
-                                    <input type="text" class="form-control" name="desg" id="desg" value="<?= old('desg', $data['info']->desg) ?>" required>
+                                    <input type="text" class="form-control" name="desg" id="desg" value="<?= old('desg', $data['info']->desg??'') ?>" required>
                                 </div>
 
                             </div>
@@ -163,9 +160,16 @@ Above IT
                                 <div>
                                     <select class="form-select" id="sex" name="sex" required>
                                         <option selected>Choose.....</option>
-                                        <option <?= $data['info']->sex == '0' ? 'Selected' : '' ?> value="0">Male</option>
-                                        <option <?= $data['info']->sex == '1' ? 'Selected' : '' ?> value="1">Female</option>
-                                        <option <?= $data['info']->sex == '2' ? 'Selected' : '' ?> value="2">Other</option>
+                                        <?php 
+                                          $gender='';
+                                        if($data['info']->sex==null){ 
+                                            $gender='9';
+                                        }else{
+                                            $gender=$data['info']->sex;
+                                        }?>
+                                        <option <?= ($gender == '0') ? 'Selected' : '' ?> value="0">Male</option>
+                                        <option <?= ($gender == '1') ? 'Selected' : '' ?> value="1">Female</option>
+                                        <option <?= ($gender == '2') ? 'Selected' : '' ?> value="2">Other</option>
 
                                     </select>
                                 </div>
@@ -173,16 +177,15 @@ Above IT
                             <div class="mb-3">
                                 <label for="about">About</label>
                                 <div>
-                                    <textarea name="about" class="form-control" id="about" rows="5" required>
-                                                    <?= old('about', $data['info']->about) ?>
-                                                    </textarea>
+                                    <textarea name="about" class="form-control" id="about" rows="5" required><?= esc(old('about', $data['info']->about??'')) ?> </textarea>
+                                                   
                                 </div>
                             </div>
 
                             <div class=" mb-3">
                                 <label for="example-date-input" class="col-sm-2 col-form-label">Date of Birth</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="date" value="<?= old('dob', date('Y-m-d', strtotime($data['info']->dob))) ?>" name="dob" min="<?= date('Y-m-d', strtotime('-60 years')) ?>" max="<?= date('Y-m-d', strtotime('-18 years')) ?>" id="dob" required>
+                                    <input class="form-control" type="date" value="<?= old('dob', date('Y-m-d', strtotime($data['info']->dob??''))) ?>" name="dob" min="<?= date('Y-m-d', strtotime('-60 years')) ?>" max="<?= date('Y-m-d', strtotime('-18 years')) ?>" id="dob" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -204,7 +207,9 @@ Above IT
                                         <label for="district" class="form-label">District:</label>
                                         <select class="form-select district" id="district" name="district" required>
 
-
+                                           <?php if($data['info']->district??''!=''):?>
+                                            <option value="" selected><?=$data['info']->district?></option>
+                                           <?php endif?>  
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select a valid district.
@@ -217,7 +222,9 @@ Above IT
                                         <label for="thana" class="form-label">Thana:</label>
                                         <select class="form-select thana" id="thana" name="thana" required>
 
-
+                                        <?php if($data['info']->thana??''!=''):?>
+                                            <option value="" selected><?=$data['info']->thana?></option>
+                                           <?php endif?> 
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select a valid thana.
@@ -230,7 +237,9 @@ Above IT
                                     <div class="mb-3">
                                         <label for="union" class="form-label">Union/Ward:</label>
                                         <select class="form-select union" id="union" name="area" required>
-                                            <option selected="" value="">Choose...</option>
+                                        <?php if($data['info']->area??''!=''):?>
+                                            <option value="" selected><?=$data['info']->area?></option>
+                                           <?php endif?> 
 
                                         </select>
                                         <div class="invalid-feedback">
@@ -242,7 +251,7 @@ Above IT
                                     <div class="mb-3">
                                         <label for="address">Street Address:</label>
                                         <div>
-                                            <input name="address" id="address" type="text" value="<?= old('address') ?>" class="form-control" required>
+                                            <input name="address" id="address" type="text" value="<?= old('address',$data['info']->address??'') ?>" class="form-control" required>
                                         </div>
 
                                     </div>
@@ -268,7 +277,65 @@ Above IT
 <?= $this->section('custom-js') ?>
 <script src="<?= base_url('/assets/libs/parsleyjs/parsley.min.js') ?>"></script>
 <script src="<?= base_url('/assets/js/pages/form-validation.init.js') ?>"></script>
+<script src="<?=base_url('/assets/js/moment.min.js')?>"></script>
 <script>
+
+
+     //Show profile information via api
+
+     loadBasicInfo();
+     function loadBasicInfo()
+     {
+        let profileInfo=document.getElementById('home-1');
+
+fetch('<?=site_url('/api/user-information/'.session()->get('user')['id'])?>')
+.then(res=>res.json())
+.then(data=>{
+   let html='';
+   
+   if(data.errors==false)
+   {
+       html+=` 
+                  
+                   <ul>
+                       <li>
+                          <b> Designation:</b> <strong class="text-danger">${data.payload.desg}</strong>
+                       </li>
+                       <li>
+                           Gender: ${data.payload.sex=='0'?'Male':'Female'}
+                       </li>
+                       <li>
+                           NID: ${data.payload.nid}
+                       </li>
+                       <li>
+                           Date Of Birth: ${moment(data.payload.dob).format('MMM Do YYYY')}
+                       </li>
+                       <li>
+                           Address: ${data.payload.address + ',' + data.payload.area + ',' + data.payload.district + ',' + data.payload.division}
+                       </li>
+                       <li>
+                           Joint at: ${moment(data.payload.created_at.date).format('MMM Do YYYY')}
+                       </li>
+                       <li>
+                           About Myself: ${data.payload.about}
+                       </li>
+                   </ul>
+                  
+
+              `
+   }else{
+           html+=`
+          <p>Profile Is not updated yet, please update your profile</p>
+          
+        `               
+          ;
+   }
+
+   profileInfo.innerHTML=html;
+})
+.catch(err=>console.log(err));
+     }
+    
     //divisions
 
     let div = document.getElementById("division");
@@ -350,12 +417,7 @@ Above IT
                     html += `<option value=${item.id} ${existvalue==item.en_name?'Selected':''}>${item.en_name}</option>`;
                 });
                 element.innerHTML = html;
-               if(type=='div')
-               {
-                  return true;
-               }else{
-                return false
-               }
+               
             }).catch(err => console.log(err))
     }
     // Profile Upload
@@ -417,6 +479,7 @@ Above IT
                     if (res.errors == true) {
                         if (typeof res.payload === 'string') {
                             $("#myModal").modal('hide');
+
                             alert(res.payload);
 
                         } else {
@@ -433,6 +496,7 @@ Above IT
 
                         $("#myModal").modal('hide');
                         alert(res.payload);
+                        loadBasicInfo();
                     }
 
                 })

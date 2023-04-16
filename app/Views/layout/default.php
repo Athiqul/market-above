@@ -43,6 +43,7 @@
             <div class="main-content">
             <div class="page-content">
     <div class="container-fluid">
+       <?=$this->include('assets/alert')?>
                 <?=$this->renderSection('content')?>
                 
                 <!-- End Page-content -->
@@ -80,6 +81,7 @@
        
         <!-- App js -->
         <script src="<?=base_url('/assets/js/app.js')?>"></script>
+       
     </body>
 
 </html>

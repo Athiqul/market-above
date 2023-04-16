@@ -12,7 +12,27 @@ use App\Models\UserModel;
 
 class User extends ResourceController
 {
-   
+    //user information model
+    private $userInfoModel;
+
+    // initialize model via construction
+    public function __construct()
+    {
+        $this->userInfoModel=new UserInfo();
+    }
+
+    // provide identical user information
+    public function profileInfo($id)
+    {
+          $info=$this->userInfoModel->where('user_id',$id)->first();
+          if($info==null)
+          {
+            return $this->setResponse('0',true,'No Information found');
+          }
+          return $this->setResponse('1',false,$info);
+    }
+
+    //Request handle for update
     public function updateInfo($id)
     {
 
