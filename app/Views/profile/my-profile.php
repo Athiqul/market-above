@@ -110,14 +110,25 @@ Above IT
                         </p>
                     </div>
                     <div class="tab-pane " id="settings-1" role="tabpanel">
-                        <p class="mb-0">
-                            Trust fund seitan letterpress, keytar raw denim keffiyeh etsy
-                            art party before they sold out master cleanse gluten-free squid
-                            scenester freegan cosby sweater. Fanny pack portland seitan DIY,
-                            art party locavore wolf cliche high life echo park Austin. Cred
-                            vinyl keffiyeh DIY salvia PBR, banh mi before they sold out
-                            farm-to-table.
-                        </p>
+                        <?php if($data['info']->resume_link==null):?>
+                            <h6 class="text-danger text-center">You have not uploaded any resume please upload your resume</h6>
+                            <?php else:?>
+                              <div class="row">
+                                <div class="col-md-12">
+                                    <div class="text-center mb-3">
+                                    <h6 class="text-center text-success">Your resume uploaded You can overview your resume</h6>
+                                <a class=" btn btn-secondary btn-rounded waves-effect waves-light" href="<?= site_url('user/resume-show/'.$data['info']->resume_link) ?>" target="_blank">View Resume</a>
+                                    </div>
+                                </div>
+                              </div>
+                        <?php endif?>
+                      <div class="row">
+                     <div class="col-md-12">
+                        <div class="text-center">
+                        <a href="<?=site_url('/user/resume-upload')?>" class="btn btn-primary btn-rounded waves-effect waves-light" >Upload New Resume</a>
+                        </div>
+                     </div>
+                      </div>
                     </div>
                 </div>
 

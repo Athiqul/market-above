@@ -40,9 +40,13 @@ $routes->group('user',['namespace'=>'App\Controllers','filter'=>'auth'],function
           $routes->get('my-profile','User::myProfile');
           $routes->get('profile-image-change/(:num)','User::profileImage/$1');
           $routes->post('profile-image-change/(:num)','User::storeImage/$1');
-          $routes->get('profile-resume-upload/(:num)','User::profileResume/$1');
-          $routes->post('profile-resume-upload/(:num)','User::storeResume/$1');
+          $routes->get('resume-upload','User::profileResume');
+          $routes->post('resume-upload','User::storeResume');
           $routes->get('profile-image-show/(:any)','User::image/$1');
+          $routes->get('resume-show/(:any)','User::showResume/$1');
+          //for password change
+          $routes->get('password-change','User::passwordChange');
+          $routes->post('password-change','User::storePassword');
 
 });
 
