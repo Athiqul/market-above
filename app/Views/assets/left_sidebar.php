@@ -33,7 +33,7 @@
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
                     <li><a href="<?=site_url('/company/add')?>">Add Company</a></li>
-                    <li><a href="email-read.html">Company List</a></li>
+                    <li><a href="<?=site_url('/company/list')?>">Company List</a></li>
                 </ul>
             </li>
 

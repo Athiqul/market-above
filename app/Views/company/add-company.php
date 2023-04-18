@@ -29,7 +29,7 @@ Above IT
                                             <div class="mb-3">
                                                 <label>Contact Number:</label>
                                                 <div>
-                                                    <input type="tel"  class="form-control" name="mobile" value="<?=old('mobile')?>" pattern="01[3-9][0-9]{8}" required="" >
+                                                    <input type="tel"  class="form-control" name="mobile" value="<?=old('mobile')?>" pattern="01[3-9][0-9]{8}||[0-9]{8}" required="" >
                                                 </div>
                                           
                                             </div>
@@ -163,7 +163,7 @@ Above IT
           let html='<option value="">Select Division</option>';
            payload.forEach(function(item){
              // console.log(item);
-              html+=`<option value=${item.id}>${item.en_name}</option>`
+              html+=`<option data-id=${item.id} value='${item.en_name}'>${item.en_name}</option>`
            });
 
            div.innerHTML=html;
@@ -175,7 +175,7 @@ Above IT
   });
 
   div.addEventListener('change',function(){
-   //console.log(this.value);
+   //console.log(this.options[this.selectedIndex].dataset.id);
    //fetch districts
    if(this.value=="")
    {
@@ -184,13 +184,13 @@ Above IT
     union.innerHTML='';
     return;
    }
-   fetch('<?=site_url('/api/division-to-districts/')?>'+this.value)
+   fetch('<?=site_url('/api/division-to-districts/')?>'+this.options[this.selectedIndex].dataset.id)
    .then(res=>res.json())
    .then(data=>{
-      console.log(data.msg);
+     // console.log(data.msg);
       let html='<option value="">Select Districts</option>';
       data.msg.forEach(function(item){
-         html+=`<option value=${item.id}>${item.en_name}</option>`;
+         html+=`<option data-id=${item.id} value='${item.en_name}'>${item.en_name}</option>`;
       });
       dis.innerHTML=html;
      
@@ -206,13 +206,13 @@ Above IT
     union.innerHTML='';
     return;
    }
-   fetch('<?=site_url('/api/district-to-thana/')?>'+this.value)
+   fetch('<?=site_url('/api/district-to-thana/')?>'+this.options[this.selectedIndex].dataset.id)
    .then(res=>res.json())
    .then(data=>{
       console.log(data.msg);
       let html='<option value="">Select Thana</option>';
       data.msg.forEach(function(item){
-         html+=`<option value=${item.id}>${item.en_name}</option>`;
+         html+=`<option data-id='${item.id}' value='${item.en_name}'>${item.en_name}</option>`;
       });
       thana.innerHTML=html;
      
@@ -228,13 +228,13 @@ Above IT
     union.innerHTML='';
     return;
    }
-   fetch('<?=site_url('/api/thana-to-unions/')?>'+this.value)
+   fetch('<?=site_url('/api/thana-to-unions/')?>'+this.options[this.selectedIndex].dataset.id)
    .then(res=>res.json())
    .then(data=>{
     console.log(data.msg);
       let html='<option value="">Select Union/Ward</option>';
       data.msg.forEach(function(item){
-         html+=`<option value=${item.id}>${item.en_name}</option>`;
+         html+=`<option data-id=${item.id} value='${item.en_name}'>${item.en_name}</option>`;
       });
       union.innerHTML=html;
      

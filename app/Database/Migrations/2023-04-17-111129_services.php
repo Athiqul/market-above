@@ -12,7 +12,7 @@ class EmployActivity extends Migration
 
             "id"=>[
                 "type"=>'INT',
-                "constraint"=>12,
+                "constraint"=>4,
                 "unsigned"=>true,
                 "auto_increment"=>true
             ],
@@ -24,7 +24,7 @@ class EmployActivity extends Migration
             ],
             "status"=>[
                 "type"=>"ENUM",
-                "constraint"=>255,
+                "constraint"=>['0','1'],
                 "null"=>true
             ],
             
@@ -41,12 +41,12 @@ class EmployActivity extends Migration
         ]);
 
         $this->forge->addPrimaryKey('id');
-        $this->forge->addForeignKey('user_id','user_access','id','CASCADE','CASCADE');
-        $this->forge->createTable('user_info');
+       
+        $this->forge->createTable('services');
     }
 
     public function down()
     {
-        //
+        $this->forge->dropTable('services');
     }
 }

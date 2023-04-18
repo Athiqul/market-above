@@ -15,6 +15,14 @@ class Company extends BaseController
     {
         $this->customerModel= new Customer();
     }
+
+    //Company List
+    public function index()
+    {
+          $companyList=$this->customerModel->findAll();
+
+          return view('company/company-list',compact('companyList'));
+    }
     public function create()
     {
         
@@ -72,11 +80,11 @@ class Company extends BaseController
             ],
         ],
         "mobile" => [
-            "rules" => "required|regex_match[/^(?:\+?88)?01[3-9]\d{8}$/]|is_unique[customers.mobile]",
+            "rules" => "required|regex_match[/^(?:\+?88)?01[3-9]\d{8}||[0-9]{8}$/]|is_unique[customers.mobile]",
             "errors" => [
                 "required" => "Mobile Number missing",
-                "regex_match" => "Provide an valid Mobile Number",
-                "is_unique"=>"This mobile number already in the sy"
+                "regex_match" => "Provide an valid contact Number for telephone It should be 8 digits and mobile it should 11 digits (remove ++880)",
+                "is_unique"=>"This mobile number already in the system"
             ],
         ],
         "email" => [
