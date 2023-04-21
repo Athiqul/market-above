@@ -32,10 +32,21 @@ Above IT
                                                 <tbody>
                                                     <?php foreach($companyList as $item):?>
                                                     <tr  style="cursor: pointer;">
-                                                        <td ><?=$item->company_name?></td>
-                                                        <td ><?=$item->mobile?></td>
-                                                        <td ><?=$item->email?></td>
-                                                        <td ><?=$item->user_id?></td>
+                                                        <td >
+                                                            
+                                                            <a href="<?=site_url('/company/details/'.$item->id)?>">
+                                                            <?=$item->company_name?>
+                                                            </a>
+                                                        </td>
+                                                        <td >
+                                                            <a class="text-dark" href="tel:<?=$item->mobile?>">++88-<?=$item->mobile?></a>
+                                                            
+                                                        </td>
+                                                        <td >
+                                                        <a class="btn btn-link text-decoration-none text-dark" href="mailto:<?=$item->email?>"><?=$item->email?></a>        
+                                                       
+                                                    </td>
+                                                        <td ><?=getUsername($item->user_id)->name?></td>
                                                         <td>
                                                         <?=date('jS \of F Y',strtotime($item->created_at))?>
                                                         </td>

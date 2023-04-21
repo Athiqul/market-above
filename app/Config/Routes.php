@@ -54,8 +54,19 @@ $routes->group('company',['namespace'=>'App\Controllers','filter'=>'auth'],funct
        $routes->get('add','Company::create');
        $routes->post('add','Company::store');
        $routes->get('list','Company::index');
-       $routes->get('show/(:num)','Company::show/$1');
-       $routes->post('update/(:num)','Company::update/$1');
+       $routes->get('details/(:num)','Company::companyInfo/$1');
+       $routes->post('update/(:num)','Company::updateCompany/$1');
+       $routes->get('edit/(:num)','Company::editCompany/$1');
+});
+
+//Meeting Routes
+$routes->group('meeting',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
+    $routes->get('add','Meeting::create');
+    $routes->post('add','Company::store');
+    $routes->get('list','Company::index');
+    $routes->get('details/(:num)','Company::companyInfo/$1');
+    $routes->post('update/(:num)','Company::updateCompany/$1');
+    $routes->get('edit/(:num)','Company::editCompany/$1');
 });
 
 
@@ -73,7 +84,8 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->post('create-company','Company::create');
     //User Information Update
     $routes->post('user-update/(:num)','User::updateInfo/$1');
-
+    //Get all company list
+    $routes->get('company-list','Company::companyList');
     //fetch user information
     $routes->get('user-information/(:num)','User::profileInfo/$1');
 });

@@ -19,7 +19,7 @@ class Company extends BaseController
     //Company List
     public function index()
     {
-          $companyList=$this->customerModel->findAll();
+          $companyList=$this->customerModel->orderBy('id','desc')->findAll();
 
           return view('company/company-list',compact('companyList'));
     }
@@ -123,5 +123,52 @@ class Company extends BaseController
     }
 
 
-}
+   }
+
+   //Company Details Information
+   public function companyInfo($id)
+   {
+    $info=$this->customerModel->find($id);
+    if($info==null)
+    {
+        return redirect()->back()->with('warning','Invalid Request This company doest not exist in the system');
+    }
+      return view('company/company_details',compact('info'));
+   }
+
+   //edit company information
+
+   public function editCompany($id)
+   {
+    $info=$this->customerModel->find($id);
+    if($info==null)
+    {
+        return redirect()->back()->with('warning','Invalid Request This company doest not exist in the system');
+    }
+      return view('company/edit_company',compact('info'));
+   }
+   //Update Company Information
+   public function updateCompany($id)
+   {
+    $info=$this->customerModel->find($id);
+    if($info==null)
+    {
+        return redirect()->back()->with('warning','Invalid Request This company doest not exist in the system');
+    }
+
+    $userInput=$this->request->getVar();
+    $info->fill($userInput);
+    if(!$info->hasChanged())
+    {
+        return redirect()->back()->with('warning','Nothing to Update');
+    }
+
+    try{
+        $this->customerModel->save($info);
+        return redirect()->to('/company/details/'.$id)->with('success','Information Updated');
+    }catch(Exception $ex){
+        return redirect()->back()->with('warning',$ex->getMessage());
+    }
+     
+   }
 }

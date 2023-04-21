@@ -95,6 +95,25 @@ public function __construct()
     }
    }
 
+
+   //show all company
+   public function companyList()
+   {
+     
+      $search=$this->request->getVar('search');
+      //create query builder
+      $builder=$this->companyModel;
+      $builder->select('id,company_name');
+      $builder->orderBy('id','desc');
+      $builder->like('company_name',$search,'both');
+      $payload= $builder->get()->getResult();
+      if($payload==null)
+      {
+        return $this->setResponse('0',true,'No record found');
+      }
+      return $this->setResponse('1',false,$payload);
+   }
+
    private function setResponse($code,$error,$payload){
     $res = [
         'code'=>$code, //1 means validate problem
