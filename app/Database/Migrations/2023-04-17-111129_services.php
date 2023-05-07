@@ -25,7 +25,7 @@ class EmployActivity extends Migration
             "status"=>[
                 "type"=>"ENUM",
                 "constraint"=>['0','1'],
-                "null"=>true
+                "default"=>'1'
             ],
             
             "created_at"=>[

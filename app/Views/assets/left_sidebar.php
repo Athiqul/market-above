@@ -114,14 +114,11 @@
                 
             </li>
             <li>
-            <a href="javascript: void(0);" class="has-arrow waves-effect">
+            <a href="<?=site_url('/services')?>" class="has-arrow waves-effect">
                     <i class="fas fa-hand-point-right"></i>
                     <span>Services</span>
                 </a>
-                <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="email-inbox.html">Add Services</a></li>
-                    <li><a href="email-read.html">Services List</a></li>
-                </ul>
+               
             </li>
             <li>
             <a href="javascript: void(0);" class="has-arrow waves-effect">

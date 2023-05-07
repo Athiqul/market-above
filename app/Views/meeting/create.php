@@ -23,14 +23,24 @@ Above IT
                 <?= form_open('/company/add', "class='custom-validation' novalidate=''") ?>
                 <div class="mb-3">
                     <label>Select Company:</label>
-                    <input type="text" class="form-control" list="company" id="search" name="company_id" />
+                    <input type="text" class="form-control" list="company" id="search" />
                     <datalist id="company">
                         
                     </datalist>
+                    <span class="text-danger text-center"  id="errorMsgCompany"></span>
                     <div class="invalid-feedback">
                         Please select a valid thana.
                     </div>
-
+                 
+                </div>
+                <div class="mb-3">
+                    <label>Company Name:</label>
+                    <input type="text" class="form-control" name="company_name" value="<?=old('company_name')?>" id="companyName" readonly />
+                   
+                    <div class="invalid-feedback">
+                        Please select a valid thana.
+                    </div>
+                  <input type="hidden" name="company_id" value="<?=old('company_id')?>" id="company_id" required >
                 </div>
                 <div class="mb-3">
                     <label>Contact Person:</label>
@@ -55,7 +65,7 @@ Above IT
                 <div class="mb-3">
                     <label>E-Mail</label>
                     <div>
-                        <input type="email" class="form-control" name="email" value="<?= old('email') ?>" required="" parsley-type="email">
+                        <input type="email" class="form-control" name="email" value="<?= old('email') ?>" parsley-type="email">
                     </div>
                 </div>
 
@@ -118,11 +128,36 @@ Above IT
            let html='';
            if(res.errors==false)
            {
+            document.getElementById('errorMsgCompany').innerHTML='';
               res.payload.forEach(function(item){
                     html+=`<option value='${item.id}'>${item.company_name}</option>`;
               });
 
               companyList.innerHTML=html;
+              //get select company
+              search.addEventListener('change',function(){
+                let selectedCompany=companyList.querySelector(`option[value="${search.value}"]`);
+                 if(selectedCompany)
+                 {
+                    //get id
+                    let companyId=selectedCompany.value;
+                    let companyName=selectedCompany.innerHTML;
+                    console.log(companyId +' ' + companyName);
+                    // Set Id And company name
+                    document.getElementById('company_id').value=companyId;
+                    document.getElementById('companyName').value=companyName;
+                    search.value='';
+
+                 }
+                 
+              });
+            
+
+           } else{
+               let error=document.getElementById('errorMsgCompany');
+               error.innerHTML='No Company found!';
+              // search.value='';
+               document.getElementById('companyName').value='';
            }
 
           })

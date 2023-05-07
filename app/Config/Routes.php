@@ -69,6 +69,12 @@ $routes->group('meeting',['namespace'=>'App\Controllers','filter'=>'auth'],funct
     $routes->get('edit/(:num)','Company::editCompany/$1');
 });
 
+//Services Route
+$routes->group('services',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
+ $routes->get('/','Services::index');
+ $routes->post('add','Services::create');
+});
+
 
 $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->get('divisions','Divisions::index');
@@ -88,6 +94,8 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->get('company-list','Company::companyList');
     //fetch user information
     $routes->get('user-information/(:num)','User::profileInfo/$1');
+    //Fetch service data
+    $routes->get('service-list','Services::index');
 });
 
 
