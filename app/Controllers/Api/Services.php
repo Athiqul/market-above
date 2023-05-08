@@ -22,14 +22,38 @@ class Services extends ResourceController
     public function index()
     {
 
+        $limit=10;
+        $page=1;
+        if($this->request->getVar('limit'))
+        {
+            $limit=$this->request->getVar('limit');
+        }
 
-        $serviceList=$this->serviceModel->orderBy('id','desc');
-        if($serviceList==null)
+        if($this->request->getVar('page'))
+        {
+            $page=$this->request->getVar('page');
+        }
+
+        $totalRecord=count($this->serviceModel->orderBy('id','desc')->findAll());
+        if($totalRecord==0)
         {
             return $this->setResponse('0',true,'No record found');
         }
 
-        return $this->setResponse('1',false,$serviceList);
+        $totalPage=ceil($totalRecord/$limit);
+        if($totalPage<$page)
+        {
+            return $this->setResponse('0',true,'No record found');
+        }
+
+        $offset=($page-1)*$limit;
+        $serviceList=$this->serviceModel->orderBy('id','desc')->findAll($limit,$offset);
+        $payload=[
+            "services"=>$serviceList,
+            "totalPage"=>ceil($totalRecord/$limit),
+            "currentPage"=>$page,
+        ];
+        return $this->setResponse('1',false,$payload);
     }
 
     /**
