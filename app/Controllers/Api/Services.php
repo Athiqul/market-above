@@ -5,6 +5,7 @@ namespace App\Controllers\Api;
 use CodeIgniter\RESTful\ResourceController;
 
 use App\Models\ServicesModel;
+use Exception;
 
 class Services extends ResourceController
 {
@@ -63,7 +64,12 @@ class Services extends ResourceController
      */
     public function show($id = null)
     {
-        //
+        $data=$this->serviceModel->find($id);
+        if($data==null)
+        {
+            return $this->setResponse('0',true,'No Services Record found');
+        }
+        return $this->setResponse('1',false,$data);
     }
 
     /**
@@ -71,39 +77,34 @@ class Services extends ResourceController
      *
      * @return mixed
      */
-    public function new()
-    {
-        //
-    }
-
-    /**
-     * Create a new resource object, from "posted" parameters
-     *
-     * @return mixed
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Return the editable properties of a resource object
-     *
-     * @return mixed
-     */
-    public function edit($id = null)
-    {
-        //
-    }
-
-    /**
-     * Add or update a model resource, from "posted" properties
-     *
-     * @return mixed
-     */
     public function update($id = null)
     {
-        //
+        //validation
+        $validiation=[
+            'service_name'=>"required",
+        ];
+        if(!$this->validate($validiation))
+        {
+            return $this->setResponse('0',true,$this->validator->getErrors());
+        }
+        $data=$this->serviceModel->find($id);
+        if($data==null)
+        {
+            return $this->setResponse('0',true,'No Services Record found');
+        }
+        $data->fill((array)$this->request->getVar());
+        if(!$data->hasChanged())
+        {
+            return $this->setResponse('0',false,'Nothing Updated!');
+        }
+        try{
+            $this->serviceModel->save($data);
+            return $this->setResponse('1',false,"Successfully Updated");
+        }catch(Exception $ex){
+            return $this->setResponse('0',true,$ex->getMessage());
+        }
+       
+
     }
 
     /**
@@ -113,7 +114,43 @@ class Services extends ResourceController
      */
     public function delete($id = null)
     {
-        //
+        $data=$this->serviceModel->find($id);
+        if($data==null)
+        {
+            return $this->setResponse('0',true,'No Services Record found');
+        }
+
+        try{
+            $this->serviceModel->delete($id);
+            return $this->setResponse('1',false,'Successfully Deleted Service Or Product Item!');
+        }catch(Exception $ex)
+        {
+            return $this->setResponse('0',true,$ex->getMessage());
+        }
+    }
+
+    //For Searching Data
+    public function searchRecord()
+    {
+        $validiation=[
+            "search"=>"required"
+        ];
+        if(!$this->validate($validiation))
+        {
+            return $this->setResponse('0',true,$this->validator->getErrors());
+        }
+
+        $search=$this->request->getVar('search');
+        $data=$this->serviceModel->orderBy('id','desc')->like('service_name',$search,'both')->findAll(10);
+        if($data==null)
+        {
+            return $this->setResponse('0',true,"No record found!");
+        }
+        $payload=[
+            "services"=>$data,
+            "total"=>count($data)
+        ];
+        return $this->setResponse('1',false,$payload);
     }
 
     private function setResponse($code,$error,$payload){

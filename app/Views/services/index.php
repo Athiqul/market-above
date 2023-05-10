@@ -4,7 +4,7 @@ Above IT
 <?= $this->endSection() ?>
 
 <?= $this->section('custom-css') ?>
-
+<link rel="stylesheet" href="<?=base_url('assets/css/sweetalert2.min.css')?>">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -64,7 +64,7 @@ Above IT
                                     </select> entries</label></div>
                         </div>
                         <div class="col-sm-12 col-md-6">
-                            <div id="datatable_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="datatable"></label></div>
+                            <div id="datatable_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" id="search"></label></div>
                         </div>
                     </div>
                     <div class="row">
@@ -77,15 +77,11 @@ Above IT
                             <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
                         </div>
                         <div class="col-sm-12 col-md-7">
-                            <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+                            <div class="dataTables_paginate paging_simple_numbers" id="pagination">
                                 <ul class="pagination pagination-rounded">
                                     <li class="paginate_button page-item previous disabled" id="datatable_previous"><a href="#" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
                                     <li class="paginate_button page-item active"><a href="#" aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
-                                    <li class="paginate_button page-item "><a href="#" aria-controls="datatable" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
-                                    <li class="paginate_button page-item "><a href="#" aria-controls="datatable" data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
-                                    <li class="paginate_button page-item "><a href="#" aria-controls="datatable" data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
-                                    <li class="paginate_button page-item "><a href="#" aria-controls="datatable" data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
-                                    <li class="paginate_button page-item "><a href="#" aria-controls="datatable" data-dt-idx="6" tabindex="0" class="page-link">6</a></li>
+                                   
                                     <li class="paginate_button page-item next" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="7" tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
                                 </ul>
                             </div>
@@ -102,16 +98,13 @@ Above IT
                                                     <div class="modal-dialog" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="staticBackdropLabel">Static backdrop</h5>
+                                                                <h5 class="modal-title" id="staticBackdropLabel">Update Service</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
-                                                            <div class="modal-body">
-                                                                <p>I will not close if you click outside me. Don't even try to press escape key.</p>
+                                                            <div class="modal-body" id="modal-body">
+                                                               
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary waves-effect waves-light">Save</button>
-                                                            </div>
+                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -122,15 +115,37 @@ Above IT
 <script src="<?= base_url('/assets/libs/parsleyjs/parsley.min.js') ?>"></script>
 <script src="<?= base_url('/assets/js/pages/form-validation.init.js') ?>"></script>
 <script src="<?= base_url('/assets/js/moment.min.js') ?>"></script>
+<script src="<?= base_url('/assets/js/sweetalert2.all.min.js') ?>"></script>
 <script>
     let serviceTable = document.getElementById('serviceTable');
+    let pagination=document.getElementById('pagination');
+    
+    //Api Calling
+    async function requestApiCall(url,type,data)
+    {
+        const request=await fetch(url,{
+            method:type,
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(data),
 
-    // initial service record load
-    fetch("<?= site_url('/api/service-list') ?>")
-        .then(res => res.json())
-        .then(res => {
-            console.log(res);
-            if (res.errors == true) {
+        });
+        const getRes= await request.json();
+        return getRes;
+    }
+    //default fetch
+    async function tableDataFetch(limit=10,page=1)
+    {
+        let res= await requestApiCall("<?= site_url('/api/service-list?page=') ?>"+page+'&limit='+limit);
+         tableLoad(res);
+        return;
+    }
+    //Table load function
+    function tableLoad(res)
+    {
+      
+        if (res.errors == true) {
                 serviceTable.innerHTML = '';
                 serviceTable.innerHTML = `<h4 class='text-danger text-center'>${res.payload}</h4>`;
             } else {
@@ -148,7 +163,7 @@ Above IT
 
 
                                 <tbody>`;
-                let sl = 0;
+                let sl = res.payload.currentPage*10-10;
                 res.payload.services.forEach(function(item) {
                     html += `<tr class="even">
                                         <td>${++sl}</td>
@@ -156,10 +171,8 @@ Above IT
                                         <td style="">${item.status=='1'?'Active':'Inactive'}</td>
                                         <td style="">${moment(item.created_at.date).format('Do MMM YY') }</td>
                                         <td style=""><button type="button" class="btn btn-info waves-effect waves-light" onclick='editRecord(this)' data-id=${item.id}><i class="fas fa-pencil-alt" title="delete"></i></button>
-                                                            <a class="btn btn-danger btn-sm edit" title="delete">
-                                                                <i class=" fas fa-trash" title="delete"></i>
-                                                            </a>
-                                                            </td>
+
+                                        <button type="button" class="btn btn-danger waves-effect waves-light" id="delete" onclick="alertItem(this)" data-id=${item.id}><i class=" fas fa-trash" title="delete"></i></button>                                                          
                                        
                                     </tr>`
                 });
@@ -168,22 +181,199 @@ Above IT
 
                 serviceTable.innerHTML = '';
                 serviceTable.innerHTML = html;
+                pagination.innerHTML='';
+                console.log(res);
+                let pager=`<ul class="pagination pagination-rounded">
+                                    <li class="paginate_button page-item previous ${res.payload.currentPage=='1'? 'disable':''}" id="datatable_previous"><a href="#" onclick="tableDataFetch(${10},${1})"  aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>`;
+                                    for(let i=1;i<=res.payload.totalPage;i++)
+                                    {
+                                        pager+=`<li class="paginate_button page-item active"><a href="#" aria-controls="datatable" onclick="tableDataFetch(${10},${i})" data-dt-idx="${i}" tabindex="0" class="page-link">${i}</a></li>`;
+                                    }
+                                    
+                                   pager+=`...`;
+                                   pager+=` <li class="paginate_button page-item next" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="7" onclick="tableDataFetch(${10},${res.payload.totalPage})"  tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
+                                </ul>`;
+             pagination.innerHTML=pager;
 
             }
-
-        })
-        .catch(err => {
-            console.log(err);
-        });
+    }
+   tableDataFetch();
+   
 
     //Edit Process
     async function editRecord(record)
     {
            $("#staticBackdrop").modal('show');
-           console.log(record);
+           //get modal 
+           let modalBody=document.getElementById('modal-body');
+           modalBody.innerHTML=`<div>
+           <button class='btn btn-primary mt-0 mb-0'>Loading......
+           
+           </button>
+                                           
+                                           
+                                        </div>`;
+           let res=await requestApiCall('<?=site_url('/api/show-service/')?>'+record.dataset.id);
+           if(res.errors==true)
+               {
+                 modalBody.innerHTML='';
+                 modalBody.innerHTML=`<h4 class='text-danger text-center'>${res.payload}</h4>`;
+               }else{
+                modalBody.innerHTML=`<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <form id="updateForm" method="post" data-id=${res.payload.id} class='needs-validation' novalidate=''>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="validationCustom03" class="form-label">Service/Product Name</label>
+                            <input id="validationCustom03" type="text" class="form-control" name="service_name" value="${res.payload.service_name}" required>
+                            <span id="errorUpdate" class='text-danger'></span>
+                            <div class="invalid-feedback">
+                                Please Write a Service or Product Name.
+                            </div>
+
+                        </div>
+                        <div class="form-check form-switch mb-3" dir="ltr">
+                                           <input type="hidden" name="status" value="0">
+                                            <input type="checkbox" name="status"  value='1' class="form-check-input" id="customSwitch1" ${res.payload.status=='1'?'checked':''} >
+                                            <label class="form-check-label" for="customSwitch1">${res.payload.status=='1'?'Active':'Inactive'}</label>
+                                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+                    <button class="btn btn-primary" type="submit">Update</button>
+                </div>
+                </form>
+            </div>
+        </div>
+        <!-- end card -->
+    </div> <!-- end col -->
+
+
+</div>`;
+ //Update Process
+ let form=document.getElementById('updateForm');
+    
+    form.addEventListener('submit',function(e){
+        e.preventDefault();
+        let serviceId=form.dataset.id;
+        let formData=new FormData(form);
+        let bodyData={};
+        for (const [name, value] of formData) {
+         bodyData[name]=value;
+  }
+    
+  Swal.fire({
+  title: 'Do you want to save the changes?',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: 'Save',
+  denyButtonText: `Don't save`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    fetch('<?=site_url('/api/update-service/')?>'+serviceId,
+        {
+            method:'post',
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify(bodyData)
+            
+        }
+        )
+        .then(res=>res.json())
+        .then(res=>{
+           console.log(res);
+           if(res.errors)
+           {
+              document.getElementById('errorUpdate').innerHTML=res.payload.service_name;
+           }else{
+            $("#staticBackdrop").modal('hide');
+            Swal.fire({
+  position: 'top-end',
+  icon: res.code=='1'?'success':'info',
+  title: res.payload,
+  showConfirmButton: false,
+  timer: 1500
+})
+            tableDataFetch();
+           }
+
+        })
+        .catch(err=>console.log(err));
+  } else if (result.isDenied) {
+    Swal.fire('Changes are not saved', '', 'info')
+  }
+})
+        
+    });
+               }
 
     }
+
+    //Delete Record
+async function deleteRecord(id)
+{
+   let res=await requestApiCall('<?=site_url('/api/delete-service/')?>'+id);
+   if(res.errors)
+   {
+      Swal.fire('Error', res.payload, 'error');
+      return
+   } 
+   Swal.fire('Deleted!', 'The item has been deleted.', 'success');
+   tableDataFetch();    
+}
+
+//Working with Search
+let search=document.getElementById('search');
+search.addEventListener('keyup',function(){
+  if(search.value.length>=3)
+  {
+      requestApiCall('<?=site_url('/api/search-service')?>','POST',{
+        search:search.value
+     }).then(res=>{
+        tableLoad(res);
+     })
+    
+  }else{
+    tableDataFetch();
+  }
+});
+
+//Sweetalert
+function alertItem(record)
+{
+    
+
+        let itemId=record.dataset.id;
+        console.log(itemId);             
+                  Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Delete This Data?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      deleteRecord(itemId);
+                      
+                    }
+                  }) 
+
+
+}
+
+
+    
      
+
 </script>
 
 <?= $this->endSection() ?>

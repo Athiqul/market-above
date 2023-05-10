@@ -96,6 +96,10 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->get('user-information/(:num)','User::profileInfo/$1');
     //Fetch service data
     $routes->get('service-list','Services::index');
+    $routes->get('show-service/(:num)','Services::show/$1');
+    $routes->post('update-service/(:num)','Services::update/$1');
+    $routes->get('delete-service/(:num)','Services::delete/$1');
+    $routes->post('search-service','Services::searchRecord');
 });
 
 
