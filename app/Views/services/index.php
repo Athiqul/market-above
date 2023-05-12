@@ -56,12 +56,11 @@ Above IT
                 <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
-                            <div class="dataTables_length" id="datatable_length"><label>Show <select name="datatable_length" aria-controls="datatable" class="custom-select custom-select-sm form-control form-control-sm form-select form-select-sm">
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                    </select> entries</label></div>
+                            <div class="dataTables_length" id="datatable_length"><label>Show <select name="datatable_length" id="recordType" aria-controls="datatable" class="custom-select custom-select-sm form-control form-control-sm form-select form-select-sm">
+                                        <option value="0">Default</option>
+                                        <option value="1">Active</option>
+                                        <option value="2">inactive</option>
+                                    </select> Status</label></div>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <div id="datatable_filter" class="dataTables_filter"><label>Search:<input type="search" class="form-control form-control-sm" placeholder="" id="search"></label></div>
@@ -144,7 +143,7 @@ Above IT
     //Table load function
     function tableLoad(res)
     {
-      
+      serviceTable.innerHTML='<h2>Loading......</h2>';
         if (res.errors == true) {
                 serviceTable.innerHTML = '';
                 serviceTable.innerHTML = `<h4 class='text-danger text-center'>${res.payload}</h4>`;
@@ -163,7 +162,7 @@ Above IT
 
 
                                 <tbody>`;
-                let sl = res.payload.currentPage*10-10;
+                let sl =res.payload.currentPage? res.payload.currentPage*10-10:0;
                 res.payload.services.forEach(function(item) {
                     html += `<tr class="even">
                                         <td>${++sl}</td>
@@ -187,11 +186,11 @@ Above IT
                                     <li class="paginate_button page-item previous ${res.payload.currentPage=='1'? 'disable':''}" id="datatable_previous"><a href="#" onclick="tableDataFetch(${10},${1})"  aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>`;
                                     for(let i=1;i<=res.payload.totalPage;i++)
                                     {
-                                        pager+=`<li class="paginate_button page-item active"><a href="#" aria-controls="datatable" onclick="tableDataFetch(${10},${i})" data-dt-idx="${i}" tabindex="0" class="page-link">${i}</a></li>`;
+                                        pager+=`<li class="paginate_button page-item"><a href="#" aria-controls="datatable" onclick="tableDataFetch(${10},${i})" data-dt-idx="${i}" tabindex="0" class="page-link">${i}</a></li>`;
                                     }
                                     
                                    pager+=`...`;
-                                   pager+=` <li class="paginate_button page-item next" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="7" onclick="tableDataFetch(${10},${res.payload.totalPage})"  tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
+                                   pager+=` <li class="paginate_button page-item next" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="7" onclick="tableDataFetch(${10},${res.payload.totalPage})" ${res.payload.currentPage==res.payload.totalPage? 'disable':''}" tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
                                 </ul>`;
              pagination.innerHTML=pager;
 
@@ -323,14 +322,20 @@ async function deleteRecord(id)
    if(res.errors)
    {
       Swal.fire('Error', res.payload, 'error');
-      return
+      return false;
    } 
    Swal.fire('Deleted!', 'The item has been deleted.', 'success');
-   tableDataFetch();    
+   return true;
 }
 
 //Working with Search
 let search=document.getElementById('search');
+search.addEventListener('click',function(){
+ if(this.value=='')
+ {
+   tableDataFetch();
+ }
+});
 search.addEventListener('keyup',function(){
   if(search.value.length>=3)
   {
@@ -362,15 +367,53 @@ function alertItem(record)
                     confirmButtonText: 'Yes, delete it!'
                   }).then((result) => {
                     if (result.isConfirmed) {
-                      deleteRecord(itemId);
-                      
+                      deleteRecord(itemId)?
+                      $(record).closest('tr').fadeOut('slow'):'';
                     }
                   }) 
 
 
 }
 
+//Working with Filtering
+let filter=document.getElementById('recordType');
+filter.addEventListener('change',function(){
+  console.log(this.value);
+  if(this.value==0)
+  {
+    tableDataFetch();
+  }
+  else if(this.value==1)
+  {
+      requestApiCall("<?=site_url('/api/active-service')?>",'get').then(res=>{
+          tableLoad(res);
+      })
+     
+  }
+  else if(this.value==2)
+  {
+    requestApiCall("<?=site_url('/api/deactive-service')?>",'get').then(res=>{
+          tableLoad(res);
+      })
+  }
+});
+// //Work with pagiantion
 
+// document.addEventListener('DOMContentLoaded', function() {
+//   var paginationItems = document.querySelectorAll('.pagination li');
+
+//   paginationItems.forEach(function(item) {
+//     item.addEventListener('click', function() {
+//       // Remove active class from all <li> elements
+//       paginationItems.forEach(function(item) {
+//         item.classList.remove('active');
+//       });
+
+//       // Add active class to the clicked <li> element
+//       this.classList.add('active');
+//     });
+//   });
+// });
     
      
 

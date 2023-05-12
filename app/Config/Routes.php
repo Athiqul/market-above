@@ -62,7 +62,7 @@ $routes->group('company',['namespace'=>'App\Controllers','filter'=>'auth'],funct
 //Meeting Routes
 $routes->group('meeting',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
     $routes->get('add','Meeting::create');
-    $routes->post('add','Company::store');
+    $routes->post('add','Meeting::store');
     $routes->get('list','Company::index');
     $routes->get('details/(:num)','Company::companyInfo/$1');
     $routes->post('update/(:num)','Company::updateCompany/$1');
@@ -100,6 +100,8 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->post('update-service/(:num)','Services::update/$1');
     $routes->get('delete-service/(:num)','Services::delete/$1');
     $routes->post('search-service','Services::searchRecord');
+    $routes->get('active-service','Services::activeService');
+    $routes->get('deactive-service','Services::deactiveService');
 });
 
 

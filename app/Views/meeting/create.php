@@ -20,7 +20,7 @@ Above IT
                 <p class="card-title-desc">Please Provide Proper and Authentic information</p>
 
 
-                <?= form_open('/company/add', "class='custom-validation' novalidate=''") ?>
+                <?= form_open('/meeting/add', "class='custom-validation' novalidate=''") ?>
                 <div class="mb-3">
                     <label>Select Company:</label>
                     <input type="text" class="form-control" list="company" id="search" />
@@ -46,18 +46,21 @@ Above IT
                     <label>Contact Person:</label>
                     <div>
                         <input type="text" class="form-control" name="contact_person" value="<?= old('contact_person') ?>" required="">
+                        <span class="text-center text-danger"><?=session()->get('warning')['contact_person']??''?></span>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label>Designation:</label>
                     <div>
                         <input type="text" class="form-control" name="desg" value="<?= old('desg') ?>" required="">
+                        <span class="text-center text-danger"><?=session()->get('warning')['desg']??''?></span>
                     </div>
                 </div>
                 <div class="mb-3">
                     <label>Contact Number:</label>
                     <div>
-                        <input type="tel" class="form-control" name="mobile" value="<?= old('mobile') ?>" pattern="01[3-9][0-9]{8}||[0-9]{8}" required="">
+                        <input type="tel" class="form-control" name="mobile" value="<?= old('mobile') ?>" pattern="01[3-9][0-9]{8}|[0-9]{8,11}" required="">
+                        <span class="text-center text-danger"><?=session()->get('warning')['mobile']??''?></span>
                     </div>
 
                 </div>
@@ -75,9 +78,17 @@ Above IT
                 <div class="mb-3">
                     <label>Meeting Summery</label>
                     <div>
-                        <textarea required="" class="form-control" rows="5" name="summery"><?= old('summery') ?></textarea>
+                        <textarea required="" class="form-control" rows="5" name="summary"><?= old('summary') ?></textarea>
+                        <span class="text-center text-danger"><?=session()->get('warning')['summary']??''?></span>
                     </div>
                 </div>
+                <div class="row">
+           <h6>Interest Services</h6>
+    <div id="services">
+      
+    </div>
+  
+</div>
 
 
                 <div class="mb-0">
@@ -166,7 +177,30 @@ Above IT
 
      });
 
-
+//fetch Services List
+let checkBoxServices=document.getElementById('services');
+fetch("<?=site_url('/api/active-service?limit=20')?>").then(res=>res.json()).then(res=>{
+    console.log(res);
+    if(res.errors==true)
+    {
+        checkBoxServices.innerHTML='';
+    }
+    else{
+        html='';
+        res.payload.services.forEach(function(item){
+            html+=`<div class="form-check form-check-inline mb-3 col-md-3">
+        <input class="form-check-input" type="checkbox" id="formCheck1" name="services[]" value="${item.id}">
+        <label class="form-check-label" for="formCheck1">
+          ${item.service_name}
+        </label>
+      </div>`;
+        });
+        checkBoxServices.innerHTML=html;
+        
+    }
+}).catch(err=>{
+    console.log(err);
+})
 
     </script>
     <?= $this->endSection() ?>
