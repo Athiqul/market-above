@@ -44,7 +44,7 @@
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
                     <li><a href="<?=site_url('/meeting/add')?>">Add Report</a></li>
-                    <li><a href="email-read.html">Meeting List</a></li>
+                    <li><a href="<?=site_url('meeting/list')?>">Meeting List</a></li>
                 </ul>
             </li>
             <li>

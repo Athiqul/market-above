@@ -7,17 +7,17 @@ use CodeIgniter\Model;
 class InterestServicesModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'interestservices';
+    protected $table            = 'interest_services';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
-    protected $returnType       = 'array';
+    protected $returnType       = \App\Entities\InterestServicesEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['services_id','company_id','meeting_id'];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';

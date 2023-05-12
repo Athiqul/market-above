@@ -3,16 +3,26 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+
 use App\Models\ServicesModel;
+use App\Models\MeetingReportModel;
+use App\Models\InterestServicesModel;
 use Exception;
+use PHPUnit\Framework\Constraint\Exception as ConstraintException;
 
 class Meeting extends BaseController
 {
-
+     private $meetingModel;
+     private $interestModel;
+     public function __construct()
+     {
+        $this->meetingModel= new MeetingReportModel();
+        $this->interestModel=new InterestServicesModel();
+     }
     // All Meeting Report with Pagination
     public function index()
     {
-        
+        return view('meeting/meeting_list');
     }
 
     //Meeting Record Create view
@@ -25,7 +35,7 @@ class Meeting extends BaseController
     //Meeting Record Store into database
     public function store()
     {
-         //dd($this->request->getVar());
+         //dd(count($this->request->getVar('services')));
          $validation=[
             "company_id"=>[
                 "rules"=>"required|is_not_unique[customers.id]",
@@ -85,11 +95,42 @@ class Meeting extends BaseController
             "summary"=>$this->request->getVar("summary"),
             "user_id"=>$this->request->getVar("user_id"),                       
          ];
-         try{
+        //Transaction begin
+        $db = \Config\Database::connect();
+        $db->transBegin();
+        try {
 
-         }catch(Exception $ex){
+            $this->meetingModel->insert($data);
+            $meetingId = $this->meetingModel->getInsertID();
 
-         }
+            if (count($this->request->getVar('services')) > 0) {
+                $services = $this->request->getVar('services');
+                foreach ($services as $item) {
+                    $check=new ServicesModel();
+                    if($check->find($item)==null)
+                    {
+                      break;
+                    }
+                    
+                    $serviceData = [
+                        "meeting_id" => $meetingId,
+                        "company_id" => $this->request->getVar("company_id"),
+                        "services_id" => $item,
+                    ];
+                    $this->interestModel->insert($serviceData);
+                }
+            }
+            if ($db->transStatus() === false) {
+                $db->transRollback();
+                return redirect()->back()->withInput()->with('warning', 'Meeting Report Add Failed!');
+            }
+            $db->transCommit();
+            return redirect()->back()->withInput()->with('success', 'Meeting Report Successfully Added!');
+        } catch (Exception $ex) {
+            $db->transRollback();
+
+            return redirect()->back()->withInput()->with('warning', $ex->getMessage());
+        }
     }
 
     //Meeting Record identical show
