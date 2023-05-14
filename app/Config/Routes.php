@@ -64,9 +64,10 @@ $routes->group('meeting',['namespace'=>'App\Controllers','filter'=>'auth'],funct
     $routes->get('add','Meeting::create');
     $routes->post('add','Meeting::store');
     $routes->get('list','Meeting::index');
-    $routes->get('details/(:num)','Company::companyInfo/$1');
+    $routes->get('details/(:num)','Meeting::show/$1');
     $routes->post('update/(:num)','Company::updateCompany/$1');
     $routes->get('edit/(:num)','Company::editCompany/$1');
+    $routes->post('search','Meeting::search');
 });
 
 //Services Route

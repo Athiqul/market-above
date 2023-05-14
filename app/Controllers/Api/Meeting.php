@@ -26,7 +26,7 @@ class Meeting extends ResourceController
     //Get All Meeting Data
     public function index()
     {
-        $limit=$this->request->getVar('limit')??10;
+        $limit=$this->request->getVar('limit')??20;
         $page=$this->request->getVar('page')??1;
         $totalRecord=count($this->meeting->findAll());
         if($totalRecord<1)

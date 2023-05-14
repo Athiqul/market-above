@@ -164,7 +164,7 @@
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <img class="rounded-circle header-profile-user" src="<?=base_url('/user/profile-image-show/'.session()->get('user')['user_info']->image_link)?>"
                                     alt="Header Avatar">
-                                <span class="d-none d-xl-inline-block ms-1">Julia</span>
+                                <span class="d-none d-xl-inline-block ms-1"><?=session()->get('user')['name']?></span>
                                 <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-end">

@@ -8,7 +8,7 @@
             <img src="<?=base_url('/user/profile-image-show/'.session()->get('user')['user_info']->image_link)?>" alt="" class="avatar-md rounded-circle">
         </div>
         <div class="mt-3">
-            <h4 class="font-size-16 mb-1">Julia Hudda</h4>
+            <h4 class="font-size-16 mb-1"><?=session()->get('user')['name']?></h4>
             <span class="text-muted"><i class="ri-record-circle-line align-middle font-size-14 text-success"></i> Online</span>
         </div>
     </div>

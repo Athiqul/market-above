@@ -22,7 +22,59 @@ class Meeting extends BaseController
     // All Meeting Report with Pagination
     public function index()
     {
-        return view('meeting/meeting_list');
+        $limit=$this->request->getVar('limit')??20;
+        $page=$this->request->getVar('page')??1;
+        $totalRecord=count($this->meetingModel->findAll());
+        
+        $totalPage=ceil($totalRecord/$limit);
+        $offset=($page-1)*$limit;
+        $builder=$this->meetingModel;
+        $builder->select('meeting_report.id as reportId,meeting_report.contact_person, meeting_report.desg, meeting_report.mobile, meeting_report.created_at,customers.company_name,customers.id as company_id,user_access.id as userId, user_access.name as username');
+        $builder->join('customers','meeting_report.company_id=customers.id');
+        $builder->join('user_access','meeting_report.user_id=user_access.id');
+        $builder->orderBy('meeting_report.id','desc');
+        $builder->limit($limit,$offset);
+        $chunk=$builder->get()->getResult();
+        
+        $payload=[
+            "records"=>$chunk,
+            "totalPage"=>$totalPage,
+            "totalRecord"=>$totalRecord,
+            "currentPage"=>$page
+        ];
+        return view('meeting/meeting_list',['payload'=>(object)$payload]);
+    }
+
+    //Search data
+    public function search()
+    {
+        $search=esc($this->request->getVar('search'));
+        $limit=$this->request->getVar('limit')??20;
+        $page=$this->request->getVar('page')??1;
+        $totalRecord=count($this->meetingModel->findAll());
+        
+        $totalPage=ceil($totalRecord/$limit);
+        $offset=($page-1)*$limit;
+        $builder=$this->meetingModel;
+        $builder->select('meeting_report.id as reportId,meeting_report.contact_person, meeting_report.desg, meeting_report.mobile, meeting_report.created_at,customers.company_name,customers.id as company_id,user_access.id as userId, user_access.name as username');
+        $builder->join('customers','meeting_report.company_id=customers.id');
+        $builder->join('user_access','meeting_report.user_id=user_access.id');
+        $builder->like('customers.company_name',$search,'both');
+        $builder->orLike('meeting_report.contact_person',$search,'both');
+        $builder->orLike('meeting_report.mobile',$search,'both');
+        $builder->orLike('user_access.name',$search,'both');
+        $builder->orderBy('meeting_report.id','desc');
+        $builder->limit($limit,$offset);
+        $chunk=$builder->get()->getResult();
+        
+        $payload=[
+            "records"=>$chunk,
+            "totalPage"=>$totalPage,
+            "totalRecord"=>$totalRecord,
+            "currentPage"=>$page
+        ];
+
+        return view('meeting/meeting_list',['payload'=>(object)$payload]);
     }
 
     //Meeting Record Create view
@@ -136,7 +188,13 @@ class Meeting extends BaseController
     //Meeting Record identical show
     public function show($id)
     {
-
+        $report=$this->meetingModel->find($id);
+        if($report==null)
+        {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        } 
+      // dd($report);
+        return view('meeting/meeting_report',compact('report'));
     }
 
     //Meeeting Record edit render view
