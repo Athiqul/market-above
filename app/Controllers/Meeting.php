@@ -200,12 +200,197 @@ class Meeting extends BaseController
     //Meeeting Record edit render view
     public function edit($id)
     {
-
+        $report=$this->meetingModel->find($id);
+        if($report==null)
+        {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        } 
+        $services=new ServicesModel();
+       
+        
+      
+        $serviceList=$services->orderBy('id','desc')->findAll();
+        //dd($serviceList);
+         return view('meeting/edit_meeting',compact('report','serviceList'));
     }
 
     //Meeting Record update
     public function update($id)
     {
+        $report=$this->meetingModel->find($id);
+        if($report==null)
+        {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        } 
+
+        $validation=[
+            "company_id"=>[
+                "rules"=>"required|is_not_unique[customers.id]",
+                "errors"=>[
+                    "required"=>"Please Select Company!",
+                    "is_not_unique"=>"Invalid Company Selected",
+                ]
+                ],
+                "contact_person"=>[
+                    "rules"=>"required",
+                    "errors"=>[
+                        "required"=>"Please Write Contacted Person Name!",
+                    ]
+                    ],
+                    "desg"=>[
+                        "rules"=>"required",
+                        "errors"=>[
+                            "required"=>"Please provide Contacted Person Designation",
+                        ]
+                        ],
+                        "mobile"=>[
+                            "rules"=>"required|regex_match[017+[0-9]{8}|018+[0-9]{8}|013+[0-9]{8}|014+[0-9]{8}|019+[0-9]{8}|015+[0-9]{8}|016+[0-9]{8}]",
+                            "errors"=>[
+                                "regex_match"=>"Please provide valid mobile number",
+                            ]
+                            ],
+                            
+                                "summary"=>[
+                                    "rules"=>"required|min_length[10]",
+                                    "errors"=>[
+                                        "min_length"=>"Please Provide more information on Summary!",
+                                        "required"=>"Please Write Meeting Summary!"
+                                    ]
+                                    ],
+                                    
+
+         ];
+
+         if(!$this->validate($validation))
+         {
+            return redirect()->back()->with('warning',$this->validator->getErrors())->withInput();
+         }
+
+         $meetingUpdate=[
+            "company_id"=>$this->request->getPost('company_id'),
+            "contact_person"=>$this->request->getPost('contact_person'),
+            "desg"=>$this->request->getPost('desg'),
+            "mobile"=>$this->request->getPost('mobile'),
+            "email"=>$this->request->getPost('email'),
+            "summary"=>$this->request->getPost('summary'),
+         ];
+
+         $report->fill($meetingUpdate);
+        
+        
+
+        $interest = interestServices($report->id);
+
+        
+         
+        $selectedData=$this->request->getPost('services');
+       
+      
+        //dd($diff);
+          //Transaction begin
+         
+          try{
+            $db = \Config\Database::connect();
+            $db->transBegin();
+            if($interest==null && $selectedData==null)
+            {
+                if(!$report->hasChanged())
+                {
+                    return redirect()->back()->with('info','Nothing updated!');
+                }
+                $this->meetingModel->save($report); 
+            } 
+            else if($interest==null &&$selectedData!=null){
+                $services = $this->request->getVar('services');
+                foreach ($services as $item) {
+                    $check=new ServicesModel();
+                    if($check->find($item)==null)
+                    {
+                      continue;
+                    }
+                    
+                    $serviceData = [
+                        "meeting_id" => $report->id,
+                        "company_id" => $this->request->getVar("company_id"),
+                        "services_id" => $item,
+                    ];
+                   $this->interestModel->save($serviceData);
+                  
+                  
+                } 
+                if($report->hasChanged())
+                {
+                    $this->meetingModel->save($report); 
+                }
+               
+            }else if($interest!==null && $selectedData==null){
+                $check = [];
+                foreach ($interest as $item) {
+                    $check[] = $item->service_id;
+                }
+                $this->interestModel->where('meeting_id',$report->id)->whereIn('services_id',$check)->delete(); 
+                if($report->hasChanged())
+                {
+                    $this->meetingModel->save($report); 
+                }
+            }
+            else{
+                   
+            $check = [];
+            foreach ($interest as $item) {
+                $check[] = $item->service_id;
+            }
+    
+                $diff=  array_diff($check,$selectedData);
+                if(count($selectedData)>count($check)||count($diff)!=0)
+                {
+                  //update & delete 
+                  $this->interestModel->where('meeting_id',$report->id)->whereIn('services_id',$check)->delete();    
+                  $services = $this->request->getVar('services');
+                    foreach ($services as $item) {
+                        $check=new ServicesModel();
+                        if($check->find($item)==null)
+                        {
+                          break;
+                        }
+                        
+                        $serviceData = [
+                            "meeting_id" => $report->id,
+                            "company_id" => $this->request->getVar("company_id"),
+                            "services_id" => $item,
+                        ];
+                       $this->interestModel->save($serviceData);
+                      
+                      
+                    } 
+                    if($report->hasChanged())
+                    {
+                        $this->meetingModel->save($report); 
+                    }
+                  
+                }else{
+                    //No update
+                    if(!$report->hasChanged())
+                    {
+                        return redirect()->back()->with('info','Nothing updated!');
+                    }
+                    $this->meetingModel->save($report);
+                 
+                }
+               
+            }
+
+            
+            $db->transCommit();
+            return redirect()->back()->withInput()->with('success', 'Meeting Report Successfully Updated!');
+
+          }catch(Exception $ex)
+          {
+            $db->transRollback();
+
+            return redirect()->back()->withInput()->with('warning', $ex->getMessage());
+          }
+      
 
     }
 }

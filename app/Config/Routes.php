@@ -65,8 +65,8 @@ $routes->group('meeting',['namespace'=>'App\Controllers','filter'=>'auth'],funct
     $routes->post('add','Meeting::store');
     $routes->get('list','Meeting::index');
     $routes->get('details/(:num)','Meeting::show/$1');
-    $routes->post('update/(:num)','Company::updateCompany/$1');
-    $routes->get('edit/(:num)','Company::editCompany/$1');
+    $routes->post('update/(:num)','Meeting::update/$1');
+    $routes->get('edit/(:num)','Meeting::edit/$1');
     $routes->post('search','Meeting::search');
 });
 
@@ -105,6 +105,7 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->get('deactive-service','Services::deactiveService');
     //Fetch Meeting Data
     $routes->get('meeting-list','Meeting::index');
+    $routes->get('interest-service/(:num)','Meeting::interestMeeting/$1');
 });
 
 

@@ -5,6 +5,7 @@ namespace App\Controllers\Api;
 use CodeIgniter\RESTful\ResourceController;
 
 use App\Models\ServicesModel;
+
 use Exception;
 
 class Services extends ResourceController
@@ -60,7 +61,7 @@ class Services extends ResourceController
     //show only active 
     public function activeService()
     {
-        $limit=10;
+        $limit=20;
         $page=1;
         if($this->request->getVar('limit'))
         {
@@ -92,6 +93,12 @@ class Services extends ResourceController
             "currentPage"=>$page,
         ];
         return $this->setResponse('1',false,$payload);
+    }
+
+    //Meeting Selected Services
+    public function meetingService()
+    {
+
     }
 
     //inactive services

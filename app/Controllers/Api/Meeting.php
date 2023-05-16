@@ -117,6 +117,15 @@ class Meeting extends ResourceController
     {
         //
     }
+    // //Interest Services according to meeting id
+    // public function interestMeeting($meeting_id)
+    // {
+    //       $subquery=$this->interest;
+    //       $subquery->select('interest_services.meeting_id')->where('interest_services.meeting_id',$meeting_id);
+    //       $builder=$this->services;
+    //       $builder->select('services.id as serviceId,services.service_name',);
+    //       return $this->setResponse('1',false,$payload);
+    // }
 
     private function setResponse($code,$error,$payload){
         $res = [
