@@ -139,11 +139,21 @@ class Company extends BaseController
    public function companyInfo($id)
    {
     $info=$this->customerModel->find($id);
-    $interest= new \App\Models\InterestServicesModel();
-    $interest->select('services.name')->where();
-    $builder=$this->customerModel;
-    $builder->select()->subQuery($interest,'service_name');
-    $builder->where('company_id',$id);
+    // $interest= new \App\Models\InterestServicesModel();
+    // $sub= $interest->select('services.name')->join('services','interest_services.services_id');
+    // $builder=$interest;
+    // $builder->select('interest_services.id')->fromSubquery($sub,'service_name');
+    // $builder->where('company_id',$id);\
+    $db = \Config\Database::connect();
+    $sub=$db->table('interest_services')->select('interest_services.services_id')->where('interest_services.company_id',$id);
+    $res=$sub->get()->getResult();
+    $ids = [];
+foreach ($res as $row) {
+    $ids[] = $row->services_id;
+}
+     $builder=$db->table('services')->select('service_name')->whereIn('services.id',$ids);
+
+    dd ($builder->get()->getResult());
     
     if($info==null)
     {
