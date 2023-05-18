@@ -126,7 +126,31 @@ class Meeting extends ResourceController
     //       $builder->select('services.id as serviceId,services.service_name',);
     //       return $this->setResponse('1',false,$payload);
     // }
+    //Company All Meeting Report
+    public function companyReport($company_id)
+    {
+        $report=$this->meeting->where('company_id',$company_id)->findAll();
+        if($report==null)
+        {
+            return $this->setResponse('0',true,"No record found!");
+        }
 
+        $limit=$this->request->getVar('limit')??10;
+        $page=$this->request->getVar('page')??1;
+        $totalPage=ceil(count($report)/$limit);
+        $offset=($page-1)*$limit;
+        $chunk=$this->meeting->where('company_id',$company_id)->orderBy('id','desc')->findAll($limit,$offset);
+        $payload=[
+            "records"=>$chunk,
+            "totalPage"=>$totalPage,
+            "totalRecord"=>count($report),
+            "currentPage"=>$page
+        ];
+        return $this->setResponse('1',false,$payload);
+
+
+        
+    }
     private function setResponse($code,$error,$payload){
         $res = [
             'code'=>$code, //1 means validate problem

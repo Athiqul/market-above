@@ -19,9 +19,23 @@ class Company extends BaseController
     //Company List
     public function index()
     {
-          $companyList=$this->customerModel->orderBy('id','desc')->findAll();
-
-          return view('company/company-list',compact('companyList'));
+        $limit=$this->request->getVar('limit')??10;
+        $page=$this->request->getVar('page')??1;
+        $totalRecord=count($this->customerModel->findAll());
+        
+        $totalPage=ceil($totalRecord/$limit);
+        $offset=($page-1)*$limit;
+        $chunk=$this->customerModel->orderBy('id','desc')->findAll($limit,$offset);
+       // dd($chunk);
+        $payload=(object)[
+            "records"=>$chunk,
+            "totalPage"=>$totalPage,
+            "totalRecord"=>$totalRecord,
+            "currentPage"=>$page
+        ];
+         // dd($payload);
+         $search='';
+          return view('company/company-list',compact('payload','search'));
     }
     public function create()
     {
@@ -32,103 +46,105 @@ class Company extends BaseController
     public function store()
     {
         //dd($this->request->getvar());
-      //validation part
-      $validate = [
+        //validation part
+        $validate = [
 
-        "company_name" => [
-            "rules" => "required",
-            "errors" => [
-                "required" => "Company Name Missing",              
+            "company_name" => [
+                "rules" => "required",
+                "errors" => [
+                    "required" => "Company Name Missing",
+                ],
             ],
-        ],
-        "user_id" => [
-            "rules" => "required|is_not_unique[user_access.id]",
-            "errors" => [
-                "required" => "Unauthorized",
-                "is_not_unique"=>'You are not Authorized'              
+            "user_id" => [
+                "rules" => "required|is_not_unique[user_access.id]",
+                "errors" => [
+                    "required" => "Unauthorized",
+                    "is_not_unique" => 'You are not Authorized'
+                ],
             ],
-        ],
-        "address" => [
-            "rules" => "required",
-            "errors" => [
-                "required" => "Please Provide Address",   
+            "address" => [
+                "rules" => "required",
+                "errors" => [
+                    "required" => "Please Provide Address",
+                ],
             ],
-        ],
-        "division" => [
-            "rules" => "required",
-            "errors" => [
-                "required" => "Please Provide division",   
+            "division" => [
+                "rules" => "required",
+                "errors" => [
+                    "required" => "Please Provide division",
+                ],
             ],
-        ],
-        "district" => [
-            "rules" => "required",
-            "errors" => [
-                "required" => "Please Provide district",   
+            "district" => [
+                "rules" => "required",
+                "errors" => [
+                    "required" => "Please Provide district",
+                ],
             ],
-        ],
-        "thana" => [
-            "rules" => "required",
-            "errors" => [
-                "required" => "Please Provide thana",   
+            "thana" => [
+                "rules" => "required",
+                "errors" => [
+                    "required" => "Please Provide thana",
+                ],
             ],
-        ],
 
-        "address" => [
-            "rules" => "required",
-            "errors" => [
-                "required" => "Please Provide area",   
+            "address" => [
+                "rules" => "required",
+                "errors" => [
+                    "required" => "Please Provide area",
+                ],
             ],
-        ],
-        "mobile" => [
-            "rules" => "required|regex_match[/^(?:\+?88)?01[3-9]\d{8}||[0-9]{8}$/]|is_unique[customers.mobile]",
-            "errors" => [
-                "required" => "Mobile Number missing",
-                "regex_match" => "Provide an valid contact Number for telephone It should be 8 digits and mobile it should 11 digits (remove ++880)",
-                "is_unique"=>"This mobile number already in the system"
+            "mobile" => [
+                "rules" => "required|regex_match[/^(?:\+?88)?01[3-9]\d{8}||[0-9]{8}$/]|is_unique[customers.mobile]",
+                "errors" => [
+                    "required" => "Mobile Number missing",
+                    "regex_match" => "Provide an valid contact Number for telephone It should be 8 digits and mobile it should 11 digits (remove ++880)",
+                    "is_unique" => "This mobile number already in the system"
+                ],
             ],
-        ],
-        "email" => [
-            "rules" => "valid_email|is_unique[customers.email]",
-            "errors" => [
-                "valid_email" => "Provide an valid email address",
-                "is_unique"=>"This email already in the system"
+            "email" => [
+                "rules" => "valid_email|is_unique[customers.email]",
+                "errors" => [
+                    "valid_email" => "Provide an valid email address",
+                    "is_unique" => "This email already in the system"
+                ],
             ],
-        ],
-      
-
-       
-    ];
 
 
-    //check 
-    if (!$this->validate($validate)) {
+
+        ];
 
 
-        //dd($this->validator->getErrors());
-      
-        return redirect()->back()->withInput()->with('warning',$this->validator->getErrors());
+        //check 
+        if (!$this->validate($validate)) {
+
+
+            //dd($this->validator->getErrors());
+
+            return redirect()->back()->withInput()->with('warning', $this->validator->getErrors());
+        }
+
+
+        try {
+            $data = $this->request->getVar();
+            if ($this->customerModel->save($data)) {
+                return redirect()->to('/company/list')->with('success', 'Operation Success! Company Added');
+            }
+            return redirect()->back()->with('warning', $this->customerModel->errors())->withInput();
+        } catch (Exception $err) {
+            return redirect()->back()->with('warning', $err->getMessage())->withInput();
+        }
     }
-
-
-    try{
-         $data=$this->request->getVar();
-         if($this->customerModel->save($data))
-         {
-            return redirect()->to('/')->with('success','Operation Success! Company Added');
-
-         }
-         return redirect()->back()->with('warning',$this->customerModel->errors())->withInput();
-    }catch(Exception $err){
-         return redirect()->back()->with('warning',$err->getMessage())->withInput();
-    }
-
-
-   }
 
    //Company Details Information
    public function companyInfo($id)
    {
     $info=$this->customerModel->find($id);
+    $interest= new \App\Models\InterestServicesModel();
+    $interest->select('services.name')->where();
+    $builder=$this->customerModel;
+    $builder->select()->subQuery($interest,'service_name');
+    $builder->where('company_id',$id);
+    
     if($info==null)
     {
         return redirect()->back()->with('warning','Invalid Request This company doest not exist in the system');
@@ -171,4 +187,27 @@ class Company extends BaseController
     }
      
    }
+   //Company Search
+   public function search()
+   {
+       $search=esc($this->request->getVar('search'));
+       $limit=$this->request->getVar('limit')??10;
+       $page=$this->request->getVar('page')??1;
+       $totalRecord=count($this->customerModel->orderBy('id','desc')->like('company_name',$search,'both')->orLike('mobile',$search,'both')->orLike('email',$search,'both')->findAll());
+       
+       $totalPage=ceil($totalRecord/$limit);
+       $offset=($page-1)*$limit;
+       $chunk=$this->customerModel->orderBy('id','desc')->like('company_name',$search,'both')->orLike('mobile',$search,'both')->orLike('email',$search,'both')->findAll($limit,$offset);
+     
+       
+       $payload=[
+           "records"=>$chunk,
+           "totalPage"=>$totalPage,
+           "totalRecord"=>$totalRecord,
+           "currentPage"=>$page
+       ];
+
+       return view('company/company-list',['payload'=>(object)$payload,'search'=>$search]);
+   }
+
 }

@@ -4,6 +4,7 @@ namespace App\Controllers\Api;
 
 use CodeIgniter\RESTful\ResourceController;
 use App\Models\Customer;
+use App\Models\InterestServicesModel;
 use Exception;
 class Company extends ResourceController
 {
@@ -113,6 +114,11 @@ public function __construct()
       }
       return $this->setResponse('1',false,$payload);
    }
+
+ 
+ //Show company interest services
+ 
+
 
    private function setResponse($code,$error,$payload){
     $res = [

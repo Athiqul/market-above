@@ -32,9 +32,10 @@ Above IT
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <div id="datatable_filter" class="dataTables_filter">
-                                <?=form_open('meeting/search')?>
-                                <label>Search:<input type="search" name="search" required="" class="form-control form-control-sm" placeholder="" aria-controls="datatable"></label></div>
-</form>
+                                <?= form_open('meeting/search') ?>
+                                <label>Search:<input type="search" name="search" required="" class="form-control form-control-sm" placeholder="" aria-controls="datatable"></label>
+                            </div>
+                            </form>
                         </div>
                     </div>
                     <div class="row">
@@ -58,7 +59,7 @@ Above IT
 
 
                                     <tbody>
-                                        <?php $sl = $payload->currentPage*20-20; ?>
+                                        <?php $sl = $payload->currentPage * 20 - 20; ?>
                                         <?php foreach ($payload->records as $item) : ?>
                                             <tr class="odd">
                                                 <td class="sorting_1 dtr-control" style=""><?= ++$sl ?></td>
@@ -68,10 +69,10 @@ Above IT
                                                 <td style=""><?= $item->mobile ?></td>
                                                 <td style=""><?= $item->username ?></td>
                                                 <td style=""><?= date('F jS Y ', strtotime($item->created_at)) ?></td>
-                                                <td style=""><a href="<?=site_url('meeting/details/'.$item->reportId)?>" class="btn btn-info waves-effect waves-light"><i class="fas fa-eye" title="view"></i></a>
-                                                        
+                                                <td style=""><a href="<?= site_url('meeting/details/' . $item->reportId) ?>" class="btn btn-info waves-effect waves-light"><i class="fas fa-eye" title="view"></i></a>
 
-</td>
+
+                                                </td>
                                             </tr>
                                         <?php endforeach ?>
                                     </tbody>

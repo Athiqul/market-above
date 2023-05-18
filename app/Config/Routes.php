@@ -57,6 +57,8 @@ $routes->group('company',['namespace'=>'App\Controllers','filter'=>'auth'],funct
        $routes->get('details/(:num)','Company::companyInfo/$1');
        $routes->post('update/(:num)','Company::updateCompany/$1');
        $routes->get('edit/(:num)','Company::editCompany/$1');
+       $routes->post('search','Company::search');
+       $routes->get('search','Company::search');
 });
 
 //Meeting Routes
@@ -68,6 +70,7 @@ $routes->group('meeting',['namespace'=>'App\Controllers','filter'=>'auth'],funct
     $routes->post('update/(:num)','Meeting::update/$1');
     $routes->get('edit/(:num)','Meeting::edit/$1');
     $routes->post('search','Meeting::search');
+ 
 });
 
 //Services Route
@@ -106,6 +109,8 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     //Fetch Meeting Data
     $routes->get('meeting-list','Meeting::index');
     $routes->get('interest-service/(:num)','Meeting::interestMeeting/$1');
+    //fetch Meeting data on behalf of company id
+    $routes->get('company-report/(:num)','Meeting::companyReport/$1');
 });
 
 
