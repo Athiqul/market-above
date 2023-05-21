@@ -22,7 +22,7 @@ class Meeting extends BaseController
     // All Meeting Report with Pagination
     public function index()
     {
-        $limit=$this->request->getVar('limit')??20;
+        $limit=$this->request->getVar('limit')??10;
         $page=$this->request->getVar('page')??1;
         $totalRecord=count($this->meetingModel->findAll());
         
@@ -49,11 +49,9 @@ class Meeting extends BaseController
     public function search()
     {
         $search=esc($this->request->getVar('search'));
-        $limit=$this->request->getVar('limit')??20;
+        $limit=$this->request->getVar('limit')??10;
         $page=$this->request->getVar('page')??1;
-        $totalRecord=count($this->meetingModel->findAll());
-        
-        $totalPage=ceil($totalRecord/$limit);
+       
         $offset=($page-1)*$limit;
         $builder=$this->meetingModel;
         $builder->select('meeting_report.id as reportId,meeting_report.contact_person, meeting_report.desg, meeting_report.mobile, meeting_report.created_at,customers.company_name,customers.id as company_id,user_access.id as userId, user_access.name as username');
@@ -66,7 +64,18 @@ class Meeting extends BaseController
         $builder->orderBy('meeting_report.id','desc');
         $builder->limit($limit,$offset);
         $chunk=$builder->get()->getResult();
-        
+
+        $builder->select('meeting_report.id as reportId,meeting_report.contact_person, meeting_report.desg, meeting_report.mobile, meeting_report.created_at,customers.company_name,customers.id as company_id,user_access.id as userId, user_access.name as username');
+        $builder->join('customers','meeting_report.company_id=customers.id');
+        $builder->join('user_access','meeting_report.user_id=user_access.id');
+        $builder->like('customers.company_name',$search,'both');
+        $builder->orLike('meeting_report.contact_person',$search,'both');
+        $builder->orLike('meeting_report.mobile',$search,'both');
+        $builder->orLike('user_access.name',$search,'both');
+        $builder->orderBy('meeting_report.id','desc');
+        $totalRecord=count($builder->get()->getResult());
+        //dd($totalRecord);
+        $totalPage=ceil($totalRecord/$limit);
         $payload=[
             "records"=>$chunk,
             "totalPage"=>$totalPage,
@@ -74,14 +83,15 @@ class Meeting extends BaseController
             "currentPage"=>$page
         ];
 
-        return view('meeting/meeting_list',['payload'=>(object)$payload]);
+        return view('meeting/meeting_list',['payload'=>(object)$payload,'search'=>$search]);
     }
 
     //Meeting Record Create view
     public function create()
     {
-         
-         return view('meeting/create');
+         //from company details
+         $getComId=$this->request->getVar('company_id')??'';
+         return view('meeting/create',compact('getComId'));
     }
 
     //Meeting Record Store into database
@@ -177,7 +187,7 @@ class Meeting extends BaseController
                 return redirect()->back()->withInput()->with('warning', 'Meeting Report Add Failed!');
             }
             $db->transCommit();
-            return redirect()->back()->withInput()->with('success', 'Meeting Report Successfully Added!');
+            return redirect()->to('/meeting/list')->with('success', 'Meeting Report Successfully Added!');
         } catch (Exception $ex) {
             $db->transRollback();
 
@@ -382,7 +392,7 @@ class Meeting extends BaseController
 
             
             $db->transCommit();
-            return redirect()->back()->withInput()->with('success', 'Meeting Report Successfully Updated!');
+            return redirect()->to('/meeting/details/'.$id)->with('success', 'Meeting Report Successfully Updated!');
 
           }catch(Exception $ex)
           {

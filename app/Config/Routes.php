@@ -69,8 +69,15 @@ $routes->group('meeting',['namespace'=>'App\Controllers','filter'=>'auth'],funct
     $routes->get('details/(:num)','Meeting::show/$1');
     $routes->post('update/(:num)','Meeting::update/$1');
     $routes->get('edit/(:num)','Meeting::edit/$1');
+    $routes->get('search','Meeting::search');
     $routes->post('search','Meeting::search');
  
+});
+
+//Myactivity Routes
+$routes->group('my-activity',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
+    $routes->get('company-list','UserActivity::companyList');
+    $routes->get('meeting-list','UserActivity::meetingList'); 
 });
 
 //Services Route

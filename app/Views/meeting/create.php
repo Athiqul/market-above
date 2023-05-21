@@ -1,3 +1,7 @@
+<?php
+
+use App\Controllers\Api\Company;
+?>
 <?= $this->extend('layout/default') ?>
 <?= $this->section('title') ?>
 Above IT
@@ -35,12 +39,13 @@ Above IT
                 </div>
                 <div class="mb-3">
                     <label>Company Name:</label>
-                    <input type="text" class="form-control" name="company_name" value="<?=old('company_name')?>" id="companyName" readonly />
+                    
+                    <input type="text" class="form-control" name="company_name" value="<?=old('company_name',$getComId!=null ? companyInfo($getComId)->company_name:'')?>" id="companyName" readonly />
                    
                     <div class="invalid-feedback">
                         Please select a valid thana.
                     </div>
-                  <input type="hidden" name="company_id" value="<?=old('company_id')?>" id="company_id" required >
+                  <input type="hidden" name="company_id" value="<?=old('company_id',$getComId??'')?>" id="company_id" required >
                 </div>
                 <div class="mb-3">
                     <label>Contact Person:</label>

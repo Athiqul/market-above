@@ -28,7 +28,7 @@ Above IT
                 <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
-                        <?php if($search):?>
+                        <?php if($search!=null):?>
                                     <div class="text-center">
                                     <a href="<?= site_url('company/list/') ?>" class="btn btn-info waves-effect waves-light "><i class=" fas fa-angle-left" title="back to all records"> </i> Back to Recent Companies List</a>
                                     </div>
@@ -107,16 +107,16 @@ Above IT
                             <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
                                 <ul class="pagination pagination-rounded">
                                     <li class="paginate_button page-item previous <?= $payload->currentPage == 1 ? 'disabled' : '' ?>" id="datatable_previous">
-                                    <a href="<?=$search==null? site_url('/company/list?page=1'):site_url('/company/search?page=1'.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link">
+                                    <a href="<?=!isset($search)? site_url('/company/list?page=1'):site_url('/company/search?page=1'.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link">
                                     <i class="mdi mdi-chevron-left"></i>
                                 </a>
                             </li>
                                     <?php for ($i = 1; $i <= $payload->totalPage; $i++) : ?>
                                         <li class="paginate_button page-item <?= ($payload->currentPage == $i ? 'active' : '') ?>">
-                                        <a href="<?=$search==null? site_url('/company/list?page='.$i):site_url('/company/search?page='.$i.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link"><?=$i?></a></li>
+                                        <a href="<?=!isset($search)? site_url('/company/list?page='.$i):site_url('/company/search?page='.$i.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link"><?=$i?></a></li>
                                     <?php endfor ?>
                                     <li class="paginate_button page-item next <?= $payload->currentPage == $payload->totalPage  ? 'disabled' : '' ?> <?= $payload->totalPage == "0"  ? 'disabled' : '' ?>"id="datatable_next">
-                                    <a href="<?=$search==null?site_url('/company/list?page='.$payload->totalPage):site_url('/company/search?page='.$payload->totalPage.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="7" tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
+                                    <a href="<?=!isset($search)?site_url('/company/list?page='.$payload->totalPage):site_url('/company/search?page='.$payload->totalPage.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="7" tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
                                 </ul>
                             </div>
                         </div>

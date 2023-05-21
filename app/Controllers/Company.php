@@ -139,27 +139,27 @@ class Company extends BaseController
    public function companyInfo($id)
    {
     $info=$this->customerModel->find($id);
-    // $interest= new \App\Models\InterestServicesModel();
+     $interest= new \App\Models\InterestServicesModel();
     // $sub= $interest->select('services.name')->join('services','interest_services.services_id');
     // $builder=$interest;
     // $builder->select('interest_services.id')->fromSubquery($sub,'service_name');
     // $builder->where('company_id',$id);\
-    $db = \Config\Database::connect();
-    $sub=$db->table('interest_services')->select('interest_services.services_id')->where('interest_services.company_id',$id);
-    $res=$sub->get()->getResult();
-    $ids = [];
-foreach ($res as $row) {
-    $ids[] = $row->services_id;
-}
-     $builder=$db->table('services')->select('service_name')->whereIn('services.id',$ids);
+     $getInterestItem=$interest->select('services_id')->distinct()->where('company_id',$id)->orderBy('id','desc')->findAll();
+     $serviceNames=[];
+     $serviceModel= new \App\Models\ServicesModel();
+     foreach($getInterestItem as $item)
+     {
+            $serviceNames[]=$serviceModel->where('id',$item->services_id)->first();
+     }
 
-    dd ($builder->get()->getResult());
-    
+    $meetingModel=new \App\Models\MeetingReportModel(); 
+    $payload=$meetingModel->where('company_id',$id)->paginate(10);
+    $pager=$meetingModel->pager;
     if($info==null)
     {
         return redirect()->back()->with('warning','Invalid Request This company doest not exist in the system');
     }
-      return view('company/company_details',compact('info'));
+      return view('company/company_details',compact('info','serviceNames','payload','pager'));
    }
 
    //edit company information

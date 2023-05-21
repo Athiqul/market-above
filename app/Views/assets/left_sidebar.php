@@ -53,8 +53,8 @@
                     <span>My activity</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="email-inbox.html">Company List</a></li>
-                    <li><a href="email-read.html">Attend Meeting</a></li>
+                    <li><a href="<?=site_url('/my-activity/company-list')?>">Company List</a></li>
+                    <li><a href="<?=site_url('/my-activity/meeting-list')?>">Attend Meeting</a></li>
                 </ul>
             </li>
             <li>

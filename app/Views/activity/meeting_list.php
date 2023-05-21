@@ -21,33 +21,12 @@ Above IT
         <div class="card">
             <div class="card-body">
 
-                <h4 class="card-title">Meeting Reports</h4>
-                <p class="card-title-desc">Recent All client Meeting Report List.
+                <h4 class="card-title">Meeting Reports of <?=session()->get('user')['name']?></h4>
+                <p class="card-title-desc">You have attended <?=$payload->totalRecord?> + client Meeting.
                 </p>
 
                 <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6">
-
-                        </div>
-                        <div class="col-sm-12 col-md-6">
-                        <?php if(isset($search)):?>
-                                    <div class="text-center">
-                                    <a href="<?= site_url('meeting/list/') ?>" class="btn btn-link waves-effect waves-light "><i class=" fas fa-angle-left" title="back to all records"> </i>Back to All Meeting Records</a>
-                                    </div>
-                            
-                            
-                               
-                            <?php endif?>
-                        </div>
-                            <div id="datatable_filter" class="dataTables_filter">
-
-                                <?= form_open('meeting/search') ?>
-                                <label>Search:<input type="search" name="search" required="" class="form-control form-control-sm" value="<?=old('search',$search??'')?>" placeholder="" aria-controls="datatable"></label>
-                            </div>
-                            </form>
-                        </div>
-                    </div>
+                    
                     <div class="row">
                         <div class="col-sm-12">
                             <?php if ($payload->records) : ?>
@@ -60,7 +39,7 @@ Above IT
                                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Office: activate to sort column ascending">Meet With</th>
                                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Meet With: activate to sort column ascending">Position</th>
                                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Contact: activate to sort column ascending">Contact</th>
-                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Agent: activate to sort column ascending">Agent</th>
+                                            
                                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Date: activate to sort column ascending">Date</th>
                                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Action: activate to sort column ascending">Action</th>
 
@@ -72,14 +51,14 @@ Above IT
                                         <?php $sl = $payload->currentPage * 10 - 10; ?>
                                         <?php foreach ($payload->records as $item) : ?>
                                             <tr class="odd">
-                                                <td class="sorting_1 dtr-control" style=""><?= ++$sl ?></td>
-                                                <td class="sorting_1 dtr-control" style=""><?= $item->company_name ?></td>
+                                                <td class="" style=""><?= ++$sl ?></td>
+                                                <td class="sorting_1 dtr-control" style=""><?= companyInfo( $item->company_id)->company_name ?></td>
                                                 <td style=""><?= $item->contact_person ?></td>
                                                 <td style=""><?= $item->desg ?></td>
                                                 <td style=""><?= $item->mobile ?></td>
-                                                <td style=""><?= $item->username ?></td>
+                                                
                                                 <td style=""><?= date('F jS Y ', strtotime($item->created_at)) ?></td>
-                                                <td style=""><a href="<?= site_url('meeting/details/' . $item->reportId) ?>" class="btn btn-info waves-effect waves-light"><i class="fas fa-eye" title="view"></i></a>
+                                                <td style=""><a href="<?= site_url('meeting/details/' . $item->id) ?>" class="btn btn-info waves-effect waves-light"><i class="fas fa-eye" title="view"></i></a>
 
 
                                                 </td>
@@ -96,12 +75,18 @@ Above IT
                         </div>
                         <div class="col-sm-12 col-md-7">
                             <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
-                                <ul class="pagination pagination-rounded">
-                                    <li class="paginate_button page-item previous <?= $payload->currentPage == 1 ? 'disabled' : '' ?>" id="datatable_previous"><a href="<?=!isset($search)? site_url('/meeting/list?page=1'):site_url('/meeting/search?page=1'.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
+                            <ul class="pagination pagination-rounded">
+                                    <li class="paginate_button page-item previous <?= $payload->currentPage == 1 ? 'disabled' : '' ?>" id="datatable_previous">
+                                    <a href="<?=site_url('/my-activity/meeting-list?page=1')?>" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link">
+                                    <i class="mdi mdi-chevron-left"></i>
+                                </a>
+                            </li>
                                     <?php for ($i = 1; $i <= $payload->totalPage; $i++) : ?>
-                                        <li class="paginate_button page-item <?= ($payload->currentPage == $i ? 'active' : '') ?>"><a href="<?= !isset($search)? site_url('/meeting/list?page='.$i):site_url('/meeting/search?page='.$i.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link"><?=$i?></a></li>
+                                        <li class="paginate_button page-item <?= ($payload->currentPage == $i ? 'active' : '') ?>">
+                                        <a href="<?=site_url('/my-activity/meeting-list?page='.$i)?>" aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link"><?=$i?></a></li>
                                     <?php endfor ?>
-                                    <li class="paginate_button page-item next <?= $payload->currentPage == $payload->totalPage ? 'disabled' : '' ?>" id="datatable_next"><a href="<?=!isset($search)?site_url('/meeting/list?page='.$payload->totalPage):site_url('/meeting/search?page='.$payload->totalPage.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="7" tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
+                                    <li class="paginate_button page-item next <?= $payload->currentPage == $payload->totalPage  ? 'disabled' : '' ?> <?= $payload->totalPage == "0"  ? 'disabled' : '' ?>"id="datatable_next">
+                                    <a href="<?=site_url('/my-activity/meeting-list?page='.$payload->totalPage)?>" aria-controls="datatable" data-dt-idx="7" tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
                                 </ul>
                             </div>
                         </div>
