@@ -23,7 +23,7 @@ Above IT
                                                 <tr>
                                                     <td>Company Name</td>
                                                     <td>
-                                                        <a href="#" id="inline-username" data-type="text" data-pk="1" data-title="Enter username" class="editable editable-click"><?=companyInfo($report->company_id)->company_name?></a>
+                                                        <a href="<?=site_url('/company/details/'.$report->company_id)?>" id="inline-username" data-type="text" data-pk="1" data-title="Enter username" class="editable editable-click"><?=companyInfo($report->company_id)->company_name?></a>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -47,7 +47,7 @@ Above IT
                                                 <tr>
                                                     <td>Email</td>
                                                     <td>
-                                                        <a href="#" id="inline-dob" data-type="combodate" data-value="2015-04-15" data-format="YYYY-MM-DD" data-viewformat="DD/MM/YYYY" data-template="D / MMM / YYYY" data-pk="1" data-title="Select Date of birth" class="editable editable-click"><?=$report->email??''?></a>
+                                                        <a href="#" id="inline-dob" data-type="combodate" ><?=$report->email??''?></a>
                                                     </td>
                                                 </tr>
                                                 <tr>
