@@ -26,7 +26,7 @@ class Authen extends BaseController
             ],
 
             "password" => [
-                "rules" => "required|min_length[8]",
+                "rules" => "required|min_length[6]",
                 "errors" => [
                     "required" => "Password Empty",
                     "min_length[8]" => "Provide Password Correctly",

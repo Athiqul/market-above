@@ -52,7 +52,7 @@
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
 									<label for="password">Password:</label>
-                                        <input class="form-control" id="password" pattern=".{8,}" type="password" name="password" value="<?=esc(old('password'))?>" required >
+                                        <input class="form-control" id="password" pattern=".{6,}" type="password" name="password" value="<?=esc(old('password'))?>" required >
                                     </div>
                                 </div>
     

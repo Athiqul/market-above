@@ -107,6 +107,13 @@ class User extends BaseController
                     try{
                         if($this->userInfoModel->save($data))
                         {
+                            $userInfo=[
+                                "user_info"=>(object)[
+                                    "image_link"=>$image_link,
+                                ],
+                            ];
+                            
+                            session()->push('user',$userInfo);
                             return redirect()->to('/user/my-profile')->with('success','Profile Picture Uploaded Successfully!');
                         }else{
                             return redirect()->back()->with('warning',$this->userInfoModel->errors());
@@ -124,6 +131,11 @@ class User extends BaseController
                try{
                 if($this->userInfoModel->save($userImage))
                 {
+                    
+                        session()->get('user')['user_info']->image_link=$image_link;
+                    
+
+                  
                     return redirect()->to('/user/my-profile')->with('success','Profile Picture Updated Successfully!');
                 }else{
                     return redirect()->back()->with('warning',$this->userInfoModel->errors());

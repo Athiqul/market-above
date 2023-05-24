@@ -5,7 +5,7 @@
     <!-- User details -->
     <div class="user-profile text-center mt-3">
         <div class="">
-            <img src="<?=base_url('/user/profile-image-show/'.session()->get('user')['user_info']->image_link)?>" alt="" class="avatar-md rounded-circle">
+            <img src="<?=session()->get('user')['user_info']!=null?base_url('/user/profile-image-show/'.session()->get('user')['user_info']->image_link):base_url('/user/profile-image-show/default.png')?>" alt="" class="avatar-md rounded-circle">
         </div>
         <div class="mt-3">
             <h4 class="font-size-16 mb-1"><?=session()->get('user')['name']?></h4>
@@ -84,8 +84,8 @@
                     <span>Team Management</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="email-inbox.html">Add User</a></li>
-                    <li><a href="email-read.html">Team List</a></li>
+                    <li><a href="<?=site_url('/team-management/add-user')?>">Add User</a></li>
+                    <li><a href="<?=site_url('/team-management')?>">Team List</a></li>
                 </ul>
             </li>
             <li>

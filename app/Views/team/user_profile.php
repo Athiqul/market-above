@@ -13,11 +13,13 @@ Above IT
         <div class="card text-center ">
             <center>
                 
-                <img class="card-img-top rounded avatar-lg img-fluid mt-2" src="<?= session()->get('user')['user_info']!=null?base_url('/user/profile-image-show/'.session()->get('user')['user_info']->image_link):base_url('/user/profile-image-show/default.png') ?>" alt="Card image cap">
-                
-               <br>
-               <br>
+                <div>
+                <img class="card-img-top rounded avatar-lg img-fluid mt-2" src="<?=$data['info']->image_link!=null?base_url('/user/profile-image-show/'.$data['info']->image_link):base_url('/user/profile-image-show/default.png') ?>" alt="Card image cap"> 
+                </div>
+               <?php if(session()->get('user')['role']=='admin'):?>
+                <br>
                 <a href="<?=site_url('/user/profile-image-change/'.$data['basic']->id)?>" class="btn btn-info btn-rounded waves-effect waves-light">Change Picture</a>
+                <?php endif?>
             </center>
 
             <div class="card-body ">
@@ -28,12 +30,15 @@ Above IT
                 <li class="list-group-item">Mobile: <?= $data['basic']->mobile ?></li>
                 <li class="list-group-item">email: <?= $data['basic']->email ?></li>
             </ul>
-            <div class="card-body">
+            <?php if(session()->get('user')['role']=='admin'):?>
+
+                <div class="card-body">
                 <div class="my-4 text-center">
                     <button type="button" class="btn btn-info btn-rounded waves-effect waves-light" id="profile-update" data-bs-toggle="modal" data-bs-target="#myModal">Update Profile</button>
                 </div>
 
             </div>
+            <?php endif?>
         </div>
 
     </div><!-- end col -->
@@ -58,17 +63,17 @@ Above IT
                     <li class="nav-item waves-effect waves-light">
                         <a class="nav-link active" data-bs-toggle="tab" href="#home-1" role="tab" aria-selected="false">
                             <span class="d-block d-sm-none"><i class="far fa-user"></i></span>
-                            <span class="d-none d-sm-block">My Info</span>
+                            <span class="d-none d-sm-block">User Info</span>
                         </a>
                     </li>
                     <li class="nav-item waves-effect waves-light">
-                        <a class="nav-link" data-bs-toggle="tab" href="#profile-1" role="tab" aria-selected="false">
+                        <a class="nav-link" data-bs-toggle="tab" href="#task" role="tab" aria-selected="false">
                             <span class="d-block d-sm-none"><i class="fas fa-calendar-week"></i></span>
                             <span class="d-none d-sm-block">Task</span>
                         </a>
                     </li>
                     <li class="nav-item waves-effect waves-light">
-                        <a class="nav-link" data-bs-toggle="tab" href="#messages-1" role="tab" aria-selected="false">
+                        <a class="nav-link" data-bs-toggle="tab" href="#activity" role="tab" aria-selected="false">
                             <span class="d-block d-sm-none"><i class="fas fa-chart-line"></i></span>
                             <span class="d-none d-sm-block">Activity</span>
                         </a>
@@ -87,7 +92,7 @@ Above IT
                         
 
                     </div>
-                    <div class="tab-pane" id="profile-1" role="tabpanel">
+                    <div class="tab-pane" id="task" role="tabpanel">
                         <p class="mb-0">
                             Food truck fixie locavore, accusamus mcsweeney's marfa nulla
                             single-origin coffee squid. Exercitation +1 labore velit, blog
@@ -98,37 +103,22 @@ Above IT
                             aesthetic magna 8-bit.
                         </p>
                     </div>
-                    <div class="tab-pane" id="messages-1" role="tabpanel">
-                        <p class="mb-0">
-                            Etsy mixtape wayfarers, ethical wes anderson tofu before they
-                            sold out mcsweeney's organic lomo retro fanny pack lo-fi
-                            farm-to-table readymade. Messenger bag gentrify pitchfork
-                            tattooed craft beer, iphone skateboard locavore carles etsy
-                            salvia banksy hoodie helvetica. DIY synth PBR banksy irony.
-                            Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh
-                            mi whatever gluten-free.
-                        </p>
+                    <div class="tab-pane" id="activity" role="tabpanel">
+                        
                     </div>
                     <div class="tab-pane " id="settings-1" role="tabpanel">
                         <?php if($data['info']==null || $data['info']->resume_link==null):?>
-                            <h6 class="text-danger text-center">You have not uploaded any resume please upload your resume</h6>
+                            <h6 class="text-danger text-center">  <h6 class="text-danger text-center"><?=$data['basic']->name?> did not upload any resume</h6></h6>
                             <?php else:?>
                               <div class="row">
                                 <div class="col-md-12">
                                     <div class="text-center mb-3">
-                                    <h6 class="text-center text-success">Your resume uploaded You can overview your resume</h6>
                                 <a class=" btn btn-secondary btn-rounded waves-effect waves-light" href="<?= site_url('user/resume-show/'.$data['info']->resume_link) ?>" target="_blank">View Resume</a>
                                     </div>
                                 </div>
                               </div>
                         <?php endif?>
-                      <div class="row">
-                     <div class="col-md-12">
-                        <div class="text-center">
-                        <a href="<?=site_url('/user/resume-upload')?>" class="btn btn-primary btn-rounded waves-effect waves-light" >Upload New Resume</a>
-                        </div>
-                     </div>
-                      </div>
+                     
                     </div>
                 </div>
 

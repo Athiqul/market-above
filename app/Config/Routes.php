@@ -79,7 +79,15 @@ $routes->group('my-activity',['namespace'=>'App\Controllers','filter'=>'auth'],f
     $routes->get('company-list','UserActivity::companyList');
     $routes->get('meeting-list','UserActivity::meetingList'); 
 });
-
+//Team Management Route
+$routes->group('team-management',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
+    $routes->get('add-user','Team::create');
+    $routes->post('add-user','Team::store');
+    $routes->get('/','Team::index'); 
+    $routes->get('action/(:num)','Team::status/$1');
+    $routes->get('user-info/(:num)','Team::userProfile/$1');
+    
+});
 //Services Route
 $routes->group('services',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
  $routes->get('/','Services::index');
