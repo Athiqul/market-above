@@ -13,12 +13,13 @@ use App\Models\UserModel;
 class User extends ResourceController
 {
     //user information model
-    private $userInfoModel;
+    private $userInfoModel,$authenModel;
 
     // initialize model via construction
     public function __construct()
     {
         $this->userInfoModel=new UserInfo();
+        $this->authenModel=new UserModel();
     }
 
     // provide identical user information
@@ -30,6 +31,36 @@ class User extends ResourceController
             return $this->setResponse('0',true,'No Information found');
           }
           return $this->setResponse('1',false,$info);
+    }
+
+
+    //user search by
+    public function search()
+    {
+        $limit=$this->request->getVar('limit')??10;
+        $page=$this->request->getVar('page')??1;
+        $search=$this->request->getVar('search');
+        if(strlen($search)<3)
+        {
+            return $this->setResponse('0',true,"Please write more");
+        }
+        $builder=$this->authenModel;
+        $builder->select('user_access.name,user_access.id,user_info.image_link');
+        $builder->join('user_info','user_access.id=user_info.user_id');
+        $builder->like('user_access.name',$search);
+        $builder->orLike('user_access.employ_id',$search);
+        $builder->orLike('user_access.mobile',$search);
+        $builder->orLike('user_access.email',$search);
+        $builder->where('user_access.status','1');
+        $builder->orderBy('user_access.id','desc');
+        $builder->limit($limit);
+        $chunk=$builder->get()->getResult();
+        if($chunk==null)
+        {
+            return $this->setResponse('0',true,"No record found");
+        }
+       return $this->setResponse('1',false,$chunk);
+
     }
 
     //Request handle for update

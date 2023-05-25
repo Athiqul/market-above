@@ -93,6 +93,21 @@ $routes->group('team-management',['namespace'=>'App\Controllers','filter'=>'auth
 
     
 });
+
+//Assign Task
+$routes->group('assign',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
+    $routes->get('add-task','AssignTask::create');
+    $routes->post('add-task','AssignTask::store');
+    $routes->get('/','AssignTask::index'); 
+    $routes->get('action/(:num)','AssignTask::status/$1');
+    $routes->get('user-info/(:num)','AssignTask::userProfile/$1');
+    $routes->get('user-image-update/(:num)','AssignTask::imageUpdate/$1');
+    $routes->post('user-image-update/(:num)','AssignTask::storeImage/$1');
+    $routes->get('resume-update/(:num)','AssignTask::profileResume/$1');
+    $routes->post('resume-update/(:num)','AssignTask::storeResume/$1');
+
+    
+});
 //Services Route
 $routes->group('services',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
  $routes->get('/','Services::index');
@@ -114,6 +129,7 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->post('create-company','Company::create');
     //User Information Update
     $routes->post('user-update/(:num)','User::updateInfo/$1');
+    $routes->get('user-search','User::search');
     //Get all company list
     $routes->get('company-list','Company::companyList');
     //fetch user information
