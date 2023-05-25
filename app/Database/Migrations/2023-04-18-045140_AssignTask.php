@@ -31,6 +31,10 @@ class AssignTask extends Migration
                 "type"=>'DATE',
                 "null"=>true,
             ],
+            "end_date"=>[
+                "type"=>'DATE',
+                "null"=>true,
+            ],
             "noti"=>[
                 "type"=>'ENUM',
                 "constraint"=>['0','1'],

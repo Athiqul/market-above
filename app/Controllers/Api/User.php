@@ -45,8 +45,8 @@ class User extends ResourceController
             return $this->setResponse('0',true,"Please write more");
         }
         $builder=$this->authenModel;
-        $builder->select('user_access.name,user_access.id,user_info.image_link');
-        $builder->join('user_info','user_access.id=user_info.user_id');
+        $builder->select('user_access.name,user_access.id');
+       
         $builder->like('user_access.name',$search);
         $builder->orLike('user_access.employ_id',$search);
         $builder->orLike('user_access.mobile',$search);

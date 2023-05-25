@@ -22,17 +22,10 @@ Above IT
         
                                         
                                         <?=form_open('/team-management/add-user',"class='custom-validation' novalidate=''")?>
-                                            <div class="mb-3">
-                                                <label>Task Description:</label>
-                                                <textarea id="elm1" name="msg" aria-hidden="true" ><?=old('msg')?></textarea>
-                                              
-                                                <?php if(session()->has('warning')):?>
-                                                    <span class="text-danger"><?=session()->get('warning')['msg']??''?></span>
-                                                    <?php endif?>
-                                            </div>
+                                            
 
                                             <div class="mb-3">
-                    <label>Select Agent:</label>
+                    <label>Select Agent: (Write agent name or mobile or email or employ id to find)</label>
                     <input type="text" class="form-control" list="agent" id="search" />
                     <datalist id="agent">
                         
@@ -53,59 +46,42 @@ Above IT
                     </div>
                   <input type="hidden" name="to_user_id" value="<?=old('to_user_id')?>" id="agent_id" required >
                 </div>
+                <div class="mb-3">
+                                                <label>Task Description:</label>
+                                                <textarea id="elm1" name="msg" aria-hidden="true" ><?=old('msg')?></textarea>
+                                              
+                                                <?php if(session()->has('warning')):?>
+                                                    <span class="text-danger"><?=session()->get('warning')['msg']??''?></span>
+                                                    <?php endif?>
+                                            </div>
+
+
+                                            
 
                                             <div class="mb-3">
-                                                <label>Employ ID:</label>
-                                                <input type="text" class="form-control" name="employ_id" value="<?=old('employ_id')?>" required>
+                                                <label>Start Date:</label>
+                                                <input class="form-control" name='job_date' type="date" value="<?=old('job_date')?>" id="example-datetime-local-input">
                                                 <?php if(session()->has('warning')):?>
-                                                    <span class="text-danger"><?=session()->get('warning')['employ_id']??''?></span>
+                                                    <span class="text-danger"><?=session()->get('warning')['job_date']??''?></span>
                                                     <?php endif?>
                                             </div>
+                                            <div class="mb-3">
+                                                <label>End Date:</label>
+                                                <input class="form-control" name='end_date' type="date" value="<?=old('end_date')?>" id="example-datetime-local-input">
+                                                <?php if(session()->has('warning')):?>
+                                                    <span class="text-danger"><?=session()->get('warning')['end_date']??''?></span>
+                                                    <?php endif?>
+                                            </div>
+                                          
         
-                                            <div class="mb-3">
-                                                <label>Mobile Number:</label>
-                                                <div>
-                                                    <input type="tel"  class="form-control" name="mobile" value="<?=old('mobile')?>" pattern="01[3-9][0-9]{8}" required="" >
-                                                </div>
-                                                <?php if(session()->has('warning')):?>
-                                                    <span class="text-danger"><?=session()->get('warning')['mobile']??''?></span>
-                                                    <?php endif?>
-                                            </div>
-        
-                                            <div class="mb-3">
-                                                <label>E-Mail</label>
-                                                <div>
-                                                    <input type="email" class="form-control" name="email"  value="<?=old('email')?>" required="" parsley-type="email">
-                                                    <?php if(session()->has('warning')):?>
-                                                    <span class="text-danger"><?=session()->get('warning')['email']??''?></span>
-                                                    <?php endif?>
-                                                </div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label>Password</label>
-                                                <div>
-                                                    <input parsley-type="password" name="password" type="password" class="form-control" required>
-                                                    <?php if(session()->has('warning')):?>
-                                                    <span class="text-danger"><?=session()->get('warning')['password']??''?></span>
-                                                    <?php endif?>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="mb-3">
-                                                <label>Confirm Password:</label>
-                                                <div>
-                                                <input parsley-type="password" name="confirm_password" type="password"  class="form-control" required>
-                                                <?php if(session()->has('warning')):?>
-                                                    <span class="text-danger"><?=session()->get('warning')['confirm_password']??''?></span>
-                                                    <?php endif?>
-                                                </div>
-                                            </div>
+                                           
+                                        
                                            
                                             <div class="mb-0">
                                                
                                                 <div>
                                                     <button type="submit" class="btn btn-primary waves-effect waves-light me-1" onsubmit="confirm('Are You Sure?')">
-                                                        Add new User
+                                                       Add Task
                                                     </button>
                                                     <button type="reset" class="btn btn-secondary waves-effect">
                                                         Cancel
@@ -151,7 +127,7 @@ Above IT
            {
             document.getElementById('errorMsgCompany').innerHTML='';
               res.payload.forEach(function(item){
-                    html+=`<option value='${item.id}'>${item.name}  </option>`;
+                    html+=`<option value='${item.id}'>${item.name}</option>`;
               });
 
               agentList.innerHTML=html;
