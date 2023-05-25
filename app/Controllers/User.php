@@ -24,6 +24,7 @@ class User extends BaseController
     //invidual profile for show admin
     // user information update by admin
     //user profile show for login user 
+    
     public function myProfile()
     {
          $id=session()->get('user')['id'];
@@ -41,9 +42,9 @@ class User extends BaseController
         // dd($data);
          return view('profile/my-profile',['data'=>$data]);  
 
-
     }
    //render upload image page
+
     public function profileImage($id)
     {
            //get existing image
@@ -107,13 +108,7 @@ class User extends BaseController
                     try{
                         if($this->userInfoModel->save($data))
                         {
-                            $userInfo=[
-                                "user_info"=>(object)[
-                                    "image_link"=>$image_link,
-                                ],
-                            ];
                             
-                            session()->push('user',$userInfo);
                             return redirect()->to('/user/my-profile')->with('success','Profile Picture Uploaded Successfully!');
                         }else{
                             return redirect()->back()->with('warning',$this->userInfoModel->errors());
@@ -237,12 +232,14 @@ class User extends BaseController
       
 
     }
-
+    
     //Resume upload
     public function profileResume()
     {
         return view('profile/resume-upload');
     }
+
+
     public function storeResume()
     {
         $id=session()->get('user')['id'];

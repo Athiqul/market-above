@@ -14,11 +14,11 @@ Above IT
             <center>
                 
                 <div>
-                <img class="card-img-top rounded avatar-lg img-fluid mt-2" src="<?=$data['info']->image_link!=null?base_url('/user/profile-image-show/'.$data['info']->image_link):base_url('/user/profile-image-show/default.png') ?>" alt="Card image cap"> 
+                <img class="card-img-top rounded avatar-lg img-fluid mt-2" src="<?=userImage($data['basic']->id)!=null?base_url('/user/profile-image-show/'.$data['info']->image_link):base_url('/user/profile-image-show/default.png') ?>" alt="Card image cap"> 
                 </div>
                <?php if(session()->get('user')['role']=='admin'):?>
                 <br>
-                <a href="<?=site_url('/user/profile-image-change/'.$data['basic']->id)?>" class="btn btn-info btn-rounded waves-effect waves-light">Change Picture</a>
+                <a href="<?=site_url('/team-management/user-image-update/'.$data['basic']->id)?>" class="btn btn-info btn-rounded waves-effect waves-light">Change Picture</a>
                 <?php endif?>
             </center>
 
@@ -118,7 +118,13 @@ Above IT
                                 </div>
                               </div>
                         <?php endif?>
-                     
+                         <?php if(session()->get('user')['role']=='admin'):?>
+                            <div class="col-md-12">
+                        <div class="text-center">
+                        <a href="<?=site_url('/team-management/resume-update/'.$data['basic']->id)?>" class="btn btn-primary btn-rounded waves-effect waves-light" >Upload New Resume</a>
+                        </div>
+                     </div>
+                            <?php endif?>
                     </div>
                 </div>
 
@@ -259,7 +265,7 @@ Above IT
                                 </div>
                             </div>
                             <div class="mb-0">
-                                <input type="hidden" name="user_id" id="user_id" value="<?= session()->get('user')['id'] ?>">
+                                <input type="hidden" name="user_id" id="user_id" value="<?= $data['basic']->id ?>">
                                 <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
                             </div>
@@ -280,16 +286,13 @@ Above IT
 <script src="<?= base_url('/assets/js/pages/form-validation.init.js') ?>"></script>
 <script src="<?=base_url('/assets/js/moment.min.js')?>"></script>
 <script>
-
-
      //Show profile information via api
-
      loadBasicInfo();
      function loadBasicInfo()
      {
         let profileInfo=document.getElementById('home-1');
 
-fetch('<?=site_url('/api/user-information/'.session()->get('user')['id'])?>')
+fetch('<?=site_url('/api/user-information/'.$data['basic']->id)?>')
 .then(res=>res.json())
 .then(data=>{
    let html='';

@@ -13,7 +13,10 @@ Above IT
         <div class="card text-center ">
             <center>
                 
-                <img class="card-img-top rounded avatar-lg img-fluid mt-2" src="<?= session()->get('user')['user_info']!=null?base_url('/user/profile-image-show/'.session()->get('user')['user_info']->image_link):base_url('/user/profile-image-show/default.png') ?>" alt="Card image cap">
+            <?php 
+            $profileImage=userImage($data['basic']->id);
+            ?>
+                <img class="card-img-top rounded avatar-lg img-fluid mt-2" src="<?=$profileImage!=null?base_url('/user/profile-image-show/'.$profileImage):base_url('/user/profile-image-show/default.png') ?>" alt="Card image cap">
                 
                <br>
                <br>

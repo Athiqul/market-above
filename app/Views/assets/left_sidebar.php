@@ -5,7 +5,10 @@
     <!-- User details -->
     <div class="user-profile text-center mt-3">
         <div class="">
-            <img src="<?=session()->get('user')['user_info']!=null?base_url('/user/profile-image-show/'.session()->get('user')['user_info']->image_link):base_url('/user/profile-image-show/default.png')?>" alt="" class="avatar-md rounded-circle">
+        <?php
+                                $topUserImage=userImage(session()->get('user')['id']);
+                                ?>
+            <img src="<?=$topUserImage!=null?base_url('/user/profile-image-show/'.$topUserImage):base_url('/user/profile-image-show/default.png')?>" alt="" class="avatar-md rounded-circle">
         </div>
         <div class="mt-3">
             <h4 class="font-size-16 mb-1"><?=session()->get('user')['name']?></h4>
@@ -20,7 +23,7 @@
             <li class="menu-title">Menu</li>
 
             <li>
-                <a href="index.html" class="waves-effect">
+                <a href="<?=site_url('/')?>" class="waves-effect">
                     <i class="ri-dashboard-line"></i><span class="badge rounded-pill bg-success float-end">3</span>
                     <span>Dashboard</span>
                 </a>

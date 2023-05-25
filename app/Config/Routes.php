@@ -86,6 +86,11 @@ $routes->group('team-management',['namespace'=>'App\Controllers','filter'=>'auth
     $routes->get('/','Team::index'); 
     $routes->get('action/(:num)','Team::status/$1');
     $routes->get('user-info/(:num)','Team::userProfile/$1');
+    $routes->get('user-image-update/(:num)','Team::imageUpdate/$1');
+    $routes->post('user-image-update/(:num)','Team::storeImage/$1');
+    $routes->get('resume-update/(:num)','Team::profileResume/$1');
+    $routes->post('resume-update/(:num)','Team::storeResume/$1');
+
     
 });
 //Services Route

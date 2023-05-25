@@ -42,6 +42,7 @@ Above IT
                                                     <tr style="cursor: pointer;">
                                                         <th>EmployID</th>
                                                         <th>Name</th>
+                                                        <th>Photo</th>
                                                         <th>Mobile</th>
                                                         <th>Email</th>
                                                         <th>Status</th>
@@ -60,6 +61,9 @@ Above IT
                                                     <tr style="cursor: pointer;">
                                                         <td style="width: 80px"><?=$item->employ_id?></td>
                                                         <td ><?=$item->name?></td>
+                                                        <td>
+                                                            <img src="<?=site_url('/user/profile-image-show/'.userImage($item->id))?>" style="width:50px;height:50px">
+                                                        </td>
                                                         <td ><?=$item->mobile?></td>
                                                         <td ><?=$item->email?></td>
                                                         <td ><?=$item->status==1?'Active':'inactive'?></td>
@@ -68,9 +72,11 @@ Above IT
                                                             <a href="<?=site_url('/team-management/user-info/'.$item->id)?>" class="btn btn-outline-info btn-sm edit " title="View">
                                                                 <i class=" fas fa-eye"></i>
                                                             </a>
+                                                            <?php if(session()->get('user')['role']=='admin'):?>
                                                             <a href="<?=site_url('/team-management/action/'.$item->id)?>" class="btn <?=$item->status==1?'btn-outline-danger':'btn-outline-success'?>  btn-sm edit" title="<?=$item->status==1?'Make Inactive':'Make Active'?>">
                                                                 <i class="<?=$item->status==1?'fas fa-user-minus':' fas fa-user-plus'?> "></i>
                                                             </a>
+                                                            <?php endif?>
                                                         </td>
                                                     </tr>
                                                   <?php endforeach?>
