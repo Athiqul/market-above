@@ -78,7 +78,7 @@
                 <ul class="sub-menu" aria-expanded="false">
                     <li><a href="<?=site_url('/assign/add-task')?>">Add Task</a></li>
                     <li><a href="<?=site_url('/assign')?>">Task List</a></li>
-                    <li><a href="">Task Report</a></li>
+                    <li><a href="<?=site_url('/assign/task-report')?>">Task Report</a></li>
                 </ul>
             </li>
             <li>

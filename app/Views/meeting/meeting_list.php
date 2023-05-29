@@ -44,8 +44,9 @@ Above IT
 
                                 <?= form_open('meeting/search') ?>
                                 <label>Search:<input type="search" name="search" required="" class="form-control form-control-sm" value="<?=old('search',$search??'')?>" placeholder="" aria-controls="datatable"></label>
-                            </div>
+                           
                             </form>
+                            </div>
                         </div>
                     </div>
                     <div class="row">

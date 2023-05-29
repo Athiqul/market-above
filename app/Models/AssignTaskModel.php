@@ -14,7 +14,7 @@ class AssignTaskModel extends Model
     protected $returnType       = \App\Entities\AssignTaskEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['to_id','msg','job_date','end_date','noti','complete'];
 
     // Dates
     protected $useTimestamps = true;

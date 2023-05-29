@@ -98,8 +98,12 @@ $routes->group('team-management',['namespace'=>'App\Controllers','filter'=>'auth
 $routes->group('assign',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
     $routes->get('add-task','AssignTask::create');
     $routes->post('add-task','AssignTask::store');
-    $routes->get('/','AssignTask::index'); 
-    $routes->get('action/(:num)','AssignTask::status/$1');
+    $routes->get('/','AssignTask::index');
+    $routes->get('task-edit/(:num)','AssignTask::edit/$1');  
+    $routes->post('task-update/(:num)','AssignTask::update/$1');  
+    $routes->get('task-report','AssignTask::allReport');
+    $routes->get('task-pending-report','AssignTask::pendingReport');
+    $routes->get('task-complete-report','AssignTask::completeReport');
     $routes->get('user-info/(:num)','AssignTask::userProfile/$1');
     $routes->get('user-image-update/(:num)','AssignTask::imageUpdate/$1');
     $routes->post('user-image-update/(:num)','AssignTask::storeImage/$1');
@@ -147,6 +151,9 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->get('interest-service/(:num)','Meeting::interestMeeting/$1');
     //fetch Meeting data on behalf of company id
     $routes->get('company-report/(:num)','Meeting::companyReport/$1');
+
+    //fetching task by id
+    $routes->get('assign-task/(:num)','Task::show/$1');
 });
 
 

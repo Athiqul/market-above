@@ -17,12 +17,12 @@ Above IT
                                
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4 class="card-title">Assign Task to the Team Member</h4>
+                                        <h4 class="card-title">Assign Task Edit</h4>
                                        
-                                        <p class="card-title-desc">Please Provide Proper and Authentic information</p>
+                                       
         
                                         
-                                        <?=form_open('/assign/add-task',"class='custom-validation' novalidate=''")?>
+                                        <?=form_open('/assign/task-update/'.$task->id,"class='custom-validation' novalidate=''")?>
                                             
 
                                             <div class="mb-3">
@@ -40,16 +40,16 @@ Above IT
                 <div class="mb-3">
                     <label>Agent Name:</label>
                     
-                    <input type="text" class="form-control" name="agent_name" value="<?=old('agent_name')?>" id="agentName" readonly />
+                    <input type="text" class="form-control" name="agent_name" value="<?=old('agent_name',getUsername($task->to_id)->name)?>" id="agentName" readonly />
                    
                     <div class="invalid-feedback">
                         Please select a valid thana.
                     </div>
-                  <input type="hidden" name="to_id" value="<?=old('to_id')?>" id="agent_id" required >
+                  <input type="hidden" name="to_id" value="<?=old('to_id',$task->to_id)?>" id="agent_id" required >
                 </div>
                 <div class="mb-3">
                                                 <label>Task Description:</label>
-                                                <textarea id="elm1" name="msg" aria-hidden="true" ><?=old('msg')?></textarea>
+                                                <textarea id="elm1" name="msg" aria-hidden="true" ><?=old('msg',$task->msg)?></textarea>
                                               
                                                 <?php if(session()->has('warning')):?>
                                                     <span class="text-danger"><?=session()->get('warning')['msg']??''?></span>
@@ -61,14 +61,14 @@ Above IT
 
                                             <div class="mb-3">
                                                 <label>Start Date:</label>
-                                                <input class="form-control" name='job_date' type="date" value="<?=old('job_date')?>" id="startDate"  min='<?=date("Y-m-d")?>'>
+                                                <input class="form-control" name='job_date' type="date" value="<?=old('job_date',date('Y-m-d',strtotime($task->job_date)))?>" id="startDate"  min='<?=date("Y-m-d")?>'>
                                                 <?php if(session()->has('warning')):?>
                                                     <span class="text-danger"><?=session()->get('warning')['job_date']??''?></span>
                                                     <?php endif?>
                                             </div>
                                             <div class="mb-3">
                                                 <label>End Date:</label>
-                                                <input class="form-control" name='end_date' type="date" value="<?=old('end_date')?>" id="endDate"  min='<?=date('Y-m-d')?>'>
+                                                <input class="form-control" name='end_date' type="date" value="<?=old('end_date',date('Y-m-d',strtotime( $task->end_date)))?>" id="endDate"  min='<?=date('Y-m-d')?>'>
                                                 <?php if(session()->has('warning')):?>
                                                     <span class="text-danger"><?=session()->get('warning')['end_date']??''?></span>
                                                     <?php endif?>
@@ -82,7 +82,7 @@ Above IT
                                                
                                                 <div>
                                                     <button type="submit" class="btn btn-primary waves-effect waves-light me-1" onsubmit="confirm('Are You Sure?')">
-                                                       Add Task
+                                                       Update Task
                                                     </button>
                                                     <button type="reset" class="btn btn-secondary waves-effect">
                                                         Cancel
@@ -96,7 +96,7 @@ Above IT
                             </div> <!-- end col -->
         
                            
-                      
+    </div>
     <?= $this->endSection() ?>
 
  

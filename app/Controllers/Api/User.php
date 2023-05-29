@@ -39,7 +39,8 @@ class User extends ResourceController
     {
         $limit=$this->request->getVar('limit')??10;
         $page=$this->request->getVar('page')??1;
-        $search=$this->request->getVar('search');
+        $search=esc($this->request->getVar('search'));
+       // dd($search);
         if(strlen($search)<3)
         {
             return $this->setResponse('0',true,"Please write more");
@@ -47,14 +48,18 @@ class User extends ResourceController
         $builder=$this->authenModel;
         $builder->select('user_access.name,user_access.id');
        
-        $builder->like('user_access.name',$search);
-        $builder->orLike('user_access.employ_id',$search);
-        $builder->orLike('user_access.mobile',$search);
-        $builder->orLike('user_access.email',$search);
+        $builder->like('user_access.name',$search,'both');
+        $builder->orLike('user_access.employ_id',$search,'both');
+        $builder->orLike('user_access.mobile',$search,'both');
+        $builder->orLike('user_access.email',$search,'both');
         $builder->where('user_access.status','1');
         $builder->orderBy('user_access.id','desc');
         $builder->limit($limit);
         $chunk=$builder->get()->getResult();
+//         echo ($builder->getLastQuery()); // Print the last executed SQL query
+// echo "<pre>";
+// print_r($builder->getError()); // Print any database errors
+// echo "</pre>";
         if($chunk==null)
         {
             return $this->setResponse('0',true,"No record found");
