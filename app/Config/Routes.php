@@ -104,7 +104,7 @@ $routes->group('assign',['namespace'=>'App\Controllers','filter'=>'auth'],functi
     $routes->get('task-report','AssignTask::allReport');
     $routes->get('task-pending-report','AssignTask::pendingReport');
     $routes->get('task-complete-report','AssignTask::completeReport');
-    $routes->get('user-info/(:num)','AssignTask::userProfile/$1');
+    $routes->get('task-search/(:num)','AssignTask::search/$1');
     $routes->get('user-image-update/(:num)','AssignTask::imageUpdate/$1');
     $routes->post('user-image-update/(:num)','AssignTask::storeImage/$1');
     $routes->get('resume-update/(:num)','AssignTask::profileResume/$1');

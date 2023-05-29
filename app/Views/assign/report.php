@@ -3,7 +3,9 @@
 Above IT
 <?= $this->endSection() ?>
 
-
+<?= $this->section('custom-css') ?>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<?= $this->endSection() ?>
 
 
 <?= $this->section('content') ?>
@@ -36,29 +38,32 @@ Above IT
                     <h4>No Task Added Yet</h4>
                 <?php else : ?>
                     <div class="table-responsive">
+                        
                         <div class="row">
                             <div class="col-md-4">
                                 <h4 class="mb-sm-0">Task Report</h4>
                                 <p>Total task reports are <?= $pager->getTotal() ?></p>
                             </div>
+                           
                             <div class="col-md-4">
+
                                 <div id="datatable_filter" class="dataTables_filter">
-
-                                    <?= form_open('meeting/search') ?>
-                                    <label>Search:<input type="search" name="search" required="" class="form-control form-control-sm" value="<?= old('search', $search ?? '') ?>" placeholder="" aria-controls="datatable"></label>
-
-                                    </form>
+                                    <p>Task Report on</p>
+                                    <a href="<?= site_url('/assign/task-pending-report') ?>" class="btn btn-primary">Pending</a>
+                                    <a href="<?= site_url('/assign/task-complete-report') ?>" class="btn btn-primary">Complete</a>
+                                    <a href="<?= site_url('/assign/task-report') ?>" class="btn btn-primary">All</a>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                              
-                                <div id="datatable_filter" class="dataTables_filter">
-                                <p>Task Report on</p>
-                                    <a href="<?=site_url('/assign/task-pending-report')?>" class="btn btn-primary">Pending</a>
-                                    <a href="<?=site_url('/assign/task-complete-report')?>" class="btn btn-primary">Complete</a>
-                                    <a href="<?=site_url('/assign/task-report')?>" class="btn btn-primary">All</a>
-                                </div>
-                            </div>
+                        </div>
+                        <div class="row">
+                           <div class="col-md-8">
+                           <form action="" id="formSearch" method="get">
+                            <Label>Search By agent Name:</Label>
+                             <input type="text" name="" class="form-control" id="search">
+
+                            </form>
+                           </div>
+                            
                         </div>
                         <table class="table table-editable table-nowrap align-middle table-edits">
                             <thead>
@@ -128,6 +133,9 @@ Above IT
 <?= $this->endSection() ?>
 
 <?= $this->section('custom-js') ?>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <script>
     //Get view btn
 
@@ -182,5 +190,45 @@ Above IT
 
 
     }
+
+    $(document).ready(function() {
+        $('#search').autocomplete({
+            source: function(request, response) {
+                let keyword = request.term;
+                fetch('<?= site_url('/api/user-search?search=') ?>' + keyword)
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.errors == false) {
+                            let options = res.payload.map(item => ({
+                                label: item.name,
+                                value: item.id
+                            }));
+                            console.log(res);
+                            response(options);
+                        } else {
+                            document.getElementById('errorMsgCompany').innerHTML = "No agent found";
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        response([]);
+                    });
+            },
+            minLength: 3, // Set the minimum length for suggestions
+            select: function(event, ui) {
+                // Handle selection of an option
+                let toId = ui.item.value;
+                let name= ui.item.label;
+
+
+                // Set Id and company name
+                document.getElementById('search').value=name;
+                document.getElementById('formSearch').action ="<?=site_url('/assign/task-search/')?>"+toId;
+
+              
+                return false;
+            }
+        });
+    });
 </script>
 <?= $this->endSection() ?>

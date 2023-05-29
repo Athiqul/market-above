@@ -43,7 +43,7 @@ Above IT
                             <div id="datatable_filter" class="dataTables_filter">
 
                                 <?= form_open('meeting/search') ?>
-                                <label>Search:<input type="search" name="search" required="" class="form-control form-control-sm" value="<?=old('search',$search??'')?>" placeholder="" aria-controls="datatable"></label>
+                                <label>Search: <input type="text" class="form-control" list="agent" id="search"   /></label>
                            
                             </form>
                             </div>

@@ -157,14 +157,12 @@ class AssignTask extends BaseController
         return view('assign/report',['data'=>$data,'pager'=>$pager]); 
     }
     //Search Report
-    public function search()
+    public function search($to_id)
     {
-          $search=$this->request->getVar('search');
-          if(strlen($search)<3)
-          {
-            return redirect()->back()->with('warning','Not enough letters write more!');
-          }
-
           
+        $data=$this->taskModel->where('to_id',$to_id)->orderBy('id','desc')->paginate(10);
+        $pager=$this->taskModel->pager;
+        return view('assign/report',['data'=>$data,'pager'=>$pager]); 
+
     }
 }
