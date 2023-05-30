@@ -96,6 +96,7 @@ $routes->group('team-management',['namespace'=>'App\Controllers','filter'=>'auth
 
 //Assign Task
 $routes->group('assign',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
+
     $routes->get('add-task','AssignTask::create');
     $routes->post('add-task','AssignTask::store');
     $routes->get('/','AssignTask::index');
@@ -104,13 +105,20 @@ $routes->group('assign',['namespace'=>'App\Controllers','filter'=>'auth'],functi
     $routes->get('task-report','AssignTask::allReport');
     $routes->get('task-pending-report','AssignTask::pendingReport');
     $routes->get('task-complete-report','AssignTask::completeReport');
-    $routes->get('task-search/(:num)','AssignTask::search/$1');
-    $routes->get('user-image-update/(:num)','AssignTask::imageUpdate/$1');
-    $routes->post('user-image-update/(:num)','AssignTask::storeImage/$1');
-    $routes->get('resume-update/(:num)','AssignTask::profileResume/$1');
-    $routes->post('resume-update/(:num)','AssignTask::storeResume/$1');
-
+    $routes->get('task-search/(:num)','AssignTask::search/$1');    
+});
+//Task
+$routes->group('my-task',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
     
+    $routes->get('pending','Task::index');
+    $routes->get('complete','Task::complete');
+    $routes->get('incomplete','Task::pending');
+    $routes->get('make-complete/(:num)','Task::makeComplete/$1');  
+    $routes->post('task-update/(:num)','AssignTask::update/$1');  
+    $routes->get('task-report','AssignTask::allReport');
+    $routes->get('task-pending-report','AssignTask::pendingReport');
+    $routes->get('task-complete-report','AssignTask::completeReport');
+    $routes->get('task-search/(:num)','AssignTask::search/$1');    
 });
 //Services Route
 $routes->group('services',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){

@@ -66,8 +66,8 @@
                     <span>Task</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="email-inbox.html">Schedule</a></li>
-                    <li><a href="email-read.html">Completed Task</a></li>
+                    <li><a href="<?=site_url('/my-task/pending')?>">Schedule</a></li>
+                    <li><a href="<?=site_url('/my-task/complete')?>">Completed Task</a></li>
                 </ul>
             </li>
             <li>
