@@ -56,8 +56,20 @@ class Task extends BaseController
         }
         try{
           $task->complete=='0'?$task->complete='1': $task->complete='0';
-         
+        
           $this->taskModel->save($task);
+          //for task activity record
+          try{
+            $activityModel=new \App\Models\EmployActivityModel();
+          $data=[
+            "user_id"=>session()->get('user')['id'],
+            "type"=>"3",
+            "task_id"=>$taskId
+          ]; 
+          $activityModel->save($data);
+          }catch(Exception $e){
+
+          }
           return redirect()->back()->with('success','Task status updated Successfully!');
         }catch(Exception $e)
         {

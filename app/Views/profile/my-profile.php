@@ -12,15 +12,15 @@ Above IT
 
         <div class="card text-center ">
             <center>
-                
-            <?php 
-            $profileImage=userImage($data['basic']->id);
-            ?>
-                <img class="card-img-top rounded avatar-lg img-fluid mt-2" src="<?=$profileImage!=null?base_url('/user/profile-image-show/'.$profileImage):base_url('/user/profile-image-show/default.png') ?>" alt="Card image cap">
-                
-               <br>
-               <br>
-                <a href="<?=site_url('/user/profile-image-change/'.$data['basic']->id)?>" class="btn btn-info btn-rounded waves-effect waves-light">Change Picture</a>
+
+                <?php
+                $profileImage = userImage($data['basic']->id);
+                ?>
+                <img class="card-img-top rounded avatar-lg img-fluid mt-2" src="<?= $profileImage != null ? base_url('/user/profile-image-show/' . $profileImage) : base_url('/user/profile-image-show/default.png') ?>" alt="Card image cap">
+
+                <br>
+                <br>
+                <a href="<?= site_url('/user/profile-image-change/' . $data['basic']->id) ?>" class="btn btn-info btn-rounded waves-effect waves-light">Change Picture</a>
             </center>
 
             <div class="card-body ">
@@ -65,13 +65,13 @@ Above IT
                         </a>
                     </li>
                     <li class="nav-item waves-effect waves-light">
-                        <a class="nav-link" data-bs-toggle="tab" href="#profile-1" role="tab" aria-selected="false">
+                        <a class="nav-link" data-bs-toggle="tab" href="#task" role="tab" aria-selected="false">
                             <span class="d-block d-sm-none"><i class="fas fa-calendar-week"></i></span>
                             <span class="d-none d-sm-block">Task</span>
                         </a>
                     </li>
                     <li class="nav-item waves-effect waves-light">
-                        <a class="nav-link" data-bs-toggle="tab" href="#messages-1" role="tab" aria-selected="false">
+                        <a class="nav-link" data-bs-toggle="tab" href="#activity" role="tab" aria-selected="false">
                             <span class="d-block d-sm-none"><i class="fas fa-chart-line"></i></span>
                             <span class="d-none d-sm-block">Activity</span>
                         </a>
@@ -87,51 +87,85 @@ Above IT
                 <!-- Tab panes -->
                 <div class="tab-content p-3 text-muted" id="profile-info">
                     <div class="tab-pane active" id="home-1" role="tabpanel">
-                        
+
 
                     </div>
-                    <div class="tab-pane" id="profile-1" role="tabpanel">
-                        <p class="mb-0">
-                            Food truck fixie locavore, accusamus mcsweeney's marfa nulla
-                            single-origin coffee squid. Exercitation +1 labore velit, blog
-                            sartorial PBR leggings next level wes anderson artisan four loko
-                            farm-to-table craft beer twee. Qui photo booth letterpress,
-                            commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
-                            vinyl cillum PBR. Homo nostrud organic, assumenda labore
-                            aesthetic magna 8-bit.
-                        </p>
-                    </div>
-                    <div class="tab-pane" id="messages-1" role="tabpanel">
-                        <p class="mb-0">
-                            Etsy mixtape wayfarers, ethical wes anderson tofu before they
-                            sold out mcsweeney's organic lomo retro fanny pack lo-fi
-                            farm-to-table readymade. Messenger bag gentrify pitchfork
-                            tattooed craft beer, iphone skateboard locavore carles etsy
-                            salvia banksy hoodie helvetica. DIY synth PBR banksy irony.
-                            Leggings gentrify squid 8-bit cred pitchfork. Williamsburg banh
-                            mi whatever gluten-free.
-                        </p>
-                    </div>
-                    <div class="tab-pane " id="settings-1" role="tabpanel">
-                        <?php if($data['info']==null || $data['info']->resume_link==null):?>
-                            <h6 class="text-danger text-center">You have not uploaded any resume please upload your resume</h6>
-                            <?php else:?>
-                              <div class="row">
-                                <div class="col-md-12">
-                                    <div class="text-center mb-3">
-                                    <h6 class="text-center text-success">Your resume uploaded You can overview your resume</h6>
-                                <a class=" btn btn-secondary btn-rounded waves-effect waves-light" href="<?= site_url('user/resume-show/'.$data['info']->resume_link) ?>" target="_blank">View Resume</a>
+                    <div class="tab-pane" id="task" role="tabpanel">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+
+                                    <div class="card-body">
+
+                                        <?php if ($data['task'] == null) : ?>
+                                            <h4>You Have No Schedule Task</h4>
+
+                                        <?php else : ?>
+
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <h4 class="mb-sm-0">Recent 10 Task Report</h4>
+                                                    <br>
+                                                </div>
+
+
+                                            </div>
+
+
+                                            <?php foreach ($data['task'] as $item) : ?>
+
+                                                <div class="col-md-12">
+                                                    <div class="card border <?= $item->complete == '0' ? ' border-danger' : ' border-success' ?>">
+                                                        <div class="card-header bg-transparent border-success">
+                                                            <h5 class="my-0  <?= $item->complete == '0' ? ' text-danger' : 'text-success' ?>"><i class="mdi  me-3 <?= $item->complete == '0' ? ' mdi-block-helper' : 'mdi-check-all' ?>"></i>Deadline: <?= date('j M,y', strtotime($item->end_date)) ?></h5>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <h4 class="<?= $item->complete == '0' ? ' text-danger' : 'text-success' ?>"><?= $item->complete == '0' ? 'Pending' : 'Completed' ?></h4>
+                                                            <p class="card-text"><?= $item->msg ?></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach ?>
+
+
+
+                                        <?php endif ?>
                                     </div>
                                 </div>
-                              </div>
-                        <?php endif?>
-                      <div class="row">
-                     <div class="col-md-12">
-                        <div class="text-center">
-                        <a href="<?=site_url('/user/resume-upload')?>" class="btn btn-primary btn-rounded waves-effect waves-light" >Upload New Resume</a>
+                            </div> <!-- end col -->
                         </div>
-                     </div>
-                      </div>
+                    </div>
+                    <div class="tab-pane" id="activity" role="tabpanel">
+                        <h4>Recent Activity</h4>
+                        <?php 
+                        $activity=getActivity($data['basic']->id);
+                        ?>
+                        <?php if($activity==null):?>
+                            <h6>So far no activity found!</h6>
+                            <?php else:?>
+                        <?php endif?>
+                    </div>
+                    <div class="tab-pane " id="settings-1" role="tabpanel">
+                        <?php if ($data['info'] == null || $data['info']->resume_link == null) : ?>
+                            <h6 class="text-danger text-center">You have not uploaded any resume please upload your resume</h6>
+                        <?php else : ?>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="text-center mb-3">
+                                        <h6 class="text-center text-success">Your resume uploaded You can overview your resume</h6>
+                                        <a class=" btn btn-secondary btn-rounded waves-effect waves-light" href="<?= site_url('user/resume-show/' . $data['info']->resume_link) ?>" target="_blank">View Resume</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif ?>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-center">
+                                    <a href="<?= site_url('/user/resume-upload') ?>" class="btn btn-primary btn-rounded waves-effect waves-light">Upload New Resume</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -158,13 +192,13 @@ Above IT
 
                             <div class="mb-3">
                                 <label>NID:</label>
-                                <input type="text" pattern="^[0-9]{10,17}$" class="form-control" name="nid" id="nid" value="<?= old('nid', $data['info']->nid??'') ?>" required="">
+                                <input type="text" pattern="^[0-9]{10,17}$" class="form-control" name="nid" id="nid" value="<?= old('nid', $data['info']->nid ?? '') ?>" required="">
                             </div>
 
                             <div class="mb-3">
                                 <label>Designation:</label>
                                 <div>
-                                    <input type="text" class="form-control" name="desg" id="desg" value="<?= old('desg', $data['info']->desg??'') ?>" required>
+                                    <input type="text" class="form-control" name="desg" id="desg" value="<?= old('desg', $data['info']->desg ?? '') ?>" required>
                                 </div>
 
                             </div>
@@ -174,13 +208,13 @@ Above IT
                                 <div>
                                     <select class="form-select" id="sex" name="sex" required>
                                         <option selected>Choose.....</option>
-                                        <?php 
-                                          $gender='';
-                                        if($data['info']==null ||$data['info']->sex==null){ 
-                                            $gender='9';
-                                        }else{
-                                            $gender=$data['info']->sex;
-                                        }?>
+                                        <?php
+                                        $gender = '';
+                                        if ($data['info'] == null || $data['info']->sex == null) {
+                                            $gender = '9';
+                                        } else {
+                                            $gender = $data['info']->sex;
+                                        } ?>
                                         <option <?= ($gender == '0') ? 'Selected' : '' ?> value="0">Male</option>
                                         <option <?= ($gender == '1') ? 'Selected' : '' ?> value="1">Female</option>
                                         <option <?= ($gender == '2') ? 'Selected' : '' ?> value="2">Other</option>
@@ -191,15 +225,15 @@ Above IT
                             <div class="mb-3">
                                 <label for="about">About</label>
                                 <div>
-                                    <textarea name="about" class="form-control" id="about" rows="5" required><?= esc(old('about', $data['info']->about??'')) ?> </textarea>
-                                                   
+                                    <textarea name="about" class="form-control" id="about" rows="5" required><?= esc(old('about', $data['info']->about ?? '')) ?> </textarea>
+
                                 </div>
                             </div>
 
                             <div class=" mb-3">
                                 <label for="example-date-input" class="col-sm-2 col-form-label">Date of Birth</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="date" value="<?= old('dob', date('Y-m-d', strtotime($data['info']->dob??''))) ?>" name="dob" min="<?= date('Y-m-d', strtotime('-60 years')) ?>" max="<?= date('Y-m-d', strtotime('-18 years')) ?>" id="dob" required>
+                                    <input class="form-control" type="date" value="<?= old('dob', date('Y-m-d', strtotime($data['info']->dob ?? ''))) ?>" name="dob" min="<?= date('Y-m-d', strtotime('-60 years')) ?>" max="<?= date('Y-m-d', strtotime('-18 years')) ?>" id="dob" required>
                                 </div>
                             </div>
                             <div class="row">
@@ -221,9 +255,9 @@ Above IT
                                         <label for="district" class="form-label">District:</label>
                                         <select class="form-select district" id="district" name="district" required>
 
-                                           <?php if($data['info']->district??''!=''):?>
-                                            <option value="" selected><?=$data['info']->district?></option>
-                                           <?php endif?>  
+                                            <?php if ($data['info']->district ?? '' != '') : ?>
+                                                <option value="" selected><?= $data['info']->district ?></option>
+                                            <?php endif ?>
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select a valid district.
@@ -236,9 +270,9 @@ Above IT
                                         <label for="thana" class="form-label">Thana:</label>
                                         <select class="form-select thana" id="thana" name="thana" required>
 
-                                        <?php if($data['info']->thana??''!=''):?>
-                                            <option value="" selected><?=$data['info']->thana?></option>
-                                           <?php endif?> 
+                                            <?php if ($data['info']->thana ?? '' != '') : ?>
+                                                <option value="" selected><?= $data['info']->thana ?></option>
+                                            <?php endif ?>
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select a valid thana.
@@ -251,9 +285,9 @@ Above IT
                                     <div class="mb-3">
                                         <label for="union" class="form-label">Union/Ward:</label>
                                         <select class="form-select union" id="union" name="area" required>
-                                        <?php if($data['info']->area??''!=''):?>
-                                            <option value="" selected><?=$data['info']->area?></option>
-                                           <?php endif?> 
+                                            <?php if ($data['info']->area ?? '' != '') : ?>
+                                                <option value="" selected><?= $data['info']->area ?></option>
+                                            <?php endif ?>
 
                                         </select>
                                         <div class="invalid-feedback">
@@ -265,7 +299,7 @@ Above IT
                                     <div class="mb-3">
                                         <label for="address">Street Address:</label>
                                         <div>
-                                            <input name="address" id="address" type="text" value="<?= old('address',$data['info']->address??'') ?>" class="form-control" required>
+                                            <input name="address" id="address" type="text" value="<?= old('address', $data['info']->address ?? '') ?>" class="form-control" required>
                                         </div>
 
                                     </div>
@@ -291,25 +325,22 @@ Above IT
 <?= $this->section('custom-js') ?>
 <script src="<?= base_url('/assets/libs/parsleyjs/parsley.min.js') ?>"></script>
 <script src="<?= base_url('/assets/js/pages/form-validation.init.js') ?>"></script>
-<script src="<?=base_url('/assets/js/moment.min.js')?>"></script>
+<script src="<?= base_url('/assets/js/moment.min.js') ?>"></script>
 <script>
+    //Show profile information via api
 
+    loadBasicInfo();
 
-     //Show profile information via api
+    function loadBasicInfo() {
+        let profileInfo = document.getElementById('home-1');
 
-     loadBasicInfo();
-     function loadBasicInfo()
-     {
-        let profileInfo=document.getElementById('home-1');
+        fetch('<?= site_url('/api/user-information/' . session()->get('user')['id']) ?>')
+            .then(res => res.json())
+            .then(data => {
+                let html = '';
 
-fetch('<?=site_url('/api/user-information/'.session()->get('user')['id'])?>')
-.then(res=>res.json())
-.then(data=>{
-   let html='';
-   
-   if(data.errors==false)
-   {
-       html+=` 
+                if (data.errors == false) {
+                    html += ` 
                   
                    <ul>
                        <li>
@@ -337,19 +368,18 @@ fetch('<?=site_url('/api/user-information/'.session()->get('user')['id'])?>')
                   
 
               `
-   }else{
-           html+=`
+                } else {
+                    html += `
           <p>Profile Is not updated yet, please update your profile</p>
           
-        `               
-          ;
-   }
+        `;
+                }
 
-   profileInfo.innerHTML=html;
-})
-.catch(err=>console.log(err));
-     }
-    
+                profileInfo.innerHTML = html;
+            })
+            .catch(err => console.log(err));
+    }
+
     //divisions
 
     let div = document.getElementById("division");
@@ -361,18 +391,17 @@ fetch('<?=site_url('/api/user-information/'.session()->get('user')['id'])?>')
     //default load if exist
 
     //fetch divisions
-    loadLoc("<?=site_url('/api/divisions')?>",
-    '',div,"Choose","<?=$data['info']->division??''?>"
+    loadLoc("<?= site_url('/api/divisions') ?>",
+        '', div, "Choose", "<?= $data['info']->division ?? '' ?>"
     );
-      
-    let checkdiv="<?=$data['info']->division??''?>";
-    if(checkdiv!='')
-    {
+
+    let checkdiv = "<?= $data['info']->division ?? '' ?>";
+    if (checkdiv != '') {
         console.log(div.value);
-    //     loadLoc(""+div.value,
-    // '',dis,"Choose","<?=$data['info']->district??''?>"
-    // );
-    } 
+        //     loadLoc(""+div.value,
+        // '',dis,"Choose","<?= $data['info']->district ?? '' ?>"
+        // );
+    }
 
     div.addEventListener('change', function() {
         //console.log(this.value);
@@ -384,10 +413,10 @@ fetch('<?=site_url('/api/user-information/'.session()->get('user')['id'])?>')
             return;
         }
 
-        loadLoc("<?=site_url('/api/division-to-districts/')?>",
-    this.value,dis,"Choose","<?=$data['info']->district??''?>"
-    );
-        
+        loadLoc("<?= site_url('/api/division-to-districts/') ?>",
+            this.value, dis, "Choose", "<?= $data['info']->district ?? '' ?>"
+        );
+
     });
 
     dis.addEventListener('change', function() {
@@ -398,29 +427,29 @@ fetch('<?=site_url('/api/user-information/'.session()->get('user')['id'])?>')
             union.innerHTML = '';
             return;
         }
-        loadLoc("<?=site_url('/api/district-to-thana/')?>",
-    this.value,thana,"Choose","<?=$data['info']->thana??''?>"
-    );
+        loadLoc("<?= site_url('/api/district-to-thana/') ?>",
+            this.value, thana, "Choose", "<?= $data['info']->thana ?? '' ?>"
+        );
     });
 
-    thana.addEventListener('change', function(){
+    thana.addEventListener('change', function() {
         if (this.value == "") {
             union.innerHTML = '';
             return;
         }
-        loadLoc("<?=site_url('/api/thana-to-unions/')?>",
-    this.value,union,"Select Union/Ward.........","<?=$data['info']->area??''?>"
-    );
+        loadLoc("<?= site_url('/api/thana-to-unions/') ?>",
+            this.value, union, "Select Union/Ward.........", "<?= $data['info']->area ?? '' ?>"
+        );
     });
 
 
     //geo loc function
 
-    function loadLoc(url, parentId='', element, optionText, existvalue = "",type='') {
-      
+    function loadLoc(url, parentId = '', element, optionText, existvalue = "", type = '') {
+
         if (parentId !== "") {
 
-           url=url+parentId;
+            url = url + parentId;
         }
         fetch(url)
             .then(res => res.json())
@@ -431,7 +460,7 @@ fetch('<?=site_url('/api/user-information/'.session()->get('user')['id'])?>')
                     html += `<option value=${item.id} ${existvalue==item.en_name?'Selected':''}>${item.en_name}</option>`;
                 });
                 element.innerHTML = html;
-               
+
             }).catch(err => console.log(err))
     }
     // Profile Upload

@@ -187,6 +187,20 @@ class Meeting extends BaseController
                 return redirect()->back()->withInput()->with('warning', 'Meeting Report Add Failed!');
             }
             $db->transCommit();
+            //for activity record
+
+            try{
+                $activityModel=new \App\Models\EmployActivityModel();
+              $data=[
+                "user_id"=>session()->get('user')['id'],
+                "type"=>"2",
+                "meeting_id"=>$meetingId
+              ]; 
+              $activityModel->save($data);
+              }catch(Exception $e){
+
+              }
+
             return redirect()->to('/meeting/list')->with('success', 'Meeting Report Successfully Added!');
         } catch (Exception $ex) {
             $db->transRollback();

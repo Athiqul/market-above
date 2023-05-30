@@ -8,6 +8,7 @@ use App\Models\UserModel;
 use App\Models\UserInfo;
 use Exception;
 use function PHPUnit\Framework\fileExists;
+use App\Models\AssignTaskModel;
 
 class Team extends BaseController
 {
@@ -147,9 +148,13 @@ class Team extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
         $profileInfo=$this->infoModel->where('user_id',$id)->first();
+        $taskModel= new AssignTaskModel();
+        $taskList=$taskModel->where('to_id',$id)->orderBy('id','desc')->findAll(10);
+       
         $data=[
            'basic'=>$basicInfo,
            'info'=>$profileInfo,
+           'task'=>$taskList,
         ];
 
 

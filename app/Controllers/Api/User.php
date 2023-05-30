@@ -105,7 +105,17 @@ class User extends ResourceController
             try{
                if ($profile->save($data))
                {
-                return $this->setResponse('1',false,"User Information Recorded Successfully");
+                    //for task activity record
+                    try {
+                        $activityModel = new \App\Models\EmployActivityModel();
+                        $data = [
+                            "user_id" => $this->request->getVar('user_id'),
+                            "type" => "6",
+                        ];
+                        $activityModel->save($data);
+                    } catch (Exception $e) {
+                    }
+                    return $this->setResponse('1', false, "User Information Recorded Successfully");
                }else{
                 return $this->setResponse('0',true,$profile->errors());
                }

@@ -127,6 +127,17 @@ class Company extends BaseController
         try {
             $data = $this->request->getVar();
             if ($this->customerModel->save($data)) {
+                try{
+                    $activityModel=new \App\Models\EmployActivityModel();
+                  $data=[
+                    "user_id"=>session()->get('user')['id'],
+                    "type"=>"1",
+                    "company_id"=>$this->customerModel->getInsertID()
+                  ]; 
+                  $activityModel->save($data);
+                  }catch(Exception $e){
+
+                  }
                 return redirect()->to('/company/list')->with('success', 'Operation Success! Company Added');
             }
             return redirect()->back()->with('warning', $this->customerModel->errors())->withInput();

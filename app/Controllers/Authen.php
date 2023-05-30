@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
-
+use Exception;
 
 class Authen extends BaseController
 {
@@ -81,7 +81,17 @@ class Authen extends BaseController
                     $data['role']='admin';
                     session()->set('user',$data);
                   }
-                 
+                  //activity store
+                  try{
+                    $activityModel=new \App\Models\EmployActivityModel();
+                  $data=[
+                    "user_id"=>$row->id,
+                    "type"=>"0",
+                  ]; 
+                  $activityModel->save($data);
+                  }catch(Exception $e){
+
+                  }
                   return redirect()->to('/')->with('success',"Welcome {$row->name} !");
                    
                 } else {

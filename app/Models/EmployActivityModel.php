@@ -7,17 +7,17 @@ use CodeIgniter\Model;
 class EmployActivityModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'employactivities';
+    protected $table            = 'employ_activity';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
-    protected $returnType       = 'array';
+    protected $returnType       = \App\Entities\EmployActivityEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = ['user_id','task_id','meeting_id','company_id','type'];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';

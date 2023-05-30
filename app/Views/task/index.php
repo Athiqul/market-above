@@ -195,7 +195,6 @@ Above IT
 function alertItem(record)
 {
     record.preventDefault();
-    console.log(record.target.closest('a').dataset.status);
     let status=record.target.closest('a').dataset.status;
     var link = record.target.closest('a').getAttribute('href');
                    

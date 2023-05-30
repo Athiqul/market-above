@@ -93,15 +93,50 @@ Above IT
 
                     </div>
                     <div class="tab-pane" id="task" role="tabpanel">
-                        <p class="mb-0">
-                            Food truck fixie locavore, accusamus mcsweeney's marfa nulla
-                            single-origin coffee squid. Exercitation +1 labore velit, blog
-                            sartorial PBR leggings next level wes anderson artisan four loko
-                            farm-to-table craft beer twee. Qui photo booth letterpress,
-                            commodo enim craft beer mlkshk aliquip jean shorts ullamco ad
-                            vinyl cillum PBR. Homo nostrud organic, assumenda labore
-                            aesthetic magna 8-bit.
-                        </p>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+
+                                    <div class="card-body">
+
+                                        <?php if ($data['task'] == null) : ?>
+                                            <h4>You Have No Schedule Task</h4>
+
+                                        <?php else : ?>
+
+
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <h4 class="mb-sm-0">Recent 10 Task Report</h4>
+                                                    <br>
+                                                </div>
+
+
+                                            </div>
+
+
+                                            <?php foreach ($data['task'] as $item) : ?>
+
+                                                <div class="col-md-12">
+                                                    <div class="card border <?= $item->complete == '0' ? ' border-danger' : ' border-success' ?>">
+                                                        <div class="card-header bg-transparent border-success">
+                                                            <h5 class="my-0  <?= $item->complete == '0' ? ' text-danger' : 'text-success' ?>"><i class="mdi  me-3 <?= $item->complete == '0' ? ' mdi-block-helper' : 'mdi-check-all' ?>"></i>Deadline: <?= date('j M,y', strtotime($item->end_date)) ?></h5>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <h4 class="<?= $item->complete == '0' ? ' text-danger' : 'text-success' ?>"><?= $item->complete == '0' ? 'Pending' : 'Completed' ?></h4>
+                                                            <p class="card-text"><?= $item->msg ?></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach ?>
+
+
+
+                                        <?php endif ?>
+                                    </div>
+                                </div>
+                            </div> <!-- end col -->
+                        </div>
                     </div>
                     <div class="tab-pane" id="activity" role="tabpanel">
                         

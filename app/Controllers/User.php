@@ -7,6 +7,7 @@ use App\Models\UserModel;
 use App\Models\UserInfo;
 use Exception;
 use function PHPUnit\Framework\fileExists;
+use App\Models\AssignTaskModel;
 class User extends BaseController
 {
     private $userModel;
@@ -33,9 +34,14 @@ class User extends BaseController
          // get user profile info
          $basicInfo=$this->userModel->find($id);
          $profileInfo=$this->userInfoModel->where('user_id',$id)->first();
+         //Show latest 10 task
+         $taskModel= new AssignTaskModel();
+         $taskList=$taskModel->where('to_id',$id)->orderBy('id','desc')->findAll(10);
+        
          $data=[
             'basic'=>$basicInfo,
             'info'=>$profileInfo,
+            'task'=>$taskList,
          ];
         
 
@@ -108,7 +114,17 @@ class User extends BaseController
                     try{
                         if($this->userInfoModel->save($data))
                         {
-                            
+                            //for task activity record
+          try{
+            $activityModel=new \App\Models\EmployActivityModel();
+          $data=[
+            "user_id"=>session()->get('user')['id'],
+            "type"=>"5",
+          ]; 
+          $activityModel->save($data);
+          }catch(Exception $e){
+
+          }
                             return redirect()->to('/user/my-profile')->with('success','Profile Picture Uploaded Successfully!');
                         }else{
                             return redirect()->back()->with('warning',$this->userInfoModel->errors());
@@ -129,7 +145,17 @@ class User extends BaseController
                     
                         session()->get('user')['user_info']->image_link=$image_link;
                     
+                       //for task activity record
+          try{
+            $activityModel=new \App\Models\EmployActivityModel();
+          $data=[
+            "user_id"=>session()->get('user')['id'],
+            "type"=>"5",
+          ]; 
+          $activityModel->save($data);
+          }catch(Exception $e){
 
+          }
                   
                     return redirect()->to('/user/my-profile')->with('success','Profile Picture Updated Successfully!');
                 }else{
@@ -222,6 +248,17 @@ class User extends BaseController
 
             if($this->userModel->save($userData))
        {
+           //for task activity record
+          try{
+            $activityModel=new \App\Models\EmployActivityModel();
+          $data=[
+            "user_id"=>session()->get('user')['id'],
+            "type"=>"4",           
+          ]; 
+          $activityModel->save($data);
+          }catch(Exception $e){
+
+          }
           return redirect()->to('logout')->with('success','Your password Updated Please Log in first');
        }else{
         return redirect()->back()->with('warning',$this->userModel->errors());
