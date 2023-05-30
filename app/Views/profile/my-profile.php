@@ -138,13 +138,76 @@ Above IT
                     </div>
                     <div class="tab-pane" id="activity" role="tabpanel">
                         <h4>Recent Activity</h4>
-                        <?php 
-                        $activity=getActivity($data['basic']->id);
+                        <?php
+                        $activity = getActivity($data['basic']->id);
                         ?>
-                        <?php if($activity==null):?>
+                        <?php if ($activity == null) : ?>
                             <h6>So far no activity found!</h6>
-                            <?php else:?>
-                        <?php endif?>
+                        <?php else : ?>
+                            <div data-simplebar="init">
+                                <div class="simplebar-wrapper" style="margin: 0px;">
+                                    
+                                    <div class="simplebar-mask">
+                                        <div class="simplebar-offset" style="right: -15px; bottom: 0px;">
+                                            <div class="simplebar-content-wrapper" style="height: auto; overflow: hidden scroll;">
+                                                <div class="simplebar-content" style="padding: 0px;">
+                                                     <?php 
+                                                     $typeTitle=[
+                                                        "Logged In",
+                                                        "Added Company Info",
+                                                        "Added Meeting Record",
+                                                        "Assign Task Updated",
+                                                        "Password Changed",
+                                                        "Image Updated",
+                                                        "Profile Information Updated"
+                                                     ];
+                                                     $typeDesc=[
+                                                        "User Has been successfully logged in",
+                                                        "Company information added or updated to view please click on it",
+                                                        "Meeting information added or updated to view please click on it",
+                                                        "Task may be compeleted or keep it in pending again please click on it to view",
+                                                        "Successfully changed password user can login with new password",
+                                                        "Image updated successfully It appears on user avatars",
+                                                        "User Profile information has been successfully updated",
+                                                     ];
+                                                     $link=[
+
+                                                     ];
+                                                     ?>
+                                                <?php foreach($activity as $item):?>
+
+                                                    <a href="" class="text-reset notification-item">
+                                                        <div class="d-flex">
+                                                            <div class="avatar-xs me-3">
+                                                                <span class="avatar-title bg-primary rounded-circle font-size-16">
+                                                                    <i class="fas fa-paper-plane"></i>
+                                                                </span>
+                                                            </div>
+                                                            <div class="flex-1">
+                                                                <h6 class="mb-1"><?=$typeTitle[$item->type]?></h6>
+                                                                <div class="font-size-12 text-muted">
+                                                                    <p class="mb-1"><?=$typeDesc[$item->type]?></p>
+                                                                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i><?=$item->created_at->humanize()?></p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                  
+                                                   <?php endforeach?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="simplebar-placeholder" style="width: auto; height: 359px;"></div>
+                                </div>
+                                <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                                    <div class="simplebar-scrollbar" style="transform: translate3d(0px, 0px, 0px); display: none;"></div>
+                                </div>
+                                <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+                                    <div class="simplebar-scrollbar" style="transform: translate3d(0px, 0px, 0px); display: block; height: 147px;"></div>
+                                </div>
+                            </div>
+                        <?php endif ?>
                     </div>
                     <div class="tab-pane " id="settings-1" role="tabpanel">
                         <?php if ($data['info'] == null || $data['info']->resume_link == null) : ?>

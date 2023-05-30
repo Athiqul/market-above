@@ -138,6 +138,17 @@ class User extends ResourceController
 
                 try{
                     $profile->save($profileInfo);
+
+                     //for task activity record
+                     try {
+                        $activityModel = new \App\Models\EmployActivityModel();
+                        $data = [
+                            "user_id" => $this->request->getVar('user_id'),
+                            "type" => "6",
+                        ];
+                        $activityModel->save($data);
+                    } catch (Exception $e) {
+                    }
     
                     return $this->setResponse('1',false,"User Information updated Successfully");
                     
