@@ -110,7 +110,7 @@
                 
             </li>
             <li>
-            <a href="javascript: void(0);" class=" waves-effect">
+            <a href="<?=site_url('/emergency-contact')?>" class=" waves-effect">
                     <i class="mdi-card-account-details-outline"></i>
                     <span>Manage Contact</span>
                 </a>

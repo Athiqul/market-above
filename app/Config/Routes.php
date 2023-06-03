@@ -126,6 +126,12 @@ $routes->group('services',['namespace'=>'App\Controllers','filter'=>'auth'],func
  $routes->post('add','Services::create');
 });
 
+//Contacts
+$routes->group('emergency-contact',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
+    $routes->get('/','Contacts::index');
+   
+   });
+
 
 $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->get('divisions','Divisions::index');
@@ -162,6 +168,18 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
 
     //fetching task by id
     $routes->get('assign-task/(:num)','Task::show/$1');
+    //Fetching All Emergency Contact 
+    $routes->get('emergency-contact-list','Contact::index');
+    $routes->post('emergency-contact-add','Contact::create');
+    $routes->get('emergency-contact-delete/(:num)','Contact::delete/$1');
+    $routes->get('emergency-contact-edit/(:num)','Contact::show/$1');
+    $routes->post('emergency-contact-update/(:num)','Contact::update/$1');
+    $routes->post('emergency-contact-search','Contact::search');
+
+    $routes->get('emergency-active-contact','Contact::active');
+    $routes->get('emergency-inactive-contact','Contact::inactive');
+
+
 });
 
 

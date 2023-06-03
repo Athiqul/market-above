@@ -161,7 +161,9 @@ class Services extends ResourceController
     {
         //validation
         $validiation=[
-            'service_name'=>"required",
+            'service_name'=>[
+                "rules"=>"required",
+            ]
         ];
         if(!$this->validate($validiation))
         {
