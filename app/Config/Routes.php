@@ -129,6 +129,8 @@ $routes->group('services',['namespace'=>'App\Controllers','filter'=>'auth'],func
 //Contacts
 $routes->group('emergency-contact',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
     $routes->get('/','Contacts::index');
+    //show executinve emengency contact
+    $routes->get('for-agents','Contacts::emergency');
    
    });
 

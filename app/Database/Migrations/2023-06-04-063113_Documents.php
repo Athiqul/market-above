@@ -4,7 +4,7 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Contact extends Migration
+class Documents extends Migration
 {
     public function up()
     {
@@ -19,30 +19,23 @@ class Contact extends Migration
            
           
 
-            "name"=>[
+            "title"=>[
                 "type"=>'VARCHAR',
                 "constraint"=>255,
                 "null"=>true
             ],
 
-            "designation"=>[
+            "doc_link"=>[
                 "type"=>'VARCHAR',
                 "constraint"=>255,
                 "null"=>true
             ],
             
-            "contact"=>[
-                "type"=>'VARCHAR',
-                "constraint"=>255,
-                "null"=>true,
-                "unique"=>true,
-            ],
 
-
-            "status"=>[
+            "type"=>[
                 "type"=>'ENUM',
-                "constraint"=>['0','1'],
-                "default"=>"",
+                "constraint"=>['0','1','2'],
+                "default"=>"0",
             ],
 
             
@@ -61,11 +54,11 @@ class Contact extends Migration
 
         $this->forge->addPrimaryKey('id');
       
-        $this->forge->createTable('contacts');
+        $this->forge->createTable('info');
     }
 
     public function down()
     {
-        $this->forge->dropTable('contacts');
+        $this->forge->dropTable('info');
     }
 }

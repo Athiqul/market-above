@@ -263,7 +263,7 @@ Above IT
             pager += ` <li class="paginate_button page-item next" id="datatable_next"><a href="#" aria-controls="datatable" data-dt-idx="7" onclick="tableDataFetch(${10},${res.payload.totalPage})" ${res.payload.currentPage==res.payload.totalPage? 'disable':''}" tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
                                 </ul>`;
             pagination.innerHTML = pager;
-            document.getElementById('datatable_info').innerHTML=`Showing ${(res.payload.currentPage*1+10)-10} to  ${+res.payload.currentPage+10-1} records of ${res.payload.totalRecord}`;
+            document.getElementById('datatable_info').innerHTML=`Showing ${sl+1-10} to  ${sl} records of ${res.payload.totalRecord}`;
 
         }
     }
