@@ -130,8 +130,8 @@
                     <span>Company Documents</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="email-inbox.html">Add Portofilo</a></li>
-                    <li><a href="email-read.html">Portofolio List</a></li>
+                    <li><a href="<?=site_url('/company-info/add')?>">Add Document</a></li>
+                    <li><a href="<?=site_url('/company-info')?>">Documents</a></li>
                 </ul>
             </li>
             

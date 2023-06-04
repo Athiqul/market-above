@@ -133,6 +133,17 @@ $routes->group('emergency-contact',['namespace'=>'App\Controllers','filter'=>'au
     $routes->get('for-agents','Contacts::emergency');
    
    });
+//Documents
+$routes->group('company-info',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
+    $routes->get('/','Info::index');
+    $routes->get('add','Info::create');
+    $routes->post('create','Info::store');
+    $routes->get('edit/(:num)','Info::show/$1');
+    $routes->post('update/(:num)','Info::update/$1');
+    $routes->get('delete/(:num)','Info::deleteDoc/$1');
+    $routes->get('document/(:any)','Info::showDoc/$1');
+   
+   });
 
 
 $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
