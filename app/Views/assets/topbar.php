@@ -88,66 +88,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div data-simplebar style="max-height: 230px;">
-                                    <a href="" class="text-reset notification-item">
-                                        <div class="d-flex">
-                                            <div class="avatar-xs me-3">
-                                                <span class="avatar-title bg-primary rounded-circle font-size-16">
-                                                    <i class="ri-shopping-cart-line"></i>
-                                                </span>
-                                            </div>
-                                            <div class="flex-1">
-                                                <h6 class="mb-1">Your order is placed</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">If several languages coalesce the grammar</p>
-                                                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 3 min ago</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="" class="text-reset notification-item">
-                                        <div class="d-flex">
-                                            <img src="<?=base_url('assets/images/users/avatar-3.jpg')?>"
-                                                class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                            <div class="flex-1">
-                                                <h6 class="mb-1">James Lemire</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">It will seem like simplified English.</p>
-                                                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 1 hours ago</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <a href="" class="text-reset notification-item">
-                                        <div class="d-flex">
-                                            <div class="avatar-xs me-3">
-                                                <span class="avatar-title bg-success rounded-circle font-size-16">
-                                                    <i class="ri-checkbox-circle-line"></i>
-                                                </span>
-                                            </div>
-                                            <div class="flex-1">
-                                                <h6 class="mb-1">Your item is shipped</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">If several languages coalesce the grammar</p>
-                                                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 3 min ago</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
+                                <div data-simplebar style="max-height: 230px;" id="notification">
+                                    
+                                    
+                                 
 
-                                    <a href="" class="text-reset notification-item">
-                                        <div class="d-flex">
-                                            <img src="<?=site_url('assets/images/users/avatar-4.jpg')?>"
-                                                class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                            <div class="flex-1">
-                                                <h6 class="mb-1">Salena Layfield</h6>
-                                                <div class="font-size-12 text-muted">
-                                                    <p class="mb-1">As a skeptical Cambridge friend of mine occidental.</p>
-                                                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i> 1 hours ago</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
+                                   
                                 </div>
                                 <div class="p-2 border-top">
                                     <div class="d-grid">
@@ -186,3 +132,45 @@
                     </div>
                 </div>
             </header>
+            <script>
+            //Notification
+            let notiDiv=document.getElementById('notification');
+           // console.log(notiDiv);
+           //fetch operation
+           fetch("<?=base_url('/api/task/notify/').session()->get('user')['id']?>")
+           .then(res=>res.json())
+           .then(res=>{
+              //console.log(res);
+              if(res.errors)
+              {
+
+              } else{
+                let html='';
+                res.payload.forEach(function(item){
+
+                    html+=`<a href="<?=site_url('/my-task/pending')?>" data-id=${item.id} onclick="markRead(event)" class="text-reset notification-item">
+                                        <div class="d-flex">
+                                            <div class="avatar-xs me-3">
+                                                <span class="avatar-title bg-primary rounded-circle font-size-16">
+                                                    <i class=" fab fa-telegram-plane"></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <h6 class="mb-1">You are assigned for new task</h6>
+                                                <div class="font-size-12 text-muted">
+                                                    <p class="mb-1">Please Complete it before deadline</p>
+                                                    <p class="mb-0"><i class="mdi mdi-clock-outline"></i>${moment(item.created_at.date).fromNow()} </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>`;
+                });
+                notiDiv.innerHTML=html;
+              }
+           })
+           .catch(err=>{
+             console.log(err);
+           }); 
+
+
+            </script>

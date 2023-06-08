@@ -24,7 +24,7 @@
 
             <li>
                 <a href="<?=site_url('/')?>" class="waves-effect">
-                    <i class="ri-dashboard-line"></i><span class="badge rounded-pill bg-success float-end">3</span>
+                    <i class="ri-dashboard-line"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
@@ -97,9 +97,9 @@
                     <span>Report</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="email-inbox.html">Company Report</a></li>
-                    <li><a href="email-read.html">Meeting Report</a></li>
-                    <li><a href="email-read.html">User Activity Report</a></li>
+                    <li><a href="<?=site_url('/report/company')?>">Company Report</a></li>
+                    <li><a href="<?=site_url('/report/meeting')?>">Meeting Report</a></li>
+                    
                 </ul>
             </li>
             <li>

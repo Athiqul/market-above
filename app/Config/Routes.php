@@ -145,6 +145,13 @@ $routes->group('company-info',['namespace'=>'App\Controllers','filter'=>'auth'],
    
    });
 
+ //Report
+ $routes->group('report',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
+    $routes->get('company','Report::companyList');
+    $routes->get('meeting','Report::meetingList');
+   
+   
+   });
 
 $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->get('divisions','Divisions::index');
@@ -191,7 +198,8 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
 
     $routes->get('emergency-active-contact','Contact::active');
     $routes->get('emergency-inactive-contact','Contact::inactive');
-
+   //User Assign Task Notify
+   $routes->get('task/notify/(:num)','Notification::userNotify/$1');
 
 });
 

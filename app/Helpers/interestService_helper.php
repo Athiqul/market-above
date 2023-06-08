@@ -11,7 +11,12 @@ if(!function_exists('interestServices'))
        
         return $interest->get()->getResult();
     }
-
+    
+    function servicesInfo($id)
+    {
+        $service=new App\Models\ServicesModel();
+        return $service->find($id);
+    }
     
 
     
