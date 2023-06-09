@@ -200,6 +200,8 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->get('emergency-inactive-contact','Contact::inactive');
    //User Assign Task Notify
    $routes->get('task/notify/(:num)','Notification::userNotify/$1');
+   //User noti mark as read
+   $routes->get('task/mark-as-read/(:num)','Notification::markasRead/$1');
 
 });
 

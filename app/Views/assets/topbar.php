@@ -74,7 +74,7 @@
                             <button type="button" class="btn header-item noti-icon waves-effect" id="page-header-notifications-dropdown"
                                   data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="ri-notification-3-line"></i>
-                                <span class="noti-dot"></span>
+                                <span class="noti-dot"  id="noti-icon"></span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0"
                                 aria-labelledby="page-header-notifications-dropdown">
@@ -141,11 +141,20 @@
            .then(res=>res.json())
            .then(res=>{
               //console.log(res);
+              let html='';
               if(res.errors)
               {
-
+                  html=`<p class='text-center'>No new Notification!</p>`;
+                  let notiIcon=document.getElementById('noti-icon');
+               notiIcon.innerText='';
+               notiIcon.classList.remove('text-danger');
+               notiIcon.classList.remove('noti-dot');
               } else{
-                let html='';
+               let len=Object.keys(res.payload).length;
+               let notiIcon=document.getElementById('noti-icon');
+               notiIcon.innerText=len;
+               notiIcon.classList.add('text-danger');
+               notiIcon.classList.add('noti-dot')
                 res.payload.forEach(function(item){
 
                     html+=`<a href="<?=site_url('/my-task/pending')?>" data-id=${item.id} onclick="markRead(event)" class="text-reset notification-item">
@@ -165,8 +174,9 @@
                                         </div>
                                     </a>`;
                 });
-                notiDiv.innerHTML=html;
+                
               }
+              notiDiv.innerHTML=html;
            })
            .catch(err=>{
              console.log(err);

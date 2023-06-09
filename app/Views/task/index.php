@@ -93,7 +93,7 @@ Above IT
 
 
                                         <td style="width: 100px">
-                                            <a id="view" class="btn btn-outline-info btn-sm edit " onclick="showRecord(this)" data-id="<?= $item->id ?>" title="View">
+                                            <a id="view" class="btn  <?=$item->noti=='0'?'btn-outline-danger':'btn-outline-info'?> btn-sm edit " onclick="showRecord(this)" data-id="<?= $item->id ?>" title="View">
                                                 <i class=" fas fa-eye"></i>
                                             </a>
 
@@ -181,11 +181,19 @@ Above IT
 
 
 </div>`;
+//mark as read
+
+         fetch("<?=site_url('/api/task/mark-as-read/')?>"+btn.dataset.id)
+         .then(res=>res.json())
+         .then(res=>{
+            console.log(res);
+         })
+         .catch(err=>{console.log(err);});
                 }
             })
             .catch(err => {
                 console.log(err);
-            })
+            });
 
 
 
