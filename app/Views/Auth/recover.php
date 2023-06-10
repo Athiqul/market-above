@@ -5,7 +5,7 @@
     <head>
         
         <meta charset="utf-8" />
-        <title>Login | Above IT - Employ Login</title>
+        <title>Recover Account | Above IT - Employ Password Recovery</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
         <!-- App favicon -->
@@ -36,7 +36,8 @@
                             </div>
                         </div>
     
-                        <h4 class="text-muted text-center font-size-18"><b>Sign In</b></h4>
+                        <h4 class="text-muted text-center font-size-18"><b>Recover Account</b></h4>
+                        <p class="text-center">Please provide email address of your account</p>
 					      <?=$this->include('assets/alert')?>
                         <div class="p-3">
 							<?=form_open('/verify',"class='form-horizontal mt-3'")?>
@@ -44,32 +45,22 @@
     
                                 <div class="form-group mb-3 row">
                                     <div class="col-12">
-										<label for="mobile">Mobile:</label>
-                                        <input class="form-control" id="mobile" type="tel" pattern="01[3-9][0-9]{8}" value="<?=esc(old('mobile'))?>" name="mobile" required >
+										<label for="mobile">Email:</label>
+                                        <input class="form-control" type="email"  value="<?=esc(old('email'))?>" name="email" required >
                                     </div>
                                 </div>
     
-                                <div class="form-group mb-3 row">
-                                    <div class="col-12">
-									<label for="password">Password:</label>
-                                        <input class="form-control" id="password" pattern=".{6,}" type="password" name="password" value="<?=esc(old('password'))?>" required >
-                                    </div>
-                                </div>
+                               
     
                                 
     
                                 <div class="form-group mb-3 text-center row mt-3 pt-1">
                                     <div class="col-12">
-                                        <button class="btn btn-info w-100 waves-effect waves-light" type="submit">Log In</button>
+                                        <button class="btn btn-info w-100 waves-effect waves-light" type="submit">Send Otp to Email</button>
                                     </div>
                                 </div>
     
-                                <div class="form-group mb-0 row mt-2">
-                                    <div class="col-sm-7 mt-3">
-                                        <a href="<?=site_url('/password-reset')?>" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your password?</a>
-                                    </div>
-                                    
-                                </div>
+                                
                             </form>
                         </div>
                         <!-- end -->

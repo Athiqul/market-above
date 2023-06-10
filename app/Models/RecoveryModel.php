@@ -4,17 +4,17 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class RecoveryModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'user_access';
+    protected $table            = 'recoveries';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
-    protected $returnType       = \App\Entities\UserEntity::class;
+    protected $returnType       = \App\Entities\RecoveryEntity::class;
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['employ_id','name','email','mobile','password','role','status'];
+    protected $allowedFields    = ['otp','user_id','match'];
 
     // Dates
     protected $useTimestamps = true;
@@ -39,10 +39,4 @@ class UserModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    //get User Name
-    public function userName($id)
-    {
-        return $this->where('id',$id)->first()->name;
-    }
 }

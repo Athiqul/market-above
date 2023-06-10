@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
+use App\Models\RecoveryModel;
 use Exception;
 
 class Authen extends BaseController
@@ -107,7 +108,37 @@ class Authen extends BaseController
         }
     }
 
+   //Forget Password
+   public function forgetPassword()
+   {
+        return view('Auth/recover');
+   }
+   //Email Verify
+   public function emailVerify()
+   {
+        $userModel= new UserModel();
+        $check=$userModel->where('email',$this->request->getVar('email'))->first();
+        if($check==null)
+        {
+          return redirect()->back()->withInput()->with('warning','Invalid email please provide correct  email!');
+        }
 
+        //Creating otp
+        // $combination=['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','O','X','L','M','N','O','R','Q','T','U','V','S','X','Y','Z'];
+         $otp=rand(000000,999999);
+         //Sent email
+         
+   }
+   //OTP verification
+   public function otpVerification()
+   {
+
+   }
+   //Take New password
+   public function newPassword()
+   {
+
+   }
     public function destroy ()
     {
         session()->remove('user');

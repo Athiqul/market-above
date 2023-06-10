@@ -32,6 +32,8 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index',['filter'=>'auth']);
 $routes->get('login', 'Authen::index');
+$routes->get('/password-reset', 'Authen::forgetPassword');
+$routes->post('/password-reset', 'Authen::emailVerify');
 $routes->post('verify', 'Authen::verify');
 $routes->get('logout', 'Authen::destroy');
 
@@ -202,6 +204,8 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
    $routes->get('task/notify/(:num)','Notification::userNotify/$1');
    //User noti mark as read
    $routes->get('task/mark-as-read/(:num)','Notification::markasRead/$1');
+   //Admin notice for user activity
+   $routes->get('user-activity','Notification::userActivityNotice');
 
 });
 
