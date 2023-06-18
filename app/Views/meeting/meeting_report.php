@@ -77,12 +77,14 @@ Above IT
                                                         
                                                     </td>
                                                 </tr>
+                                                <?php if(session()->get('user')['id']==$report->user_id|| session()->get('user')['role']=='admin'):?>
                                                 <tr>
                                                     <td>Action</td>
                                                     <td>
                                                         <a href="<?=site_url('/meeting/edit/'.$report->id)?>" id="inline-comments" data-type="textarea" data-pk="1" data-placeholder="Your comments here..." data-title="Enter comments" class="editable editable-pre-wrapped editable-click">Edit</a>
                                                     </td>
                                                 </tr>
+                                                <?php endif?>
             
                                                 </tbody>
                                             </table>

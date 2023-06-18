@@ -29,7 +29,7 @@ class Meeting extends BaseController
         $totalPage=ceil($totalRecord/$limit);
         $offset=($page-1)*$limit;
         $builder=$this->meetingModel;
-        $builder->select('meeting_report.id as reportId,meeting_report.contact_person, meeting_report.desg, meeting_report.mobile, meeting_report.created_at,customers.company_name,customers.id as company_id,user_access.id as userId, user_access.name as username');
+        $builder->select('meeting_report.id as reportId,meeting_report.contact_person, meeting_report.desg, meeting_report.mobile, meeting_report.created_at,customers.company_name,customers.id as company_id,user_access.id as user_id, user_access.name as username');
         $builder->join('customers','meeting_report.company_id=customers.id');
         $builder->join('user_access','meeting_report.user_id=user_access.id');
         $builder->orderBy('meeting_report.id','desc');
@@ -54,7 +54,7 @@ class Meeting extends BaseController
        
         $offset=($page-1)*$limit;
         $builder=$this->meetingModel;
-        $builder->select('meeting_report.id as reportId,meeting_report.contact_person, meeting_report.desg, meeting_report.mobile, meeting_report.created_at,customers.company_name,customers.id as company_id,user_access.id as userId, user_access.name as username');
+        $builder->select('meeting_report.id as reportId,meeting_report.contact_person, meeting_report.desg, meeting_report.mobile, meeting_report.created_at,customers.company_name,customers.id as company_id,user_access.id as user_id, user_access.name as username');
         $builder->join('customers','meeting_report.company_id=customers.id');
         $builder->join('user_access','meeting_report.user_id=user_access.id');
         $builder->like('customers.company_name',$search,'both');
@@ -229,6 +229,12 @@ class Meeting extends BaseController
         {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         } 
+        $userId=session()->get('user')['id'];
+        $role=session()->get('user')['role'];
+        if($userId !=$report->user_id && $role!=='admin')
+        {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
         $services=new ServicesModel();
        
         
@@ -246,7 +252,12 @@ class Meeting extends BaseController
         {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         } 
-
+        $userId=session()->get('user')['id'];
+    $role=session()->get('user')['role'];
+    if($userId !=$report->user_id && $role!=='admin')
+    {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    }
         $validation=[
             "company_id"=>[
                 "rules"=>"required|is_not_unique[customers.id]",

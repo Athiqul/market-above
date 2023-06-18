@@ -31,90 +31,90 @@ Above IT
 
                         </div>
                         <div class="col-sm-12 col-md-6">
-                        <?php if(isset($search)):?>
-                                    <div class="text-center">
+                            <?php if (isset($search)) : ?>
+                                <div class="text-center">
                                     <a href="<?= site_url('meeting/list/') ?>" class="btn btn-link waves-effect waves-light "><i class=" fas fa-angle-left" title="back to all records"> </i>Back to All Meeting Records</a>
-                                    </div>
-                            
-                            
-                               
-                            <?php endif?>
-                        </div>
-                            <div id="datatable_filter" class="dataTables_filter">
-
-                                <?= form_open('meeting/search') ?>
-                                <label>Search: <input type="text" class="form-control" list="agent" id="search"   /></label>
-                           
-                            </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <?php if ($payload->records) : ?>
-                                <table id="datatable" class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info">
-                                    <thead>
-                                        <tr role="row">
-                                            <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 745px;" aria-sort="ascending" aria-label="SL.: activate to sort column descending">SL.</th>
-                                            <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 745px;" aria-sort="ascending" aria-label="Company: activate to sort column descending">Company</th>
-
-                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Office: activate to sort column ascending">Meet With</th>
-                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Meet With: activate to sort column ascending">Position</th>
-                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Contact: activate to sort column ascending">Contact</th>
-                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Agent: activate to sort column ascending">Agent</th>
-                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Date: activate to sort column ascending">Date</th>
-                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Action: activate to sort column ascending">Action</th>
-
-                                        </tr>
-                                    </thead>
+                                </div>
 
 
-                                    <tbody>
-                                        <?php $sl = $payload->currentPage * 10 - 10; ?>
-                                        <?php foreach ($payload->records as $item) : ?>
-                                            <tr class="odd">
-                                                <td class="sorting_1 dtr-control" style=""><?= ++$sl ?></td>
-                                                <td class="sorting_1 dtr-control" style=""><?= $item->company_name ?></td>
-                                                <td style=""><?= $item->contact_person ?></td>
-                                                <td style=""><?= $item->desg ?></td>
-                                                <td style=""><?= $item->mobile ?></td>
-                                                <td style=""><?= $item->username ?></td>
-                                                <td style=""><?= date('F jS Y ', strtotime($item->created_at)) ?></td>
-                                                <td style=""><a href="<?= site_url('meeting/details/' . $item->reportId) ?>" class="btn btn-info waves-effect waves-light"><i class="fas fa-eye" title="view"></i></a>
 
-
-                                                </td>
-                                            </tr>
-                                        <?php endforeach ?>
-                                    </tbody>
-                                </table>
-                          
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12 col-md-5">
-                            <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">Showing <?=$sl+1-10?> to <?=$sl ?> of <?= $payload->totalRecord ?> entries</div>
-                        </div>
-                        <div class="col-sm-12 col-md-7">
-                            <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
-                                <ul class="pagination pagination-rounded">
-                                    <li class="paginate_button page-item previous <?= $payload->currentPage == 1 ? 'disabled' : '' ?>" id="datatable_previous"><a href="<?=!isset($search)? site_url('/meeting/list?page=1'):site_url('/meeting/search?page=1'.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
-                                    <?php for ($i = 1; $i <= $payload->totalPage; $i++) : ?>
-                                        <li class="paginate_button page-item <?= ($payload->currentPage == $i ? 'active' : '') ?>"><a href="<?= !isset($search)? site_url('/meeting/list?page='.$i):site_url('/meeting/search?page='.$i.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link"><?=$i?></a></li>
-                                    <?php endfor ?>
-                                    <li class="paginate_button page-item next <?= $payload->currentPage == $payload->totalPage ? 'disabled' : '' ?>" id="datatable_next"><a href="<?=!isset($search)?site_url('/meeting/list?page='.$payload->totalPage):site_url('/meeting/search?page='.$payload->totalPage.'&search='.$search)?>" aria-controls="datatable" data-dt-idx="7" tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <?php else : ?>
-                                <h4>No Records found!</h4>
                             <?php endif ?>
-                </div>
+                        </div>
+                        <div id="datatable_filter" class="dataTables_filter">
 
+                            <?= form_open('meeting/search') ?>
+                            <label>Search: <input type="text" class="form-control" list="agent" id="search" name="search" required /></label>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <?php if ($payload->records) : ?>
+                            <table id="datatable" class="table table-bordered dt-responsive nowrap dataTable no-footer dtr-inline" style="border-collapse: collapse; border-spacing: 0px; width: 100%;" role="grid" aria-describedby="datatable_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 745px;" aria-sort="ascending" aria-label="SL.: activate to sort column descending">SL.</th>
+                                        <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 745px;" aria-sort="ascending" aria-label="Company: activate to sort column descending">Company</th>
+
+                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Office: activate to sort column ascending">Meet With</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Meet With: activate to sort column ascending">Position</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Contact: activate to sort column ascending">Contact</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Agent: activate to sort column ascending">Agent</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Date: activate to sort column ascending">Date</th>
+                                        <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" style="width: 0px;" aria-label="Action: activate to sort column ascending">Action</th>
+
+                                    </tr>
+                                </thead>
+
+
+                                <tbody>
+                                    <?php $sl = $payload->currentPage * 10 - 10; ?>
+                                    <?php foreach ($payload->records as $item) : ?>
+                                        <tr class="odd">
+                                            <td><?= ++$sl ?></td>
+                                            <td class="sorting_1 dtr-control" style=""><?= $item->company_name ?></td>
+                                            <td style=""><?= $item->contact_person ?></td>
+                                            <td style=""><?= $item->desg ?></td>
+                                            <td style=""><?= $item->mobile ?></td>
+                                            <td style=""> <a class="" href="<?=site_url('/team-management/user-info/'.$item->user_id)?>"><?= $item->username ?></a> </td>
+                                            <td style=""><?= date('F jS Y ', strtotime($item->created_at)) ?></td>
+                                            <td style=""><a href="<?= site_url('meeting/details/' . $item->reportId) ?>" class="btn btn-info waves-effect waves-light"><i class="fas fa-eye" title="view"></i></a>
+
+
+                                            </td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                </tbody>
+                            </table>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">Showing <?= $payload->currentPage * 10 + 1 - 10 ?> to <?= $payload->totalRecord > 10 ? ($payload->totalRecord < $payload->currentPage * 10 ? $payload->totalRecord : $payload->currentPage * 10) : $payload->totalRecord ?> of <?= $payload->totalRecord ?> entries</div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
+                            <ul class="pagination pagination-rounded">
+                                <li class="paginate_button page-item previous <?= $payload->currentPage == 1 ? 'disabled' : '' ?>" id="datatable_previous"><a href="<?= !isset($search) ? site_url('/meeting/list?page=1') : site_url('/meeting/search?page=1' . '&search=' . $search) ?>" aria-controls="datatable" data-dt-idx="0" tabindex="0" class="page-link"><i class="mdi mdi-chevron-left"></i></a></li>
+                                <?php for ($i = 1; $i <= $payload->totalPage; $i++) : ?>
+                                    <li class="paginate_button page-item <?= ($payload->currentPage == $i ? 'active' : '') ?>"><a href="<?= !isset($search) ? site_url('/meeting/list?page=' . $i) : site_url('/meeting/search?page=' . $i . '&search=' . $search) ?>" aria-controls="datatable" data-dt-idx="1" tabindex="0" class="page-link"><?= $i ?></a></li>
+                                <?php endfor ?>
+                                <li class="paginate_button page-item next <?= $payload->currentPage == $payload->totalPage ? 'disabled' : '' ?>" id="datatable_next"><a href="<?= !isset($search) ? site_url('/meeting/list?page=' . $payload->totalPage) : site_url('/meeting/search?page=' . $payload->totalPage . '&search=' . $search) ?>" aria-controls="datatable" data-dt-idx="7" tabindex="0" class="page-link"><i class="mdi mdi-chevron-right"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            <?php else : ?>
+                <h4>No Records found!</h4>
+            <?php endif ?>
             </div>
+
         </div>
-    </div> <!-- end col -->
+    </div>
+</div> <!-- end col -->
 </div>
 
 

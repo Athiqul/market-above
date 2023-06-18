@@ -81,12 +81,18 @@ Above IT
                                                     <?= $info->address . ',' . $info->area . ',' . $info->thana . ',' . $info->district . ',' . $info->division ?>
                                                 </address>
                                             </li>
+                                            <?php 
+                                            $userData=getUsername($info->user_id);
+
+                                            ?>
+                                            <?php if($userData->role!=0):?>
                                             <li>
-                                                Added By: <a href="http://">
-                                                    <?= getUsername($info->user_id)->name ?>
+                                                Added By: <a href="<?=site_url('/team-management/user-info/'.$info->user_id)?>">
+                                                    <?= $userData->name ?>
                                                 </a>
 
                                             </li>
+                                            <?php endif?>
                                             <li>
                                                 Created At:
                                                 <?= date('jS F Y', strtotime($info->created_at)) ?>
@@ -97,9 +103,11 @@ Above IT
                                                 <?= date('jS F Y', strtotime($info->updated_at)) ?>
                                             </li>
                                         </ul>
+                                        <?php if(session()->get('user')['id']==$info->user_id|| session()->get('user')['role']=='admin'):?>
                                         <div class="col-md-4">
                                             <a href="<?= site_url('/company/edit/' . $info->id) ?>" class="btn btn-info">Edit Information</a>
                                         </div>
+                                        <?php endif?>
                                     </div>
                                 </div>
                             </div>

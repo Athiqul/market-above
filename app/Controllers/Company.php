@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 
 use App\Models\Customer;
 use App\Entities\Customers;
+use CodeIgniter\CodeIgniter;
 use Exception;
 
 class Company extends BaseController
@@ -178,9 +179,17 @@ class Company extends BaseController
    public function editCompany($id)
    {
     $info=$this->customerModel->find($id);
+   
+
     if($info==null)
     {
         return redirect()->back()->with('warning','Invalid Request This company doest not exist in the system');
+    }
+    $userId=session()->get('user')['id'];
+    $role=session()->get('user')['role'];
+    if($userId !=$info->user_id && $role!=='admin')
+    {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
     }
       return view('company/edit_company',compact('info'));
    }
@@ -191,6 +200,13 @@ class Company extends BaseController
     if($info==null)
     {
         return redirect()->back()->with('warning','Invalid Request This company doest not exist in the system');
+    }
+
+    $userId=session()->get('user')['id'];
+    $role=session()->get('user')['role'];
+    if($userId !=$info->user_id && $role!=='admin')
+    {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
     }
 
     $userInput=$this->request->getVar();

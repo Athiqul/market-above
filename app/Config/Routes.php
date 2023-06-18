@@ -32,9 +32,9 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index',['filter'=>'auth']);
 $routes->get('login', 'Authen::index');
-$routes->get('/password-reset', 'Authen::forgetPassword');
-$routes->post('/password-reset', 'Authen::emailVerify');
-$routes->post('verify', 'Authen::verify');
+// $routes->get('/password-reset', 'Authen::forgetPassword');
+// $routes->post('/password-reset', 'Authen::emailVerify');
+ $routes->post('verify', 'Authen::verify');
 $routes->get('logout', 'Authen::destroy');
 
 //User related routes
@@ -82,22 +82,22 @@ $routes->group('my-activity',['namespace'=>'App\Controllers','filter'=>'auth'],f
     $routes->get('meeting-list','UserActivity::meetingList'); 
 });
 //Team Management Route
-$routes->group('team-management',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
-    $routes->get('add-user','Team::create');
-    $routes->post('add-user','Team::store');
-    $routes->get('/','Team::index'); 
-    $routes->get('action/(:num)','Team::status/$1');
+$routes->group('team-management',['namespace'=>'App\Controllers'],function($routes){
+    $routes->get('add-user','Team::create',['filter'=>'admin']);
+    $routes->post('add-user','Team::store',['filter'=>'admin']);
+    $routes->get('/','Team::index',['filter'=>'auth']); 
+    $routes->get('action/(:num)','Team::status/$1',['filter'=>'admin']);
     $routes->get('user-info/(:num)','Team::userProfile/$1');
-    $routes->get('user-image-update/(:num)','Team::imageUpdate/$1');
-    $routes->post('user-image-update/(:num)','Team::storeImage/$1');
-    $routes->get('resume-update/(:num)','Team::profileResume/$1');
-    $routes->post('resume-update/(:num)','Team::storeResume/$1');
+    $routes->get('user-image-update/(:num)','Team::imageUpdate/$1',['filter'=>'admin']);
+    $routes->post('user-image-update/(:num)','Team::storeImage/$1',['filter'=>'admin']);
+    $routes->get('resume-update/(:num)','Team::profileResume/$1',['filter'=>'admin']);
+    $routes->post('resume-update/(:num)','Team::storeResume/$1',['filter'=>'admin']);
 
     
 });
 
 //Assign Task
-$routes->group('assign',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
+$routes->group('assign',['namespace'=>'App\Controllers','filter'=>'admin'],function($routes){
 
     $routes->get('add-task','AssignTask::create');
     $routes->post('add-task','AssignTask::store');
@@ -123,27 +123,27 @@ $routes->group('my-task',['namespace'=>'App\Controllers','filter'=>'auth'],funct
     $routes->get('task-search/(:num)','AssignTask::search/$1');    
 });
 //Services Route
-$routes->group('services',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
+$routes->group('services',['namespace'=>'App\Controllers','filter'=>'admin'],function($routes){
  $routes->get('/','Services::index');
  $routes->post('add','Services::create');
 });
 
 //Contacts
-$routes->group('emergency-contact',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
-    $routes->get('/','Contacts::index');
+$routes->group('emergency-contact',['namespace'=>'App\Controllers'],function($routes){
+    $routes->get('/','Contacts::index',['filter'=>'admin']);
     //show executinve emengency contact
-    $routes->get('for-agents','Contacts::emergency');
+    $routes->get('for-agents','Contacts::emergency',['filter'=>'auth']);
    
    });
 //Documents
-$routes->group('company-info',['namespace'=>'App\Controllers','filter'=>'auth'],function($routes){
-    $routes->get('/','Info::index');
-    $routes->get('add','Info::create');
-    $routes->post('create','Info::store');
-    $routes->get('edit/(:num)','Info::show/$1');
-    $routes->post('update/(:num)','Info::update/$1');
-    $routes->get('delete/(:num)','Info::deleteDoc/$1');
-    $routes->get('document/(:any)','Info::showDoc/$1');
+$routes->group('company-info',['namespace'=>'App\Controllers'],function($routes){
+    $routes->get('/','Info::index',['filter'=>'auth']);
+    $routes->get('add','Info::create',['filter'=>'admin']);
+    $routes->post('create','Info::store',['filter'=>'admin']);
+    $routes->get('edit/(:num)','Info::show/$1',['filter'=>'admin']);
+    $routes->post('update/(:num)','Info::update/$1',['filter'=>'admin']);
+    $routes->get('delete/(:num)','Info::deleteDoc/$1',['filter'=>'admin']);
+    $routes->get('document/(:any)','Info::showDoc/$1',['filter'=>'auth']);
    
    });
 
@@ -166,46 +166,46 @@ $routes->group('api',['namespace'=>'App\Controllers\Api'],function($routes){
     $routes->post('create-union-ward','Unions::createUnionWard');
 
     //Company Add
-    $routes->post('create-company','Company::create');
+    $routes->post('create-company','Company::create',['filter'=>'auth']);
     //User Information Update
-    $routes->post('user-update/(:num)','User::updateInfo/$1');
-    $routes->get('user-search','User::search');
+    $routes->post('user-update/(:num)','User::updateInfo/$1',['filter'=>'auth']);
+    $routes->get('user-search','User::search',['filter'=>'auth']);
     //Get all company list
-    $routes->get('company-list','Company::companyList');
+    $routes->get('company-list','Company::companyList',['filter'=>'auth']);
     //fetch user information
-    $routes->get('user-information/(:num)','User::profileInfo/$1');
+    $routes->get('user-information/(:num)','User::profileInfo/$1',['filter'=>'auth']);
     //Fetch service data
-    $routes->get('service-list','Services::index');
-    $routes->get('show-service/(:num)','Services::show/$1');
-    $routes->post('update-service/(:num)','Services::update/$1');
-    $routes->get('delete-service/(:num)','Services::delete/$1');
-    $routes->post('search-service','Services::searchRecord');
-    $routes->get('active-service','Services::activeService');
-    $routes->get('deactive-service','Services::deactiveService');
+    $routes->get('service-list','Services::index',['filter'=>'auth']);
+    $routes->get('show-service/(:num)','Services::show/$1',['filter'=>'auth']);
+    $routes->post('update-service/(:num)','Services::update/$1',['filter'=>'auth']);
+    $routes->get('delete-service/(:num)','Services::delete/$1',['filter'=>'auth']);
+    $routes->post('search-service','Services::searchRecord',['filter'=>'auth']);
+    $routes->get('active-service','Services::activeService',['filter'=>'auth']);
+    $routes->get('deactive-service','Services::deactiveService',['filter'=>'auth']);
     //Fetch Meeting Data
-    $routes->get('meeting-list','Meeting::index');
-    $routes->get('interest-service/(:num)','Meeting::interestMeeting/$1');
+    $routes->get('meeting-list','Meeting::index',['filter'=>'auth']);
+    $routes->get('interest-service/(:num)','Meeting::interestMeeting/$1',['filter'=>'auth']);
     //fetch Meeting data on behalf of company id
-    $routes->get('company-report/(:num)','Meeting::companyReport/$1');
+    $routes->get('company-report/(:num)','Meeting::companyReport/$1',['filter'=>'auth']);
 
     //fetching task by id
-    $routes->get('assign-task/(:num)','Task::show/$1');
+    $routes->get('assign-task/(:num)','Task::show/$1',['filter'=>'auth']);
     //Fetching All Emergency Contact 
-    $routes->get('emergency-contact-list','Contact::index');
-    $routes->post('emergency-contact-add','Contact::create');
-    $routes->get('emergency-contact-delete/(:num)','Contact::delete/$1');
-    $routes->get('emergency-contact-edit/(:num)','Contact::show/$1');
-    $routes->post('emergency-contact-update/(:num)','Contact::update/$1');
-    $routes->post('emergency-contact-search','Contact::search');
+    $routes->get('emergency-contact-list','Contact::index',['filter'=>'auth']);
+    $routes->post('emergency-contact-add','Contact::create',['filter'=>'auth']);
+    $routes->get('emergency-contact-delete/(:num)','Contact::delete/$1',['filter'=>'auth']);
+    $routes->get('emergency-contact-edit/(:num)','Contact::show/$1',['filter'=>'auth']);
+    $routes->post('emergency-contact-update/(:num)','Contact::update/$1',['filter'=>'auth']);
+    $routes->post('emergency-contact-search','Contact::search',['filter'=>'auth']);
 
-    $routes->get('emergency-active-contact','Contact::active');
-    $routes->get('emergency-inactive-contact','Contact::inactive');
+    $routes->get('emergency-active-contact','Contact::active',['filter'=>'auth']);
+    $routes->get('emergency-inactive-contact','Contact::inactive',['filter'=>'auth']);
    //User Assign Task Notify
-   $routes->get('task/notify/(:num)','Notification::userNotify/$1');
+   $routes->get('task/notify/(:num)','Notification::userNotify/$1',['filter'=>'auth']);
    //User noti mark as read
-   $routes->get('task/mark-as-read/(:num)','Notification::markasRead/$1');
+   $routes->get('task/mark-as-read/(:num)','Notification::markasRead/$1',['filter'=>'auth']);
    //Admin notice for user activity
-   $routes->get('user-activity','Notification::userActivityNotice');
+   $routes->get('user-activity','Notification::userActivityNotice',['filter'=>'auth']);
 
 });
 

@@ -70,6 +70,7 @@
                     <li><a href="<?=site_url('/my-task/complete')?>">Completed Task</a></li>
                 </ul>
             </li>
+            <?php if(session()->get('user')['role']=='admin'):?>
             <li>
             <a href="javascript: void(0);" class="has-arrow waves-effect">
                     <i class="fas fa-user-plus"></i>
@@ -81,6 +82,7 @@
                     <li><a href="<?=site_url('/assign/task-report')?>">Task Report</a></li>
                 </ul>
             </li>
+           
             <li>
             <a href="javascript: void(0);" class="has-arrow waves-effect">
                     <i class="fas fa-users-cog"></i>
@@ -91,6 +93,7 @@
                     <li><a href="<?=site_url('/team-management')?>">Team List</a></li>
                 </ul>
             </li>
+           
             <li>
             <a href="javascript: void(0);" class="has-arrow waves-effect">
                     <i class="fas fa-file-export"></i>
@@ -102,6 +105,7 @@
                     
                 </ul>
             </li>
+            <?php endif?>
             <li>
             <a href="<?=site_url('/emergency-contact/for-agents')?>" class=" waves-effect">
                     <i class="mdi-card-account-phone"></i>
@@ -109,6 +113,7 @@
                 </a>
                 
             </li>
+            <?php if(session()->get('user')['role']=='admin'):?>
             <li>
             <a href="<?=site_url('/emergency-contact')?>" class=" waves-effect">
                     <i class="mdi-card-account-details-outline"></i>
@@ -116,6 +121,7 @@
                 </a>
                 
             </li>
+          
             <li>
             <a href="<?=site_url('/services')?>" class="has-arrow waves-effect">
                     <i class="fas fa-hand-point-right"></i>
@@ -123,6 +129,7 @@
                 </a>
                
             </li>
+            <?php endif?>
           
             <li>
             <a href="javascript: void(0);" class="has-arrow waves-effect">
@@ -130,7 +137,9 @@
                     <span>Company Documents</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
+                <?php if(session()->get('user')['role']=='admin'):?>
                     <li><a href="<?=site_url('/company-info/add')?>">Add Document</a></li>
+                    <?php endif?>
                     <li><a href="<?=site_url('/company-info')?>">Documents</a></li>
                 </ul>
             </li>
